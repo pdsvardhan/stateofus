@@ -1,0 +1,387 @@
+features:
+  - id: feat-question-experience-page
+    title: Unified question experience page
+    short_description: Question + interaction + result + exploration as ONE page;
+      visibility states change, page stays unified (DOC 0 P4, DOC 5 R1).
+    type: ui
+    status: planned
+    priority: P0
+    size: L
+    test_status: not-tested
+    acceptance_criteria:
+      - content: Question page renders question, interaction, result area and
+          exploration affordances as one unified page with state-dependent
+          visibility (no separate result route)
+        test_status: not-tested
+        linked_test: null
+      - content: After answering, result + personal insight appear on the same page
+          without full navigation
+        test_status: not-tested
+        linked_test: null
+      - content: Page fully usable at 375px width with thumb-reachable primary actions
+        test_status: not-tested
+        linked_test: null
+    dependencies: []
+  - id: feat-interaction-modes
+    title: Five interaction modes
+    short_description: Quick Pick, Bucket Sort, Tier Placement, Trade-off Cards,
+      Swipe Stack; one interaction per question; skip always allowed (DOC 2).
+    type: ui
+    status: planned
+    priority: P0
+    size: L
+    test_status: not-tested
+    acceptance_criteria:
+      - content: "All five modes render and submit: quick-pick, bucket-sort,
+          tier-placement, tradeoff-cards, swipe-stack"
+        test_status: not-tested
+        linked_test: null
+      - content: Every question shows a Skip control that advances without recording an
+          answer
+        test_status: not-tested
+        linked_test: null
+      - content: Each mode completes with a single interaction paradigm (no multi-screen
+          forms)
+        test_status: not-tested
+        linked_test: null
+      - content: Drag/swipe modes also offer a tap-only fallback that works at 375px
+        test_status: not-tested
+        linked_test: null
+    dependencies: []
+  - id: feat-result-reveal
+    title: Result reveal system
+    short_description: "Per-question reveal patterns: immediate / threshold /
+      progressive; failure states never show empty charts (DOC 5 s4+15)."
+    type: hybrid
+    status: planned
+    priority: P0
+    size: M
+    test_status: not-tested
+    acceptance_criteria:
+      - content: "Reveal pattern is per-question config: immediate | threshold |
+          progressive"
+        test_status: not-tested
+        linked_test: null
+      - content: Below threshold the page shows placeholder with context +
+          encouragement, never an empty chart
+        test_status: not-tested
+        linked_test: null
+      - content: Reaching threshold activates the primary result without manual
+          intervention
+        test_status: not-tested
+        linked_test: null
+    dependencies: []
+  - id: feat-dv-engine
+    title: Visualization engine (primary + secondary DVs)
+    short_description: "MVP DV families: S1-S3 splits, G1-G2 geographic, R1-R3
+      ranking, insight cards. 1 primary + 0-2 secondary per question (DOC 4
+      s9)."
+    type: ui
+    status: planned
+    priority: P0
+    size: L
+    test_status: not-tested
+    acceptance_criteria:
+      - content: "MVP DV set renders from aggregate data: S1 split cards, S2 radial
+          split, S3 liquid fill, G1 gradient heat map, G2 bubble map, R1 tier
+          board, R2 dynamic leaderboard, R3 podium, insight cards"
+        test_status: not-tested
+        linked_test: null
+      - content: Each question declares 1 primary + 0-2 secondary DVs from the catalogue
+          schema
+        test_status: not-tested
+        linked_test: null
+      - content: DV transitions animate 300-700ms (heavy <900ms) and respect
+          prefers-reduced-motion
+        test_status: not-tested
+        linked_test: null
+      - content: Secondary DVs never duplicate the primary's information shape
+        test_status: not-tested
+        linked_test: null
+    dependencies: []
+  - id: feat-personal-insight-layer
+    title: Personal insight layer + insight cards
+    short_description: Mandatory on every result; template-driven, never generative
+      (DOC 4 s8, DOC 5 s8-9).
+    type: ui
+    status: planned
+    priority: P0
+    size: M
+    test_status: not-tested
+    acceptance_criteria:
+      - content: Every answered result shows >=1 template-driven personal insight
+          (you-matched-X%, you-differ, region-differs, minority/majority)
+        test_status: not-tested
+        linked_test: null
+      - content: Insights generate from templates only - no LLM/generative text at
+          runtime
+        test_status: not-tested
+        linked_test: null
+      - content: Skipped questions show the aggregate result without the personal layer
+        test_status: not-tested
+        linked_test: null
+    dependencies: []
+  - id: feat-discovery
+    title: Discovery system
+    short_description: Browse, categories, trending, explore, related, random,
+      search (questions+categories only). Guided, not algorithmic (DOC 6 s6, DOC
+      7 s6).
+    type: ui
+    status: planned
+    priority: P0
+    size: M
+    test_status: not-tested
+    acceptance_criteria:
+      - content: Users can reach questions via categories, trending, explore, related,
+          and random discovery
+        test_status: not-tested
+        linked_test: null
+      - content: Search returns matching questions and categories; result content is not
+          searchable
+        test_status: not-tested
+        linked_test: null
+      - content: Every result page offers >=1 related/next question
+        test_status: not-tested
+        linked_test: null
+    dependencies: []
+  - id: feat-homepage-curation
+    title: Curated multi-source homepage
+    short_description: "Feed sources: editorial, trending, recent, explore +
+      diversity rules; no single feed (DOC 6 s5)."
+    type: hybrid
+    status: planned
+    priority: P0
+    size: M
+    test_status: not-tested
+    acceptance_criteria:
+      - content: Homepage composes editorial + trending + recent + explore modules
+        test_status: not-tested
+        linked_test: null
+      - content: "Category diversity rule enforced: no single category dominates
+          adjacent modules"
+        test_status: not-tested
+        linked_test: null
+      - content: Editorial picks are manageable from the admin console
+        test_status: not-tested
+        linked_test: null
+    dependencies: []
+  - id: feat-reactions-sharing
+    title: Question reactions + sharing
+    short_description: Like/dislike, share link, result image export; context
+      preserved, no personalized exports (DOC 6 s9+11).
+    type: ui
+    status: planned
+    priority: P0
+    size: M
+    test_status: not-tested
+    acceptance_criteria:
+      - content: "Question like/dislike: one per device, toggleable"
+        test_status: not-tested
+        linked_test: null
+      - content: Share link copies canonical question URL and unfurls with an OG preview
+        test_status: not-tested
+        linked_test: null
+      - content: Result image export downloads a rendered card preserving question +
+          result + sample size
+        test_status: not-tested
+        linked_test: null
+    dependencies: []
+  - id: feat-question-lifecycle
+    title: Question lifecycle + governance
+    short_description: States
+      draft->active->paused->frozen->archived->removed(rare); visible status;
+      results outlive participation (DOC 6 s3-4+13).
+    type: backend
+    status: planned
+    priority: P0
+    size: M
+    test_status: not-tested
+    acceptance_criteria:
+      - content: Lifecycle states enforced server-side with an explicit
+          allowed-transition map
+        test_status: not-tested
+        linked_test: null
+      - content: Frozen questions show results and reject new answers
+        test_status: not-tested
+        linked_test: null
+      - content: Question status is visible on the question page (governance
+          transparency)
+        test_status: not-tested
+        linked_test: null
+    dependencies: []
+  - id: feat-admin-console
+    title: Minimal admin console
+    short_description: Create/edit/pause/freeze/archive/feature/export questions;
+      protected surface (DOC 7 s10).
+    type: ui
+    status: planned
+    priority: P0
+    size: M
+    test_status: not-tested
+    acceptance_criteria:
+      - content: Admin can create, edit, pause, freeze, archive, feature, and export
+          questions
+        test_status: not-tested
+        linked_test: null
+      - content: Admin routes are inaccessible without the admin credential
+        test_status: not-tested
+        linked_test: null
+      - content: Question create/edit form covers the catalogue schema incl. mode,
+          options, DV selection, insight type
+        test_status: not-tested
+        linked_test: null
+    dependencies: []
+  - id: feat-question-data-model
+    title: Question catalogue data model
+    short_description: Adopt the 34-column catalogue schema as the question data model (DATA-1).
+    type: backend
+    status: planned
+    priority: P0
+    size: M
+    test_status: not-tested
+    acceptance_criteria:
+      - content: Schema captures all 34 catalogue columns (id, category, mode, options,
+          DVs, insight type, scores, priority, notes...)
+        test_status: not-tested
+        linked_test: null
+      - content: Bulk import from the XLSX/CSV catalogue succeeds and is idempotent
+          (re-import does not duplicate)
+        test_status: not-tested
+        linked_test: null
+      - content: Every question validates interaction mode + DV ids against approved
+          enums
+        test_status: not-tested
+        linked_test: null
+    dependencies: []
+  - id: feat-anonymous-participation
+    title: Anonymous participation
+    short_description: No accounts; device-scoped identity for comparisons + dedup;
+      migration hooks for future auth (DOC 7 s7).
+    type: backend
+    status: planned
+    priority: P0
+    size: M
+    test_status: not-tested
+    acceptance_criteria:
+      - content: Answering requires no signup/login anywhere in the product
+        test_status: not-tested
+        linked_test: null
+      - content: Device-scoped identity persists answers so return visits show
+          you-vs-crowd comparisons
+        test_status: not-tested
+        linked_test: null
+      - content: One answer per question per device is enforced
+        test_status: not-tested
+        linked_test: null
+    dependencies: []
+  - id: feat-seed-content-pipeline
+    title: Launch content pipeline (>=100 questions)
+    short_description: Import 25 content-ready catalogue questions; Claude authors
+      ~75+ to reach >=100 across 6 categories x 5 modes; user reviews (user
+      decision 2026-06-12).
+    type: automated
+    status: planned
+    priority: P0
+    size: L
+    test_status: not-tested
+    acceptance_criteria:
+      - content: The 25 content-ready catalogue questions are imported
+        test_status: not-tested
+        linked_test: null
+      - content: ">=100 total questions live at launch across all 6 categories and all 5
+          interaction modes"
+        test_status: not-tested
+        linked_test: null
+      - content: Every authored question passes the DOC-3 standards checklist
+          (experience-first, 1-2 lines, visual payoff, skip allowed)
+        test_status: not-tested
+        linked_test: null
+      - content: User review + approval is recorded before any authored question
+          activates
+        test_status: not-tested
+        linked_test: null
+    dependencies: []
+  - id: feat-region-capture
+    title: Region capture (IP-geo + optional refine)
+    short_description: Coarse city/state from IP automatically + one-tap optional
+      correction on geo questions (user decision 2026-06-12).
+    type: backend
+    status: planned
+    priority: P1
+    size: M
+    test_status: not-tested
+    acceptance_criteria:
+      - content: Coarse region (city/state) derives from IP on first visit without
+          prompting
+        test_status: not-tested
+        linked_test: null
+      - content: A one-tap optional correction is available on questions with geographic
+          DVs
+        test_status: not-tested
+        linked_test: null
+      - content: Region stores at city/state granularity only - never precise location
+        test_status: not-tested
+        linked_test: null
+    dependencies: []
+  - id: feat-vote-dedup
+    title: Vote dedup + bot resistance
+    short_description: Device + IP heuristics, rate limits; reduce impact not
+      eliminate (DOC 3 S9, DOC 7 s12).
+    type: backend
+    status: planned
+    priority: P1
+    size: M
+    test_status: not-tested
+    acceptance_criteria:
+      - content: Repeat answer attempts from the same device update or are rejected -
+          never duplicated
+        test_status: not-tested
+        linked_test: null
+      - content: Per-IP and per-device rate limits protect answer endpoints
+        test_status: not-tested
+        linked_test: null
+      - content: Burst patterns (abnormal answers/minute) are rejected and logged
+        test_status: not-tested
+        linked_test: null
+    dependencies: []
+  - id: feat-share-landing
+    title: Inbound share landing flow
+    short_description: Shared link opens question with shared-result context; answer
+      -> compare -> continue (ai-proposed, approved).
+    type: ui
+    status: planned
+    priority: P1
+    size: S
+    test_status: not-tested
+    acceptance_criteria:
+      - content: A shared link opens the question page showing the shared-result context
+        test_status: not-tested
+        linked_test: null
+      - content: The visitor can answer and then sees their comparison against the
+          shared result
+        test_status: not-tested
+        linked_test: null
+      - content: A continue affordance leads to related questions
+        test_status: not-tested
+        linked_test: null
+    dependencies: []
+  - id: feat-og-image-gen
+    title: OG / share image generation
+    short_description: Server-rendered share cards for image export + link unfurls (DOC 5 s14).
+    type: backend
+    status: planned
+    priority: P1
+    size: M
+    test_status: not-tested
+    acceptance_criteria:
+      - content: Server renders a share-card image with question + primary result +
+          sample size
+        test_status: not-tested
+        linked_test: null
+      - content: OG/Twitter meta tags serve the generated image per question
+        test_status: not-tested
+        linked_test: null
+      - content: Image generation completes <2s or serves from cache
+        test_status: not-tested
+        linked_test: null
+    dependencies: []

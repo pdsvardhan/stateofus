@@ -1,0 +1,12 @@
+decisions:
+  - id: adr-001-comwatch-staging
+    project_slug: comwatch
+    title: "ComWatch: scope and rails locked from a 10-document product package"
+    status: accepted
+    date: 2026-06-12T00:00:00.000Z
+    tags:
+      - staging
+      - initial
+      - curated
+      - cat:product
+    body_path: decisions/2026-06-12-initial-staging.md

@@ -1,0 +1,328 @@
+# ND1 — FINALIZED for ComWatch (`comwatch` slug)
+# Finalized: 2026-06-12
+# Stage 0 sub-steps 0.1-0.11 complete; ready for Stage 1.1 (SO1 production)
+# Scope: large
+# Type: 2 (Type 2 — artifacts present, doc-only package, no F1 code)
+# Source: 10 intent PDFs (DOC 0-9, "Public Pulse" working title) + question catalogue XLSX
+#         (116 rows, 25 content-ready) + DV examples DOCX (23 viz reference images)
+#         + user verbatim 2026-06-12
+# NOTE: docs use working title "Public Pulse"; final product name is ComWatch everywhere
+#       (user decision 2026-06-12).
+
+project_meta:
+  slug: comwatch
+  display_name: ComWatch
+  port: 8510
+  public_url: https://comwatch.vault7a.xyz   # to be wired at Stage 3 deploy
+  hosting_target: vault7a-docker
+  current_status: building
+  lifecycle_phase: ideating
+  scope_size_proposed: large       # 17 features / 5 flows fits large band; user confirmed 2026-06-12
+  target_devices: both             # mobile-first per DOC 0 P6
+  journey_type: 2
+  journey_evidence:
+    attachments_count: 12
+    f1_code: 0
+    f2_docs: 10                    # DOC 0-9 PDFs
+    f3_data: 1                     # question catalogue XLSX
+    f4_reference: 1                # DV examples DOCX (23 images) — design-stage reference
+  user_confirmed: true
+
+# ============================================================
+# 0.4 — core_idea_raw  (USER VERBATIM, immutable, anti-gaslight)
+# ============================================================
+core_idea_raw: |
+  load ottomate skill and create a new project called ComWatch. go through all files
+  present here C:/Users/pdsva/Desktop/Projects/ComWatch, currently working on design
+  system, meanwhile you can do all work necessary before that, if any questions ask
+core_idea_captured_at: 2026-06-12
+core_idea_note: |
+  User message is short by design — the intent lives in the Type 2 doc package.
+  DOC 0 Master PRD is the source of truth for product intent. User is separately
+  working on the design system (Stage 2 input); this pipeline run covers everything
+  before that (Stage 0 + Stage 1 SO1).
+
+# ============================================================
+# 0.3 — Doc translation inventory (Type 2)
+# ============================================================
+doc_inventory:
+  - { file: "Public Pulse Product Requirements Document.pdf", doc_id: DOC-0, role: master-prd, chars: 3809 }
+  - { file: "Categories & Poll Universe.pdf",                 doc_id: DOC-1, role: categories, chars: 1661 }
+  - { file: "Question System.pdf",                            doc_id: DOC-2, role: question-modes, chars: 964 }
+  - { file: "Question Standards.pdf",                         doc_id: DOC-3, role: question-quality, chars: 929 }
+  - { file: "Visualization System.pdf",                       doc_id: DOC-4, role: dv-families, chars: 4814 }
+  - { file: "Result System.pdf",                              doc_id: DOC-5, role: result-experience, chars: 4577 }
+  - { file: "Governance + Engagement System.pdf",             doc_id: DOC-6, role: lifecycle-discovery, chars: 3954 }
+  - { file: "MVP Scope & Product Roadmap.pdf",                doc_id: DOC-7, role: mvp-scope, chars: 3795 }
+  - { file: "Design Handoff.pdf",                             doc_id: DOC-8, role: design-brief, chars: 4060 }
+  - { file: "Builder Handoff.pdf",                            doc_id: DOC-9, role: builder-brief, chars: 4632 }
+  - { file: "Public_Pulse_Final_Question_Catalogue_Merged.xlsx", doc_id: DATA-1, role: question-catalogue,
+      detail: "34-col schema x 116 rows across 6 category sheets; 25 content-ready (5 per category, Identity=0), 91 placeholder" }
+  - { file: "DV examples.docx", doc_id: REF-1, role: dv-reference-board,
+      detail: "23 reference images: leaderboards, tournaments, bubble/map charts, sankey, splits; design-stage input, NOT processed here" }
+
+# ============================================================
+# 0.7 — intent
+# ============================================================
+intent:
+  problem_statement: |
+    Surveys and polls feel like work: you fill a form, you get nothing back. There is
+    no satisfying way to answer structured public questions and immediately discover
+    what other people think. ComWatch is a mobile-first public-opinion platform built
+    around the loop Question -> Answer -> Aggregation -> Visualization -> Reaction ->
+    Return. One question = one experience page: a fast playful interaction (Quick Pick,
+    Bucket Sort, Tier Placement, Trade-off Cards, Swipe Stack), an instantly rewarding
+    visual result (split cards, radial splits, heat maps, leaderboards, treemaps), and
+    a mandatory personal insight layer ("you matched 12%", "your city differs").
+    The output experience is as important as answering. Users should feel
+    "I contributed + I learned something + I want to answer another" — never
+    "I filled a form."
+    provenance: DOC 0 sections 1-2, 4, 6
+
+  target_users:
+    - role: "Anonymous general public (no accounts in MVP)"
+      traits: ["mobile-first", "short attention", "thumb interactions", "low reading"]
+      provenance: DOC 0 P6, DOC 7 section 7
+    - role: "Curiosity-driven explorers arriving via shared results"
+      traits: ["inbound from share links", "want to compare themselves vs the crowd"]
+      provenance: DOC 5 section 14 + ai-inferred (share loop is the growth engine)
+
+  non_goals_initial:
+    - { value: "Accounts / login / profiles (anonymous only; migration hooks allowed)", provenance: "DOC 7 section 7" }
+    - { value: "Open poll creation (questions are internal + curated)",                 provenance: "DOC 7 section 9" }
+    - { value: "Comments (high moderation cost, low initial value)",                    provenance: "DOC 6 section 10" }
+    - { value: "Trust engine / advanced weighting",                                     provenance: "DOC 0 section 11" }
+    - { value: "Follow systems / social profiles / community systems",                  provenance: "DOC 0 section 11" }
+    - { value: "Monetization",                                                          provenance: "DOC 0 section 5" }
+    - { value: "Recommendation engine / analytics platform / experimentation platform", provenance: "DOC 0 section 11" }
+    - { value: "Tournament mode (product mode, not MVP)",                               provenance: "DOC 2 special mode" }
+    - { value: "Notifications",                                                         provenance: "DOC 6 section 8" }
+    - { value: "XP / daily rewards / forced streaks / user leaderboards (gamification)", provenance: "DOC 6 section 7" }
+    - { value: "Infinite feeds (no single algorithmic feed; homepage is curated)",      provenance: "DOC 6 sections 1+5" }
+
+  success_criteria_initial:
+    - { value: "Questions answered (primary signal): cumulative answers grow week over week post-launch", measurable: true, quality_score: 0.7, provenance: "DOC 0 section 10" }
+    - { value: "Completion rate: >=70% of started questions reach the result view",     measurable: true, quality_score: 0.85, provenance: "DOC 0 section 10 + ai-quantified" }
+    - { value: "Return visits: >=20% of participants answer on a second day within 14 days", measurable: true, quality_score: 0.8, provenance: "DOC 0 section 10 + ai-quantified" }
+    - { value: "Share rate: >=5% of result views trigger share-link copy or image export", measurable: true, quality_score: 0.8, provenance: "DOC 0 section 10 + ai-quantified" }
+    - { value: "Result exploration: >=30% of result views open a secondary DV or insight card", measurable: true, quality_score: 0.8, provenance: "DOC 0 section 10 + ai-quantified" }
+    - { value: "Launch content: >=100 questions live covering all 6 categories and all 5 interaction modes", measurable: true, quality_score: 0.95, provenance: "DOC 7 section 3 + user 2026-06-12" }
+  needs_user_review: false   # approved in batched panel 2026-06-12; ai-quantified thresholds revisitable at Stage 1
+
+# ============================================================
+# 0.8 — preferences
+# ============================================================
+preferences:
+  likes:
+    - "Modern, smooth, interactive, editorial visual language (DOC 4 section 3)"
+    - "Purposeful motion 300-700ms: reveal, expand, highlight, flow, cluster, settle (DOC 4 section 4)"
+    - "Playful, light, fast interactions — satisfying not administrative (DOC 8 section 8)"
+    - "Medium information density (DOC 4 section 3)"
+    - "Mobile-first thumb-driven layouts, 1-2 line questions (DOC 0 P6)"
+    - "Results that feel surprising, comparative, discussable, shareable (DOC 0 P2)"
+
+  dislikes:
+    - "Corporate dashboard / dense BI / analytics feeling (DOC 4 section 3)"
+    - "Static charts, text-first results, box overload (DOC 4 section 3)"
+    - "Survey/form feeling, admin feeling, heavy reading (DOC 8 section 6)"
+    - "Cinematic delays (>900ms motion) (DOC 4 section 4)"
+    - "Live-twitching results (constant movement) (DOC 4 section 6)"
+
+  must_haves:
+    - "One question = one experience page (question + answer + result + exploration together) (DOC 0 P4)"
+    - "Skip always allowed — never force an answer (DOC 3 S5)"
+    - "Personal insight layer mandatory on every result (template-driven, never generative) (DOC 4 section 8)"
+    - "Insight cards mandatory in MVP (DOC 5 section 9)"
+    - "Sample size + vote count visible (trust visible, never dominant) (DOC 3 S8, DOC 5 section 10)"
+    - "Anonymous participation (DOC 7 section 7)"
+    - "One question = one interaction = one completion (DOC 2 rules)"
+    - "Result must reward participation — no empty charts, no fake precision (DOC 5 R2-R3)"
+    - "Curated homepage with multi-source feed (editorial/trending/recent/explore) (DOC 6 section 5)"
+    - ">=100 launch questions covering all categories and interaction modes (user 2026-06-12)"
+
+  avoid:
+    - "Engagement farming, empty gamification (DOC 6 section 1)"
+    - "Forcing maps where geography doesn't matter (DOC 4 G rules)"
+    - "S/A/B tier labels — prefer descriptive labels (DOC 4 R rules)"
+    - "Secondary DVs that repeat the primary's information (DOC 5 section 7)"
+    - "Analytics rabbit holes — max 2-3 exploration layers (DOC 5 section 12)"
+    - "Personalized share exports / custom edits (DOC 6 section 11)"
+
+  ui_hints:
+    dark_mode_pref: "unspecified — design system in progress by user; Stage 2 input"
+    palette_hint: "unspecified — design system in progress by user"
+    animation_level: "rich but purposeful; 300-700ms standard, <900ms heavy; motion explains, never decorates"
+    layout_style: "editorial, medium density, mobile-first; one-question-one-page"
+
+  tech_hints:
+    framework_hint: "skip — builder decides (DOC 9: builder owns stack)"
+    db_hint: "skip — builder decides"
+    deploy_hint: "Docker on VAULT7A, port 8510 -> 3000, NPM Proxy + Cloudflare Tunnel (house standard)"
+
+  integrations_initial:
+    - { service: "Gitea", role: "source repo (pdsv/comwatch)", already_wired: false }
+    - { service: "NPM Proxy Manager", role: "reverse proxy", already_wired: false }
+    - { service: "Cloudflare Tunnel", role: "public exposure (comwatch.vault7a.xyz)", already_wired: false }
+    - { service: "IP geolocation (provider TBD at Stage 2)", role: "coarse region capture for geographic DVs + region insights", already_wired: false }
+
+  auth_intent: none
+    # DOC 7 section 7: anonymous only; builder may leave migration hooks.
+    # Admin surface needs separate protection — captured as risk admin-surface-exposure.
+
+# ============================================================
+# 0.10 — sketches (Phase A generative + Phase B overlay + Phase C complementary)
+# Approved by user in batched panel 2026-06-12 (all 13 + 4 companions)
+# ============================================================
+features_sketch:
+  - id: feat-question-experience-page
+    name: "Unified question experience page"
+    detail: "Question + interaction + result + exploration on one page; visibility states change, page stays unified"
+    provenance: "DOC 0 P4, DOC 5 R1"
+  - id: feat-interaction-modes
+    name: "Five interaction modes"
+    detail: "Quick Pick, Bucket Sort, Tier Placement, Trade-off Cards, Swipe Stack; one interaction per question; skip always allowed"
+    provenance: "DOC 2"
+  - id: feat-result-reveal
+    name: "Result reveal system"
+    detail: "Per-question patterns: immediate / threshold / progressive; failure states show placeholder + context + encouragement, never empty charts"
+    provenance: "DOC 5 sections 4+15"
+  - id: feat-dv-engine
+    name: "Visualization engine (primary + secondary DVs)"
+    detail: "1 primary + 0-2 secondary per question. MVP families: S1 Split Cards, S2 Radial Split, S3 Liquid Fill, G1 Gradient Heat Map, G2 Bubble Map, R1 Tier Board, R2 Dynamic Leaderboard, R3 Podium, Insight/Comparison Cards. Conditional: S4, G3, R4, N1-N2, P1-P2. Future: F1 Sankey"
+    provenance: "DOC 4 section 9"
+  - id: feat-personal-insight-layer
+    name: "Personal insight layer + insight cards"
+    detail: "Mandatory on every result. Template-driven (never generative): you-matched-X%, you-differ, your-region-differs, minority/majority. Insight cards discoverable, light, not fortune cookies"
+    provenance: "DOC 4 section 8, DOC 5 sections 8-9"
+  - id: feat-discovery
+    name: "Discovery system"
+    detail: "Browse, categories, trending, explore, related, random discovery, search (questions + categories only; results not searchable in MVP). Guided feel, not algorithmic"
+    provenance: "DOC 7 section 6, DOC 6 section 6"
+  - id: feat-homepage-curation
+    name: "Curated multi-source homepage"
+    detail: "Feed sources: editorial, trending, recent, explore, question diversity. No single feed; avoid domination + repetition; surface different categories"
+    provenance: "DOC 6 section 5"
+  - id: feat-reactions-sharing
+    name: "Question reactions + sharing"
+    detail: "Like/dislike on questions, share link, result image export, question URL. Context preserved; no personalized exports; share should explain, not bait"
+    provenance: "DOC 6 sections 9+11, DOC 5 section 14"
+  - id: feat-question-lifecycle
+    name: "Question lifecycle + governance"
+    detail: "States: draft -> active -> paused -> frozen -> archived -> removed(rare). No universal expiry — question decides. Visible status/participation/result state; transparency rules"
+    provenance: "DOC 6 sections 3-4+13"
+  - id: feat-admin-console
+    name: "Minimal admin console"
+    detail: "Create / edit / pause / archive / export / feature questions. May live outside the public product. Optional: homepage tools, basic analytics"
+    provenance: "DOC 7 section 10"
+  - id: feat-question-data-model
+    name: "Question catalogue data model"
+    detail: "Adopt 34-column XLSX schema: id, category, subcategory, title, text, objective, mode, interaction, answer structure, options, skip, primary/secondary DV, insight type, result shape, emotion, 5 scores, experience requirement, bias risk, rationale, alternatives, MVP priority, notes"
+    provenance: "DATA-1 catalogue"
+  - id: feat-anonymous-participation
+    name: "Anonymous participation"
+    detail: "No accounts; device/session-scoped identity for you-vs-crowd comparisons + dedup; auth migration hooks left for future"
+    provenance: "DOC 7 section 7"
+  - id: feat-seed-content-pipeline
+    name: "Launch content pipeline (>=100 questions)"
+    detail: "Import 25 content-ready catalogue questions; Claude authors ~75+ to reach >=100 covering all 6 categories x 5 modes x DV variety; user reviews before launch. Identity category needs all-new content (0 ready)"
+    provenance: "DATA-1 + DOC 7 section 3 + user 2026-06-12"
+  # Phase C complementary (ai-proposed, approved 2026-06-12)
+  - id: feat-region-capture
+    name: "Region capture strategy"
+    detail: "IP-geo coarse city/state automatically + one-tap optional correction on first geo question. No account needed. Feeds G1/G2 DVs + your-region-differs insights"
+    provenance: "ai-proposed (docs silent); user picked IP-geo + optional refine 2026-06-12"
+  - id: feat-vote-dedup
+    name: "Vote dedup / bot resistance"
+    detail: "Anonymous + repeat answering needs dedup: device fingerprint/localStorage + IP heuristics + rate limits. DOC 7 lists bot resistance as optional-if-cheap; lifted to sketched feature"
+    provenance: "ai-proposed; DOC 7 section 12"
+  - id: feat-share-landing
+    name: "Inbound share landing flow"
+    detail: "Visitor opens shared result link -> sees question + result state -> prompted to answer -> compare -> continue exploring. The share loop is the growth engine"
+    provenance: "ai-proposed (implied by DOC 5 section 14)"
+  - id: feat-og-image-gen
+    name: "OG / share image generation"
+    detail: "Server-side render of result cards for image export + link unfurls (share formats: image, link, structured card)"
+    provenance: "ai-proposed (implied by DOC 5 section 14 formats)"
+
+flows_sketch:
+  - id: flow-core-answer-loop
+    name: "Core answer loop"
+    detail: "Entry -> discover question -> answer (one interaction) -> result reveal -> personal insight -> explore secondary DVs -> share / continue -> next question"
+    provenance: "DOC 0 section 6"
+  - id: flow-inbound-share
+    name: "Inbound share flow"
+    detail: "Open shared link -> question + result context -> answer -> personal comparison -> continue to related questions"
+    provenance: "ai-proposed, approved 2026-06-12"
+  - id: flow-discovery-browse
+    name: "Discovery / browse flow"
+    detail: "Homepage -> category / trending / explore / search / random -> question page"
+    provenance: "DOC 6 section 6, DOC 7 section 6"
+  - id: flow-admin-question
+    name: "Admin question management flow"
+    detail: "Create (34-col schema fields) -> draft -> preview -> activate -> monitor participation -> pause / freeze / archive; export"
+    provenance: "DOC 7 section 10, DOC 6 section 3"
+  - id: flow-result-lifecycle
+    name: "Result lifecycle flow"
+    detail: "Answers collected -> threshold reached -> primary result activates -> exploration expands -> question may freeze/archive; results stay visible after freeze"
+    provenance: "DOC 5 section 3, DOC 6 G2"
+
+risk_concerns_initial:
+  - { id: anonymous-vote-stuffing,   severity: high,   note: "No auth -> ballot stuffing / troll skew. Mitigate: dedup (feat-vote-dedup), rate limits, bias tolerance per DOC 3 S9 (reduce impact, not eliminate)" }
+  - { id: region-data-accuracy,      severity: medium, note: "IP-geo is coarse/wrong on mobile carrier NAT -> wrong your-region insights. Mitigate: optional one-tap correction, show region only at city/state granularity" }
+  - { id: viz-complexity-creep,      severity: high,   note: "9 MVP DV variants across 4 families is a lot to build WELL. Risk: many weak DVs instead of few strong. Stage 2 should consider trimming MVP DV set" }
+  - { id: cold-start-empty-results,  severity: medium, note: "New questions have no data -> dead pages. Mitigate: reveal patterns (threshold/progressive), failure states per DOC 5 section 15, launch seeding strategy" }
+  - { id: aggregation-performance,   severity: medium, note: "Live aggregation per answer at scale; caching/refresh strategy needed (DOC 4 section 6 refresh events). MVP scale is small but design for caching early" }
+  - { id: mobile-gesture-complexity, severity: medium, note: "Bucket Sort / Tier Placement / Swipe Stack = drag-drop + swipe on mobile web — notoriously fiddly. Prototype early, fallback tap interactions" }
+  - { id: content-pipeline-gap,      severity: high,   note: "Only 25/116 catalogue questions content-ready (Identity: 0/15) vs >=100 launch target. Claude authors gap; user reviews. Quality bar per DOC 3" }
+  - { id: admin-surface-exposure,    severity: medium, note: "auth_intent=none but admin console mutates content. Admin must be protected (separate port / CF Access / token) even in MVP" }
+  - { id: no-tests,                  severity: high,   note: "Baseline: no test framework yet. Stage 3 gates require critical-flow E2Es green (cv project: BLOCK on red)" }
+  - { id: no-error-tracking,         severity: medium, note: "Baseline: no error tracking. Wire GlitchTip or equivalent at Stage 3" }
+
+complementary_suggestions_outcome:
+  accepted: [feat-region-capture, feat-vote-dedup, feat-share-landing, feat-og-image-gen]
+  rejected: []
+
+# ============================================================
+# Phase H gap list — resolution status
+# ============================================================
+gap_list:
+  resolved_this_session:
+    - core_idea_raw                  # captured verbatim 2026-06-12
+    - journey_type                   # Type 2, 12 artifacts, user-instructed
+    - slug / display_name / port     # comwatch / ComWatch / 8510; naming decision: ComWatch everywhere
+    - tags                           # cv + public-facing (strict Stage 3 gates) + descriptive
+    - problem_statement              # synthesized from DOC 0; approved
+    - target_users                   # approved
+    - non_goals_initial              # 11 from docs; approved
+    - success_criteria_initial       # 6 (ai-quantified thresholds); approved
+    - preferences                    # likes/dislikes/must_haves/avoid from DOC 3/4/5/6/8; approved
+    - auth_intent                    # none (anonymous only)
+    - target_devices                 # both, mobile primary
+    - features_sketch                # 13 doc-sourced + 4 companions; approved
+    - flows_sketch                   # 5; approved
+    - risk_concerns_initial          # 10; approved
+    - scope_size                     # large; approved
+    - region_capture_strategy        # IP-geo + optional refine; user decision 2026-06-12
+    - launch_content_strategy        # >=100 questions; 25 imported + ~75 Claude-authored, user reviews; decision 2026-06-12
+
+  deferred_to_stage_1_or_2:
+    - field: ui_hints (palette, dark mode)
+      reason: "User is building the design system in parallel; plugs into Stage 2 UI master plan"
+    - field: MVP DV set trimming
+      reason: "viz-complexity-creep risk; Stage 2 component planning decides final MVP DV list"
+    - field: success_criteria thresholds
+      reason: "ai-quantified numbers (70% completion etc.) are starting points; refine at Stage 1 verification"
+    - field: result reveal thresholds
+      reason: "implementation decision per DOC 5 section 3"
+    - field: admin protection mechanism
+      reason: "Stage 2 tech architecture decision (CF Access vs token vs separate surface)"
+    - field: IP-geo provider choice
+      reason: "Stage 2 tech architecture"
+
+known_drift:
+  - "stage-0-overview.md says 'Insert nd1_archive row' but no API route exists for nd1_archive
+     (table exists in schema.ts; checked app/api 2026-06-12). Recorded state lives in
+     intent_drafts row + this file. Surfaced to user per authority-order rule."
+
+stage_0_complete: true
+ready_for_stage_1_1: true

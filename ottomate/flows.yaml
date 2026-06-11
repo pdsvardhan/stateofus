@@ -1,0 +1,189 @@
+flows:
+  - id: flow-core-answer-loop
+    title: Core answer loop
+    type: ui
+    priority: critical
+    test_status: not-tested
+    trigger: User opens an active question page
+    expected_outcome: User answers with one interaction, sees a rewarding visual
+      result + personal insight, explores, then shares or continues to the next
+      question
+    pre_conditions:
+      - Question exists and is in active state
+    steps:
+      - actor: user
+        action: Opens a question page
+        result: Question, category, sample size and interaction render as one page
+      - actor: user
+        action: Completes the single interaction (or taps Skip)
+        result: Answer recorded (or skip advances without recording)
+      - actor: system
+        action: Aggregates the new answer and applies the question's reveal pattern
+        result: Primary DV renders (or placeholder if below threshold)
+      - actor: system
+        action: Computes template-driven personal insight from user answer + aggregate
+        result: Personal insight layer + insight cards display
+      - actor: user
+        action: Explores secondary DV / insight cards
+        result: Exploration layer expands (max 2-3 layers)
+      - actor: user
+        action: Taps share or continue
+        result: Share sheet opens or next/related question loads
+    edge_cases:
+      - "Below reveal threshold: placeholder with context + encouragement, never
+        an empty chart"
+      - "Skipped question: aggregate result shown without personal layer"
+      - "Return visit to an answered question: previous answer + current
+        aggregate shown, no duplicate vote"
+    linked_features:
+      - feat-anonymous-participation
+      - feat-discovery
+      - feat-dv-engine
+      - feat-interaction-modes
+      - feat-personal-insight-layer
+      - feat-question-experience-page
+      - feat-reactions-sharing
+      - feat-region-capture
+      - feat-result-reveal
+      - feat-vote-dedup
+    linked_pages:
+      - page-comwatch-question
+  - id: flow-inbound-share
+    title: Inbound share landing
+    type: ui
+    priority: important
+    test_status: not-tested
+    trigger: Visitor opens a shared question/result URL
+    expected_outcome: Visitor lands on the question with shared context, answers,
+      sees their comparison, and continues exploring
+    pre_conditions:
+      - Shared URL resolves to an existing question
+    steps:
+      - actor: user
+        action: Opens the shared link
+        result: Question page renders with shared-result context and OG preview
+          consistency
+      - actor: system
+        action: Renders current result state + invitation to answer
+        result: Visitor understands the result and is prompted to participate
+      - actor: user
+        action: Answers the question
+        result: Personal comparison vs the crowd renders
+      - actor: user
+        action: Taps continue
+        result: Related questions load
+    edge_cases:
+      - "Question frozen: results visible, answering disabled with explanation"
+      - "Question removed: graceful gone-page with alternative questions"
+    linked_features:
+      - feat-og-image-gen
+      - feat-question-experience-page
+      - feat-share-landing
+    linked_pages:
+      - page-comwatch-question
+  - id: flow-discovery-browse
+    title: Discovery / browse
+    type: ui
+    priority: critical
+    test_status: not-tested
+    trigger: User lands on the homepage or opens discovery surfaces
+    expected_outcome: User finds an interesting question through curated modules,
+      categories, trending, search or random
+    pre_conditions: []
+    steps:
+      - actor: user
+        action: Lands on the homepage
+        result: "Curated modules render: editorial, trending, recent, explore with
+          category diversity"
+      - actor: user
+        action: Picks a category / trending / explore / search / random
+        result: A question list or search results render
+      - actor: user
+        action: Taps a question card
+        result: Question page opens
+    edge_cases:
+      - "Empty category: empty state with alternative categories"
+      - "Search with no hits: suggestions + popular questions"
+    linked_features:
+      - feat-discovery
+      - feat-homepage-curation
+    linked_pages:
+      - page-comwatch-category
+      - page-comwatch-explore
+      - page-comwatch-home
+      - page-comwatch-question
+      - page-comwatch-search
+  - id: flow-admin-question
+    title: Admin question management
+    type: mixed
+    priority: critical
+    test_status: not-tested
+    trigger: Admin opens the protected admin console
+    expected_outcome: Admin creates, previews, activates and governs questions
+      through their lifecycle
+    pre_conditions:
+      - Admin credential present
+    steps:
+      - actor: user
+        action: Authenticates into the admin console
+        result: Admin question table renders
+      - actor: user
+        action: Creates or edits a question per the 34-column schema
+        result: Draft saved with validation
+      - actor: user
+        action: Previews the question page
+        result: Draft renders exactly as it will appear publicly
+      - actor: user
+        action: Activates the question
+        result: Question goes live and accepts answers
+      - actor: system
+        action: Tracks participation stats per question
+        result: Counts visible in the admin table
+      - actor: user
+        action: Pauses / freezes / archives the question
+        result: State transition enforced and publicly visible
+    edge_cases:
+      - "Invalid schema fields: inline validation errors, draft not lost"
+      - "Freeze with existing answers: results stay visible, answering closes"
+    linked_features:
+      - feat-admin-console
+      - feat-question-data-model
+      - feat-question-lifecycle
+      - feat-seed-content-pipeline
+    linked_pages:
+      - page-comwatch-admin
+      - page-comwatch-admin-question-edit
+  - id: flow-result-lifecycle
+    title: Result lifecycle (automated)
+    type: automated
+    priority: important
+    test_status: not-tested
+    trigger: Answers accumulate on an active question
+    expected_outcome: Results activate at threshold, exploration expands, and
+      results remain visible after freeze/archive
+    pre_conditions:
+      - Question active with a reveal pattern configured
+    steps:
+      - actor: system
+        action: Collects and aggregates incoming answers
+        result: Counts and sample size accumulate
+      - actor: system
+        action: Detects reveal threshold reached
+        result: Primary result activates automatically
+      - actor: system
+        action: Unlocks exploration (secondary DVs, insight cards)
+        result: Exploration layer available
+      - actor: system
+        action: On freeze/archive keeps results visible
+        result: Participation closed, results preserved as historical artifacts
+    edge_cases:
+      - "Low-activity question: archived with results preserved - results are
+        never deleted"
+      - "Aggregation lag: results refresh on answer / periodic / manual, never
+        live-twitching"
+    linked_features:
+      - feat-dv-engine
+      - feat-question-lifecycle
+      - feat-result-reveal
+    linked_pages:
+      - page-comwatch-question

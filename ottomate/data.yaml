@@ -1,0 +1,40 @@
+conceptual:
+  project_slug: comwatch
+  has_data_layer: true
+  retention_policy_type: forever
+  retention_reason: "Results are historical artifacts (DOC 6 G2): answers +
+    aggregates persist after questions freeze/archive. Device identifiers are
+    pseudonymous; region stored at city/state granularity only."
+  freshness_threshold_hours: 24
+  freshness_notification_target: log
+sources:
+  - id: 32
+    project_slug: comwatch
+    name: Question catalogue (XLSX import)
+    source_type: csv-upload
+    url_or_path: inputs/Public_Pulse_Final_Question_Catalogue_Merged.xlsx
+    ingestion_method: one-time-upload
+    ingestion_frequency: on-demand (launch + content drops)
+    failure_handling: alert-and-abort
+    refresh_strategy: upsert
+    watermark_field: question_id
+    backfill_supported: false
+  - id: 33
+    project_slug: comwatch
+    name: User answers + reactions (runtime)
+    source_type: user-input
+    ingestion_method: real-time-stream
+    ingestion_frequency: continuous
+    failure_handling: retry-with-backoff
+    refresh_strategy: append-only
+    backfill_supported: false
+  - id: 34
+    project_slug: comwatch
+    name: IP geolocation lookup (provider TBD at Stage 2)
+    source_type: external-api
+    authentication: api-key
+    ingestion_method: user-triggered
+    ingestion_frequency: per first visit / per geo question
+    failure_handling: silent-skip
+    backfill_supported: false
+contract: null

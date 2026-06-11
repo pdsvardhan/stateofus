@@ -1,0 +1,101 @@
+slug: comwatch
+display_name: ComWatch
+summary:
+  tagline: Answer one question. See what everyone thinks.
+  short_description: "ComWatch is a mobile-first public-opinion platform: answer a
+    structured question with one playful interaction (quick pick, bucket sort,
+    tier placement, trade-off cards, swipe stack) and instantly get a rewarding
+    visual result - split cards, radial splits, heat maps, leaderboards - plus a
+    personal insight layer comparing you to the crowd. Anonymous, curated, built
+    to make exploring public opinion satisfying instead of survey-like."
+  core_idea: "ComWatch turns public-opinion polling into a rewarding experience
+    loop: Question -> Answer -> Aggregation -> Visualization -> Reaction ->
+    Return. One question = one experience page: a fast thumb-friendly
+    interaction, an instantly readable primary visualization, 0-2 secondary
+    visualizations for curiosity, and a mandatory template-driven personal
+    insight layer (you matched 12%, your city differs). Questions are curated
+    assets with lifecycle governance (draft/active/paused/frozen/archived),
+    discovered through a curated multi-source homepage, categories, trending,
+    explore, and search. Anonymous participation only - skip always allowed,
+    sample sizes always visible, results designed to be shared."
+current_status: building
+lifecycle_phase: ideating
+scope_size: large
+target_devices: both
+hosting_target: vault7a-docker
+port: 8510
+public_url: https://comwatch.vault7a.xyz
+repository_url: http://localhost:3300/pdsv/comwatch
+problem_statement: "Surveys and polls feel like work: you fill a form and get
+  nothing back. There is no satisfying way to answer structured public questions
+  and immediately discover what other people think. Existing tools optimize for
+  the asker, not the answerer - results are boring tables, participation is a
+  chore, and nothing invites you back. ComWatch makes the output experience as
+  important as answering: every answer is instantly rewarded with a visual,
+  comparative, shareable result and a personal insight."
+non_goals:
+  - No accounts / login / profiles - anonymous only (migration hooks allowed)
+  - No open poll creation - questions are internal and curated
+  - No comments in MVP (high moderation cost, low initial value)
+  - No trust engine / advanced weighting
+  - No follow systems / social profiles / community systems
+  - No monetization
+  - No recommendation engine / analytics platform / experimentation platform
+  - No tournament mode in MVP (product mode, not question type)
+  - No notifications
+  - No XP / daily rewards / forced streaks / user leaderboards
+  - No infinite feeds - homepage is curated, never a single algorithmic feed
+success_criteria:
+  - "Questions answered (primary signal): cumulative answers grow week over week
+    post-launch"
+  - "Completion rate: >=70% of started questions reach the result view"
+  - "Return visits: >=20% of participants answer on a second day within 14 days"
+  - "Share rate: >=5% of result views trigger share-link copy or image export"
+  - "Result exploration: >=30% of result views open a secondary DV or insight
+    card"
+  - "Launch content: >=100 questions live covering all 6 categories and all 5
+    interaction modes"
+preferences:
+  likes:
+    - Modern, smooth, interactive, editorial visual language
+    - "Purposeful motion 300-700ms: reveal, expand, highlight, flow, cluster,
+      settle"
+    - Playful, light, fast interactions - satisfying not administrative
+    - Medium information density
+    - Mobile-first thumb-driven layouts, 1-2 line questions
+    - Results that feel surprising, comparative, discussable, shareable
+  dislikes:
+    - Corporate dashboard / dense BI / analytics feeling
+    - Static charts, text-first results, box overload
+    - Survey/form feeling, admin feeling, heavy reading
+    - Cinematic delays (>900ms motion)
+    - Live-twitching results (constant movement)
+  must_haves:
+    - One question = one experience page (question + answer + result +
+      exploration together)
+    - Skip always allowed - never force an answer
+    - Personal insight layer mandatory on every result (template-driven, never
+      generative)
+    - Insight cards mandatory in MVP
+    - Sample size + vote count visible (trust visible, never dominant)
+    - Anonymous participation; auth migration hooks only
+    - One question = one interaction = one completion
+    - Result must reward participation - no empty charts, no fake precision
+    - Curated homepage with multi-source feed (editorial/trending/recent/explore)
+    - ">=100 launch questions covering all 6 categories and all 5 interaction
+      modes"
+  avoid:
+    - Engagement farming, XP, streaks, empty gamification
+    - Infinite feeds / single algorithmic feed
+    - Forcing maps where geography doesn't matter
+    - S/A/B tier labels - prefer descriptive labels
+    - Secondary DVs that repeat the primary's information
+    - Analytics rabbit holes - max 2-3 exploration layers
+    - Personalized share exports / custom edits
+tags:
+  - cv
+  - public-facing
+  - polls
+  - data-viz
+  - opinion-platform
+  - mobile-first
