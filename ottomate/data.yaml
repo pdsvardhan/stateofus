@@ -37,4 +37,8 @@ sources:
     ingestion_frequency: per first visit / per geo question
     failure_handling: silent-skip
     backfill_supported: false
-contract: null
+contract:
+  project_slug: comwatch
+  database_engine: sqlite
+  storage_location: in-project-sqlite
+  migration_tooling: drizzle

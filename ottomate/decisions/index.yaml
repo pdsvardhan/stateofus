@@ -10,3 +10,25 @@ decisions:
       - curated
       - cat:product
     body_path: decisions/2026-06-12-initial-staging.md
+  - id: adr-002-comwatch-tech-stack
+    project_slug: comwatch
+    title: Custom SVG visualization engine over a chart library, on the house
+      Next.js + SQLite stack
+    status: accepted
+    date: 2026-06-12T00:00:00.000Z
+    tags:
+      - stage-2
+      - tech-stack
+      - curated
+      - cat:system
+    body_path: decisions/2026-06-12-tech-stack.md
+  - id: adr-003-comwatch-build-plan
+    project_slug: comwatch
+    title: "Build order: data foundation first, content pipeline early, admin UI last"
+    status: accepted
+    date: 2026-06-12T00:00:00.000Z
+    tags:
+      - stage-2
+      - build-plan
+      - curated
+    body_path: decisions/2026-06-12-build-plan.md

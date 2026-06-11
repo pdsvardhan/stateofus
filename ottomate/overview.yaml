@@ -19,7 +19,7 @@ summary:
     explore, and search. Anonymous participation only - skip always allowed,
     sample sizes always visible, results designed to be shared."
 current_status: building
-lifecycle_phase: ideating
+lifecycle_phase: building
 scope_size: large
 target_devices: both
 hosting_target: vault7a-docker
