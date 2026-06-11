@@ -1,0 +1,68 @@
+# Stage 2.4 prep — per-slot candidates from master_components (193 entries scanned 2026-06-12)
+# NOT picks. Picking happens after the UI master plan locks, via the components-pick
+# page (primary) or chat fallback. "author-fresh" slots get skip_reason at the gate
+# and are built at Stage 3, then seeded back into the asset library.
+# Summary: 30/48 slots have >=2 library candidates · 18 author-fresh (9 DV renderers,
+# 5 interaction modes, 4 editor/composite primitives).
+
+page-comwatch-home:
+  header-nav:           [mc-floating-navbar, mc-pill-nav, mc-card-nav]
+  hero-question-card:   [mc-3d-card-hover, mc-reflective-card, mc-tilted-card]
+  trending-module:      [mc-animated-list, mc-marquee, mc-cast-carousel]
+  recent-module:        [mc-animated-list, mc-stack]
+  explore-module:       [mc-expanding-flex-cards, mc-pixel-card]
+  question-card:        [mc-tilted-card, mc-pixel-card, mc-reflective-card, mc-3d-card]
+  category-rail:        [mc-pill-nav, mc-marquee]
+
+page-comwatch-question:
+  question-header:      [mc-quality-badge, mc-relative-time]   # light composite; mostly bespoke
+  interaction-quick-pick:    author-fresh   # seed skeleton: mc-radio-group
+  interaction-bucket-sort:   author-fresh
+  interaction-tier-placement: author-fresh
+  interaction-tradeoff-cards: author-fresh  # motion seed: mc-multi-stage-comparator
+  interaction-swipe-stack:   author-fresh   # base: mc-stack (StackedCards)
+  skip-button:          [mc-button-group]
+  dv-split-cards:       author-fresh
+  dv-radial-split:      [mc-radial-donut, mc-animated-circular-progress, mc-progress-circle-tremor]
+  dv-liquid-fill:       author-fresh        # motion seed: mc-shape-wave
+  dv-heat-map:          author-fresh        # geo base: mapsofbharat TopoJSON + d3-geo
+  dv-bubble-map:        author-fresh        # geo base: same
+  dv-tier-board:        author-fresh
+  dv-leaderboard:       author-fresh        # seeds: mc-animated-list + mc-number-ticker
+  dv-podium:            author-fresh
+  insight-card:         [mc-stat-card-gradient, mc-pixel-card]
+  personal-insight-banner: [mc-banner, mc-stat-card-gradient]
+  result-placeholder:   [mc-skeleton-shadcn, mc-loading-screen, mc-banner]
+  reaction-bar:         [mc-button-group]   # + bespoke like/dislike morphs
+  share-sheet:          [mc-sheet, mc-modal-shadcn, mc-popover-shadcn]
+  related-questions-rail: [mc-cast-carousel, mc-animated-list, mc-marquee]
+  region-correction-chip: [mc-popover-shadcn, mc-combobox-kibo]
+
+page-comwatch-category:
+  category-header:      [mc-hero-backdrop, mc-quality-badge]
+  question-list:        [mc-animated-list]  # + @tanstack/react-virtual if needed
+  empty-state:          [mc-banner, mc-loading-screen]
+
+page-comwatch-explore:
+  trending-list:        [mc-animated-list, mc-marquee]
+  random-question-button: [mc-button-group, mc-confetti]
+  category-grid:        [mc-expanding-flex-cards, mc-3d-product-cards]
+
+page-comwatch-search:
+  search-bar:           [mc-command-palette, mc-command-shadcn, mc-combobox-kibo]
+  search-results-list:  [mc-animated-list]
+  search-empty-state:   [mc-banner]
+
+page-comwatch-admin:
+  admin-question-table: [mc-kibo-table]
+  admin-filters:        [mc-filter-faceted, mc-filter-slider, mc-select-shadcn]
+  status-badge:         [mc-kibo-status, mc-quality-badge]
+  lifecycle-actions:    [mc-dropdown-menu, mc-alert-dialog]
+  import-export-bar:    [mc-button-group]
+
+page-comwatch-admin-question-edit:
+  question-form:        author-fresh        # react-hook-form + shadcn inputs composite
+  options-editor:       author-fresh        # per-mode editor; seed: mc-kibo-tags
+  dv-selector:          author-fresh        # visual DV picker; seed: mc-select-shadcn
+  insight-type-selector: [mc-select-shadcn, mc-radio-group]
+  question-preview:     author-fresh        # embeds the public question page
