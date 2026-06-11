@@ -1,0 +1,944 @@
+# ComWatch — Authored Question Draft v1 (2026-06-12)
+# Author: Claude (per user mandate 2026-06-12: ">=100 questions covering a lot of
+# categories, question styles"). 80 new questions below + 25 content-ready catalogue
+# imports = 105 at launch.
+# Status: DRAFT — user review + approval required before activation
+#         (AC on feat-seed-content-pipeline).
+# Standards applied (DOC 3): experience-first, 1-2 lines, single interaction,
+# skip always allowed (global), visual payoff considered per question, no expertise
+# required, bias-tolerant. Parked domains avoided: politics, work, deep beliefs.
+# Modes: quick_pick / bucket_sort / tier_placement / tradeoff_cards / swipe_stack
+# DVs: S1 split cards, S2 radial split, S3 liquid fill, G1 heat map, G2 bubble map,
+#      R1 tier board, R2 leaderboard, R3 podium, P1 treemap (+ Insight Cards always)
+# geo: true => question feeds G1/G2 + region insights (uses feat-region-capture)
+
+meta:
+  totals: { new: 80, imported_ready: 25, launch_total: 105 }
+  per_category: { C1: 13, C2: 13, C3: 14, C4: 13, C5: 13, C6: 14 }
+  per_mode: { quick_pick: 30, bucket_sort: 12, tier_placement: 13, tradeoff_cards: 12, swipe_stack: 13 }
+  duplication_check: >
+    Verified against the 25 content-ready catalogue rows. Near-neighbors flagged
+    inline with `overlap_note` and differentiated by frame/cards.
+
+# ============================================================
+# C1 — City & Place Experience (13 new; ids continue after C1-20)
+# ============================================================
+questions:
+  - id: C1-21
+    category: City and Place Experience
+    mode: quick_pick
+    text: "Which would fix your daily commute the most?"
+    options: "Reliable bus/metro timings | Less traffic | Safer footpaths | Parking that exists | Working from home"
+    primary_dv: S1 Split Cards
+    insight_type: "Majority vs you"
+    emotion: Seen
+    priority: High
+    rationale: "Universal friction; strong split + city comparison potential."
+    geo: true
+
+  - id: C1-22
+    category: City and Place Experience
+    mode: quick_pick
+    text: "What's the real test of a good neighborhood?"
+    options: "Groceries in a 5-min walk | Quiet at night | Green spaces | Street food nearby | Neighbors who help"
+    primary_dv: S1 Split Cards
+    insight_type: "Majority vs you"
+    emotion: Curious
+    priority: High
+    rationale: "Values question disguised as experience; discussable."
+
+  - id: C1-23
+    category: City and Place Experience
+    mode: bucket_sort
+    text: "Sort these by how they actually decide where you'd live."
+    options: "Items: Rent | Commute | Food options | Safety | Friends nearby | Parks & gyms — Buckets: Dealbreaker / Nice to have / Don't care"
+    primary_dv: P1 Treemap
+    insight_type: "You vs the crowd's dealbreakers"
+    emotion: Decisive
+    priority: High
+    rationale: "Trade-off revelation; treemap shows the real hierarchy."
+
+  - id: C1-24
+    category: City and Place Experience
+    mode: tier_placement
+    text: "Rank these city sounds from white noise to rage-inducing."
+    options: "Honking | Construction | Loud neighbors | Street vendors | Dogs at 3am | Loudspeakers"
+    primary_dv: R1 Tier Board
+    insight_type: "Your rage profile vs majority"
+    emotion: Playful
+    priority: High
+    rationale: "Everyone has instant opinions; funny tier labels."
+
+  - id: C1-25
+    category: City and Place Experience
+    mode: quick_pick
+    text: "Does your city feel safer than it did 5 years ago?"
+    options: "Safer | About the same | Less safe | I'm new here"
+    primary_dv: G1 Gradient Heat Map
+    secondary_dv: S2 Radial Split
+    insight_type: "Your region vs national mood"
+    emotion: Curious
+    priority: Medium
+    rationale: "Perception question, geo-comparative; experience-based not expertise."
+    geo: true
+
+  - id: C1-26
+    category: City and Place Experience
+    mode: tradeoff_cards
+    text: "Pick your forever city: incredible food but brutal traffic, or boring food and 15-minute commutes?"
+    options: "Food + traffic | Bland + breezy"
+    primary_dv: S2 Radial Split
+    insight_type: "Which side are you on"
+    emotion: Torn
+    priority: High
+    rationale: "Forces a real value signal; perfect split visual."
+
+  - id: C1-27
+    category: City and Place Experience
+    mode: swipe_stack
+    text: "Worth moving cities for? Swipe."
+    options: "Cards: Dream job | Lower rent | Better weather | Closer to family | A relationship | Just vibes — Directions: Worth it / Not worth it"
+    primary_dv: R2 Dynamic Leaderboard
+    insight_type: "Your priorities vs the crowd"
+    emotion: Reflective
+    priority: High
+    rationale: "Fast swipes, leaderboard reveals what actually moves people."
+
+  - id: C1-28
+    category: City and Place Experience
+    mode: quick_pick
+    text: "What do you actually use your neighborhood park for?"
+    options: "Walks | Sitting and scrolling | Sports | Kids time | I don't go"
+    primary_dv: S1 Split Cards
+    insight_type: "Honesty check vs crowd"
+    emotion: Guilty
+    priority: Medium
+    rationale: "Self-aware humor; low effort, honest split."
+
+  - id: C1-29
+    category: City and Place Experience
+    mode: bucket_sort
+    text: "Transport bingo: which have you actually used this month?"
+    options: "Items: Bus | Metro | Auto/rickshaw | Cab app | Train | Own vehicle only — Buckets: Used / Not used"
+    primary_dv: R2 Dynamic Leaderboard
+    secondary_dv: G2 Bubble Map
+    insight_type: "Your mix vs your city's mix"
+    emotion: Curious
+    priority: Medium
+    rationale: "Pure experience capture; city-to-city comparison is the payoff."
+    geo: true
+
+  - id: C1-30
+    category: City and Place Experience
+    mode: tier_placement
+    text: "Rank these urban luxuries by how much they'd change your life."
+    options: "24/7 water | Zero power cuts | Gigabit internet | Doorstep everything | Walkable streets"
+    primary_dv: R3 Podium
+    insight_type: "Your podium vs majority podium"
+    emotion: Wistful
+    priority: High
+    rationale: "Infrastructure desires as a game; regional differences will surprise."
+    geo: true
+
+  - id: C1-31
+    category: City and Place Experience
+    mode: quick_pick
+    text: "How long is your one-way commute?"
+    options: "Under 15 min | 15-30 | 30-60 | 60+ | I work from home"
+    primary_dv: G1 Gradient Heat Map
+    secondary_dv: S1 Split Cards
+    insight_type: "You vs your city's average"
+    emotion: Solidarity
+    priority: High
+    rationale: "Classic comparable stat everyone wants to benchmark."
+    geo: true
+
+  - id: C1-32
+    category: City and Place Experience
+    mode: tradeoff_cards
+    text: "Tenth floor with a view, or ground floor with a garden?"
+    options: "View | Garden"
+    primary_dv: S3 Liquid Fill
+    insight_type: "Which tribe you joined"
+    emotion: Playful
+    priority: Medium
+    rationale: "Light identity split; liquid fill makes it satisfying."
+
+  - id: C1-33
+    category: City and Place Experience
+    mode: swipe_stack
+    text: "Crime against city life, or perfectly fine? Swipe."
+    options: "Cards: Parking across two spots | Jumping the bus queue | Blasting music in the park | Drying clothes on the balcony rail | Feeding pigeons at the square — Directions: Crime / Fine"
+    primary_dv: R2 Dynamic Leaderboard
+    insight_type: "Your strictness score vs crowd"
+    emotion: Judgy
+    priority: High
+    overlap_note: "Existing C-row covers public behavior broadly; these cards are city-infrastructure specific."
+    rationale: "Judgment swipes are shareable; strictness insight is fun."
+
+# ============================================================
+# C2 — Daily Life & Livability (13 new)
+# ============================================================
+  - id: C2-21
+    category: Daily Life and Livability
+    mode: quick_pick
+    text: "What kills your day's energy fastest?"
+    options: "Bad sleep | Heavy lunch | One long meeting | Doomscrolling | The heat"
+    primary_dv: S1 Split Cards
+    insight_type: "Majority vs you"
+    emotion: Seen
+    priority: High
+    rationale: "Instant self-recognition; clean split."
+
+  - id: C2-22
+    category: Daily Life and Livability
+    mode: quick_pick
+    text: "Which chore would you outsource forever if it were free?"
+    options: "Dishes | Folding laundry | Cooking | Bathroom cleaning | Grocery runs"
+    primary_dv: S1 Split Cards
+    insight_type: "Your enemy vs the nation's enemy"
+    emotion: Playful
+    priority: High
+    rationale: "Universal, funny, zero expertise."
+
+  - id: C2-23
+    category: Daily Life and Livability
+    mode: bucket_sort
+    text: "Sort your mornings: which of these actually happen?"
+    options: "Items: Exercise | Real breakfast | Snooze x3 | Phone in bed | Leaving on time — Buckets: Daily / Sometimes / Fantasy"
+    primary_dv: P1 Treemap
+    insight_type: "Your honesty vs crowd honesty"
+    emotion: Guilty
+    priority: High
+    rationale: "Confession-style sorting; treemap of collective fantasy is the reward."
+
+  - id: C2-24
+    category: Daily Life and Livability
+    mode: tier_placement
+    text: "Rank these by energy drained per minute."
+    options: "'Quick call' that isn't | Waiting in queues | Traffic | Small talk with neighbors | Customer-care IVR"
+    primary_dv: R1 Tier Board
+    insight_type: "Your drain profile vs majority"
+    emotion: Solidarity
+    priority: High
+    rationale: "Shared suffering = discussion + shares."
+
+  - id: C2-25
+    category: Daily Life and Livability
+    mode: tradeoff_cards
+    text: "Cheap groceries 20 minutes away, or pricey ones downstairs?"
+    options: "Cheap + far | Pricey + close"
+    primary_dv: S2 Radial Split
+    insight_type: "Convenience tax: do you pay it?"
+    emotion: Torn
+    priority: Medium
+    rationale: "Real economic behavior signal via a daily choice."
+
+  - id: C2-26
+    category: Daily Life and Livability
+    mode: swipe_stack
+    text: "Adulting checklist: actually done these this year?"
+    options: "Cards: Full health checkup | Hit a savings target | Fixed sleep schedule | Decluttered the house | Learned a new skill — Directions: Done / Not yet"
+    primary_dv: R2 Dynamic Leaderboard
+    insight_type: "Your adulting score vs crowd"
+    emotion: Motivated
+    priority: High
+    rationale: "Self-audit with a leaderboard payoff; repeat-friendly yearly."
+
+  - id: C2-27
+    category: Daily Life and Livability
+    mode: quick_pick
+    text: "What time does your body actually wake up?"
+    options: "Before 6 | 6-7 | 7-8 | 8-9 | After 9"
+    primary_dv: S2 Radial Split
+    insight_type: "You vs the distribution"
+    emotion: Curious
+    priority: Medium
+    rationale: "Clean radial distribution; benchmark instinct."
+
+  - id: C2-28
+    category: Daily Life and Livability
+    mode: quick_pick
+    text: "The tap water where you live:"
+    options: "Drink it straight | Filter it | Bottled only | Depends on the day"
+    primary_dv: G1 Gradient Heat Map
+    secondary_dv: S1 Split Cards
+    insight_type: "Your region vs others"
+    emotion: Curious
+    priority: High
+    rationale: "Lived infrastructure experience; striking regional map."
+    geo: true
+
+  - id: C2-29
+    category: Daily Life and Livability
+    mode: tradeoff_cards
+    text: "One year of perfect sleep, or one year of free food delivery?"
+    options: "Sleep | Delivery"
+    primary_dv: S3 Liquid Fill
+    insight_type: "Which side are you on"
+    emotion: Playful
+    priority: High
+    rationale: "Health vs indulgence; great share bait."
+
+  - id: C2-30
+    category: Daily Life and Livability
+    mode: bucket_sort
+    text: "Sort these subscriptions by what they actually deserve."
+    options: "Items: Music | Video streaming | Food-delivery membership | Cloud storage | Gym | News — Buckets: Worth every rupee / Meh / Cancel it"
+    primary_dv: R1 Tier Board
+    insight_type: "Your stack vs crowd verdicts"
+    emotion: Decisive
+    priority: Medium
+    overlap_note: "Existing C2 row sorts streaming services under money pressure; this is the full subscription stack by perceived worth."
+    rationale: "Wallet honesty; tier board sparks debate."
+
+  - id: C2-31
+    category: Daily Life and Livability
+    mode: tier_placement
+    text: "Rank these household disasters by panic level."
+    options: "WiFi down | Power cut | Gas runs out mid-cooking | Water stops mid-shower | Fridge dies overnight"
+    primary_dv: R3 Podium
+    insight_type: "Your panic podium vs majority"
+    emotion: Playful
+    priority: High
+    rationale: "Relatable chaos; podium of panic is memeable."
+
+  - id: C2-32
+    category: Daily Life and Livability
+    mode: quick_pick
+    text: "Who really decides your dinner?"
+    options: "Whatever's in the fridge | The delivery app | My mood | Whoever cooks | The meal-prep plan"
+    primary_dv: S1 Split Cards
+    insight_type: "Majority vs you"
+    emotion: Seen
+    priority: Medium
+    rationale: "Daily-life truth; low effort."
+
+  - id: C2-33
+    category: Daily Life and Livability
+    mode: swipe_stack
+    text: "Modern essentials or just marketing? Swipe."
+    options: "Cards: Air fryer | Robot vacuum | Smartwatch | 9-stage water purifier | Massage gun — Directions: Essential / Marketing"
+    primary_dv: R2 Dynamic Leaderboard
+    insight_type: "Your skepticism score"
+    emotion: Judgy
+    priority: High
+    overlap_note: "Existing swipe covers convenience services (fees, subscriptions); these cards are gadgets."
+    rationale: "Product-skeptic content travels well."
+
+# ============================================================
+# C3 — Entertainment & Culture (14 new)
+# ============================================================
+  - id: C3-21
+    category: Entertainment and Culture
+    mode: quick_pick
+    text: "What actually decides what you watch tonight?"
+    options: "The algorithm | Partner/family | Reviews | My comfort rewatch | Whatever's trending"
+    primary_dv: S1 Split Cards
+    insight_type: "Majority vs you"
+    emotion: Seen
+    priority: High
+    rationale: "Universal nightly ritual; honest split."
+
+  - id: C3-22
+    category: Entertainment and Culture
+    mode: quick_pick
+    text: "A movie's first 15 minutes are weak. You…"
+    options: "Power through | Phone comes out | Switch immediately | Fall asleep"
+    primary_dv: S1 Split Cards
+    insight_type: "Patience percentile"
+    emotion: Guilty
+    priority: Medium
+    rationale: "Attention-span confession; fun insight."
+
+  - id: C3-23
+    category: Entertainment and Culture
+    mode: bucket_sort
+    text: "Sort these by how you actually consume music."
+    options: "Items: Full albums | Playlists | One song on repeat | Shuffle everything | Reels audio — Buckets: My way / Sometimes / Never"
+    primary_dv: P1 Treemap
+    insight_type: "Your listener type vs crowd"
+    emotion: Curious
+    priority: Medium
+    overlap_note: "Existing C3 row asks where you discover music; this is how you consume it."
+    rationale: "Identity through habits; treemap of listening culture."
+
+  - id: C3-24
+    category: Entertainment and Culture
+    mode: tier_placement
+    text: "Rank these live experiences by pure magic."
+    options: "Stadium cricket match | Concert | Standup gig | Theatre play | Festival night market"
+    primary_dv: R3 Podium
+    insight_type: "Your podium vs majority"
+    emotion: Nostalgic
+    priority: High
+    rationale: "Positive ranking; sparks 'you had to be there' stories."
+
+  - id: C3-25
+    category: Entertainment and Culture
+    mode: tradeoff_cards
+    text: "Never rewatch anything again, or only rewatches and nothing new?"
+    options: "Only new | Only rewatches"
+    primary_dv: S2 Radial Split
+    insight_type: "Comfort vs novelty: your side"
+    emotion: Torn
+    priority: High
+    rationale: "Reveals a real psychological split; very discussable."
+
+  - id: C3-26
+    category: Entertainment and Culture
+    mode: swipe_stack
+    text: "Classics check: watched it, or still 'planning to'?"
+    options: "Cards: Sholay | The Godfather | Friends (all seasons) | A Satyajit Ray film | Game of Thrones — Directions: Watched / Planning to"
+    primary_dv: R2 Dynamic Leaderboard
+    insight_type: "Your classics score vs crowd"
+    emotion: Guilty
+    priority: Medium
+    rationale: "Cultural homework confession; leaderboard of collective procrastination."
+
+  - id: C3-27
+    category: Entertainment and Culture
+    mode: quick_pick
+    text: "Subtitles on content in your own language:"
+    options: "Always on | Only at night | Never | Wait, people turn them off?"
+    primary_dv: S1 Split Cards
+    insight_type: "Majority vs you"
+    emotion: Playful
+    priority: High
+    rationale: "Famously divisive micro-habit; pure viral fuel."
+
+  - id: C3-28
+    category: Entertainment and Culture
+    mode: quick_pick
+    text: "Where do you actually discover new shows?"
+    options: "Friends | Reels/Shorts | App homepage | Reviews & YouTube | Random scrolling"
+    primary_dv: S1 Split Cards
+    insight_type: "Your discovery style vs crowd"
+    emotion: Curious
+    priority: Medium
+    rationale: "Media-diet snapshot; useful comparisons by age/region later."
+
+  - id: C3-29
+    category: Entertainment and Culture
+    mode: tier_placement
+    text: "Rank these binge formats by danger to your sleep."
+    options: "20-min sitcoms | K-drama | Reality TV | True-crime docs | Late-night sports highlights"
+    primary_dv: R1 Tier Board
+    insight_type: "Your weakness vs the crowd's"
+    emotion: Solidarity
+    priority: High
+    rationale: "'One more episode' is universal; funny tiers."
+
+  - id: C3-30
+    category: Entertainment and Culture
+    mode: tradeoff_cards
+    text: "Front row at your favorite artist once, or unlimited concerts from the back?"
+    options: "Front row once | Unlimited from the back"
+    primary_dv: S2 Radial Split
+    insight_type: "Intensity vs abundance: your side"
+    emotion: Torn
+    priority: Medium
+    rationale: "Experience-economy dilemma; clean two-way split."
+
+  - id: C3-31
+    category: Entertainment and Culture
+    mode: quick_pick
+    text: "Your gaming status these days:"
+    options: "Daily player | Weekend warrior | Mobile puzzles only | I watch others play | Retired"
+    primary_dv: S1 Split Cards
+    insight_type: "Your tribe size"
+    emotion: Seen
+    priority: Medium
+    rationale: "Inclusive framing captures lapsed gamers too."
+
+  - id: C3-32
+    category: Entertainment and Culture
+    mode: swipe_stack
+    text: "Remake it, or leave it alone? Swipe."
+    options: "Cards: Your childhood cartoon | A 90s classic film | An old game franchise | A legendary sitcom | A one-season wonder — Directions: Remake / Leave it alone"
+    primary_dv: R2 Dynamic Leaderboard
+    insight_type: "Your purist score"
+    emotion: Protective
+    priority: Medium
+    rationale: "Nostalgia protection instinct; discussion gold."
+
+  - id: C3-33
+    category: Entertainment and Culture
+    mode: quick_pick
+    text: "Spoilers:"
+    options: "Ruin everything | Don't really matter | I seek them out | Depends on the genre"
+    primary_dv: S2 Radial Split
+    insight_type: "Majority vs you"
+    emotion: Defensive
+    priority: High
+    rationale: "Permanent internet debate, structured."
+
+  - id: C3-34
+    category: Entertainment and Culture
+    mode: tradeoff_cards
+    text: "Lose music or lose movies & TV for a year?"
+    options: "Lose music | Lose movies & TV"
+    primary_dv: S3 Liquid Fill
+    insight_type: "Which half of humanity are you"
+    emotion: Torn
+    priority: High
+    rationale: "Brutal forced choice; liquid fill split is shareable."
+
+# ============================================================
+# C4 — Consumption & Brand Experience (13 new)
+# ============================================================
+  - id: C4-22
+    category: Consumption and Brand Experience
+    mode: quick_pick
+    text: "What actually makes you trust an online seller?"
+    options: "Review count | Easy returns | Brand name | Cash on delivery | A friend's word"
+    primary_dv: S1 Split Cards
+    insight_type: "Majority vs you"
+    emotion: Curious
+    priority: High
+    rationale: "Experience-based trust signal; useful + discussable."
+
+  - id: C4-23
+    category: Consumption and Brand Experience
+    mode: quick_pick
+    text: "Your favorite brand raises prices. You…"
+    options: "Pay anyway | Hunt alternatives | Wait for sales | Quit cold turkey"
+    primary_dv: S1 Split Cards
+    insight_type: "Loyalty percentile"
+    emotion: Defensive
+    priority: Medium
+    rationale: "Loyalty stress-test; brands debate fuel."
+
+  - id: C4-24
+    category: Consumption and Brand Experience
+    mode: bucket_sort
+    text: "Sort these purchases by what really happened."
+    options: "Items: Gym equipment | Fancy kitchen gadget | Sale-season clothes | Premium subscription | Latest phone upgrade — Buckets: Worth it / Regret / Still in the box"
+    primary_dv: R1 Tier Board
+    insight_type: "Your regret profile vs crowd"
+    emotion: Guilty
+    priority: High
+    rationale: "Collective regret is funny and honest; strong tiers."
+
+  - id: C4-25
+    category: Consumption and Brand Experience
+    mode: tier_placement
+    text: "Rank these delivery experiences by rage."
+    options: "Delayed with no update | Wrong item | Damaged box | The 'attempted delivery' lie | Last-minute cancellation"
+    primary_dv: R1 Tier Board
+    insight_type: "Your rage match vs majority"
+    emotion: Solidarity
+    priority: High
+    rationale: "Universally felt; the 'attempted delivery' lie will dominate."
+
+  - id: C4-26
+    category: Consumption and Brand Experience
+    mode: tradeoff_cards
+    text: "Lifetime free delivery, or lifetime ad-free everything?"
+    options: "Free delivery | No ads ever"
+    primary_dv: S2 Radial Split
+    insight_type: "Which side are you on"
+    emotion: Torn
+    priority: High
+    rationale: "Two modern taxes; pure split bait."
+
+  - id: C4-27
+    category: Consumption and Brand Experience
+    mode: swipe_stack
+    text: "Does premium actually feel premium? Swipe."
+    options: "Cards: Airport lounges | Business class | Flagship phones | 5-star buffets | Designer wear — Directions: Worth it / Theatre"
+    primary_dv: R2 Dynamic Leaderboard
+    insight_type: "Your skepticism score"
+    emotion: Judgy
+    priority: Medium
+    rationale: "Aspirational vs experienced; experienced users carry the result."
+
+  - id: C4-28
+    category: Consumption and Brand Experience
+    mode: quick_pick
+    text: "Extended warranty:"
+    options: "Always take it | Never | Only for expensive stuff | ...what warranty?"
+    primary_dv: S1 Split Cards
+    insight_type: "Majority vs you"
+    emotion: Playful
+    priority: Medium
+    rationale: "Quick consumer-psychology snapshot."
+
+  - id: C4-29
+    category: Consumption and Brand Experience
+    mode: quick_pick
+    text: "What actually triggers your phone upgrade?"
+    options: "It breaks | Battery gives up | New-model envy | Fixed schedule | Apps stop supporting it"
+    primary_dv: S1 Split Cards
+    insight_type: "You vs the upgrade cycle"
+    emotion: Seen
+    priority: High
+    rationale: "Everyone has a story; brandable follow-ups later."
+
+  - id: C4-30
+    category: Consumption and Brand Experience
+    mode: tradeoff_cards
+    text: "Same product: 20% cheaper but 10-day delivery, or full price tomorrow?"
+    options: "Cheaper + slow | Full price + tomorrow"
+    primary_dv: S3 Liquid Fill
+    insight_type: "Your patience price"
+    emotion: Torn
+    priority: High
+    rationale: "Patience economy measured in one tap."
+
+  - id: C4-31
+    category: Consumption and Brand Experience
+    mode: bucket_sort
+    text: "Sort these 'free' things by their real cost."
+    options: "Items: Free trials | Free-delivery minimums | Loyalty points | Rs.1 games | Free apps with ads — Buckets: Actually free / It's a trap"
+    primary_dv: P1 Treemap
+    insight_type: "Your cynicism vs crowd"
+    emotion: Knowing
+    priority: Medium
+    rationale: "Consumer literacy with humor."
+
+  - id: C4-32
+    category: Consumption and Brand Experience
+    mode: tier_placement
+    text: "Rank these checkout moments by cart-abandonment power."
+    options: "Surprise delivery fee | Forced login wall | OTP that never comes | Coupon that fails | Payment failed but money deducted"
+    primary_dv: R1 Tier Board
+    insight_type: "Your breaking point vs majority"
+    emotion: Solidarity
+    priority: High
+    rationale: "'Money deducted' is a national trauma; instant solidarity."
+
+  - id: C4-33
+    category: Consumption and Brand Experience
+    mode: swipe_stack
+    text: "Ads that actually worked on you. Swipe honestly."
+    options: "Cards: A jingle you still hum | An IPL-break ad | An influencer unboxing | A billboard | A pre-roll you didn't skip — Directions: Worked / Never"
+    primary_dv: R2 Dynamic Leaderboard
+    insight_type: "Your ad resistance score"
+    emotion: Guilty
+    priority: Medium
+    rationale: "Confession framing makes advertising fun to discuss."
+
+  - id: C4-34
+    category: Consumption and Brand Experience
+    mode: quick_pick
+    text: "Midnight emergency purchase: who saves you?"
+    options: "Kirana downstairs | 10-minute app | 24/7 pharmacy | I suffer till morning"
+    primary_dv: G2 Bubble Map
+    secondary_dv: S1 Split Cards
+    insight_type: "Your city's midnight lifeline"
+    emotion: Playful
+    priority: High
+    rationale: "Quick-commerce vs kirana is a live cultural shift; city bubbles tell it."
+    geo: true
+
+# ============================================================
+# C5 — Identity / Opinion / Society (13 new — category had 0 ready)
+# All kept light + experience-first to avoid survey feeling (DOC 1 risk note).
+# Parked domains (politics, deep beliefs) deliberately untouched.
+# ============================================================
+  - id: C5-16
+    category: Identity Opinion and Society
+    mode: quick_pick
+    text: "How do you actually apologize?"
+    options: "Say it directly | Act extra nice | Jokes and memes | Write it out | Wait it out"
+    primary_dv: S1 Split Cards
+    insight_type: "Majority vs you"
+    emotion: Seen
+    priority: High
+    rationale: "Self-recognition; zero expertise; safe personal territory."
+
+  - id: C5-17
+    category: Identity Opinion and Society
+    mode: quick_pick
+    text: "Birthday attention:"
+    options: "Love it | Tolerate it | Hide that day | Depends who remembers"
+    primary_dv: S2 Radial Split
+    insight_type: "Your tribe size"
+    emotion: Playful
+    priority: Medium
+    rationale: "Light identity; surprising minority reveal likely."
+
+  - id: C5-18
+    category: Identity Opinion and Society
+    mode: bucket_sort
+    text: "Sort these small-talk topics by survivability."
+    options: "Items: Weather | Traffic | Cricket | 'So what do you do?' | Property prices | Diets — Buckets: Can do forever / 5 minutes max / Escape immediately"
+    primary_dv: R1 Tier Board
+    insight_type: "Your escape list vs crowd"
+    emotion: Playful
+    priority: High
+    rationale: "Social comedy; everyone has strong rankings."
+
+  - id: C5-19
+    category: Identity Opinion and Society
+    mode: tier_placement
+    text: "Rank these by how much they reveal about a person."
+    options: "Their playlist | Their camera roll | Their browser tabs | Their food order | Their reply speed"
+    primary_dv: R3 Podium
+    insight_type: "Your detective instincts vs crowd"
+    emotion: Curious
+    priority: High
+    rationale: "Philosophical but playful; big discussion potential."
+
+  - id: C5-20
+    category: Identity Opinion and Society
+    mode: tradeoff_cards
+    text: "Always say what you think, or always know what others think of you?"
+    options: "Say freely | Know everything"
+    primary_dv: S2 Radial Split
+    insight_type: "Which side are you on"
+    emotion: Torn
+    priority: High
+    rationale: "Classic dilemma, kept binary and light."
+
+  - id: C5-21
+    category: Identity Opinion and Society
+    mode: swipe_stack
+    text: "Friendship maintenance: acceptable or not?"
+    options: "Cards: Replying after 3 days | Meme-only communication | Forgetting birthdays but showing up in crises | Group-chat lurking | Same-day plan cancelling — Directions: Acceptable / Not"
+    primary_dv: R2 Dynamic Leaderboard
+    insight_type: "Your strictness vs crowd"
+    emotion: Discussion
+    priority: High
+    rationale: "Modern friendship norms; tag-a-friend share energy."
+
+  - id: C5-22
+    category: Identity Opinion and Society
+    mode: quick_pick
+    text: "Your conflict style at home:"
+    options: "Talk it out now | Cool off first | Pretend nothing happened | Deploy humor"
+    primary_dv: S1 Split Cards
+    insight_type: "Majority vs you"
+    emotion: Seen
+    priority: Medium
+    rationale: "Relatable self-report, non-judgmental options."
+
+  - id: C5-23
+    category: Identity Opinion and Society
+    mode: quick_pick
+    text: "Lending money to friends:"
+    options: "Yes, openly | Yes, but it changes things | Small amounts only | Never"
+    primary_dv: S1 Split Cards
+    insight_type: "Majority vs you"
+    emotion: Honest
+    priority: High
+    rationale: "Money + friendship is high-discussion; experience-based."
+
+  - id: C5-24
+    category: Identity Opinion and Society
+    mode: tier_placement
+    text: "Rank these life skills school never taught."
+    options: "Taxes | Saying no | First aid | Cooking basics | Reading a rent agreement"
+    primary_dv: R1 Tier Board
+    insight_type: "Your gaps vs crowd gaps"
+    emotion: Solidarity
+    priority: High
+    rationale: "Cross-generation agreement bait; constructive feel."
+
+  - id: C5-25
+    category: Identity Opinion and Society
+    mode: tradeoff_cards
+    text: "Big wedding with everyone, or a tiny one and a house down payment?"
+    options: "Big wedding | Tiny + down payment"
+    primary_dv: S3 Liquid Fill
+    insight_type: "Which side are you on"
+    emotion: Torn
+    priority: High
+    rationale: "Culturally live dilemma; generational splits will show."
+
+  - id: C5-26
+    category: Identity Opinion and Society
+    mode: bucket_sort
+    text: "Who would you actually tell first?"
+    options: "Items: Good news | Money trouble | Health scare | Embarrassing story | A big decision — Buckets: Family / Friends / Partner / No one"
+    primary_dv: P1 Treemap
+    insight_type: "Your circle map vs crowd"
+    emotion: Reflective
+    priority: Medium
+    rationale: "Gentle intimacy mapping; 'No one' bucket will be a quiet headline."
+
+  - id: C5-27
+    category: Identity Opinion and Society
+    mode: swipe_stack
+    text: "White lies: fine or not fine?"
+    options: "Cards: 'Looks great!' about a haircut | 'I'm 5 minutes away' | 'Saw your message late' | 'The food was amazing' | 'Let's definitely catch up' — Directions: Fine / Not fine"
+    primary_dv: R2 Dynamic Leaderboard
+    insight_type: "Your honesty score vs crowd"
+    emotion: Playful
+    priority: High
+    rationale: "Everyone's guilty of at least three; perfect swipe rhythm."
+
+  - id: C5-28
+    category: Identity Opinion and Society
+    mode: quick_pick
+    text: "Do you know your neighbors' names?"
+    options: "All of them | A few | Faces only | We avoid eye contact"
+    primary_dv: G1 Gradient Heat Map
+    secondary_dv: S1 Split Cards
+    insight_type: "Your city's friendliness vs yours"
+    emotion: Curious
+    priority: Medium
+    rationale: "Social-fabric question with a great city map payoff."
+    geo: true
+
+# ============================================================
+# C6 — Fun / Internet Chaos (14 new)
+# ============================================================
+  - id: C6-21
+    category: Fun and Internet Chaos
+    mode: quick_pick
+    text: "Raita's role in biryani:"
+    options: "Mandatory | Optional | A crime | ...what's raita?"
+    primary_dv: S1 Split Cards
+    insight_type: "Majority vs you"
+    emotion: Defensive
+    priority: High
+    rationale: "Engineered food controversy; guaranteed discussion."
+
+  - id: C6-22
+    category: Fun and Internet Chaos
+    mode: quick_pick
+    text: "Pick the superior chai companion."
+    options: "Parle-G | Marie | Good Day | Hide & Seek | Rusk supremacy"
+    primary_dv: R3 Podium
+    secondary_dv: S1 Split Cards
+    insight_type: "Your biscuit loyalty vs nation"
+    emotion: Playful
+    priority: High
+    rationale: "National debate; podium result is a share magnet."
+
+  - id: C6-23
+    category: Fun and Internet Chaos
+    mode: quick_pick
+    text: "Your group-chat role:"
+    options: "Meme dealer | Lurker | The planner nobody listens to | Voice-note villain | Leaves-on-read"
+    primary_dv: S1 Split Cards
+    insight_type: "Your tribe size"
+    emotion: Seen
+    priority: High
+    rationale: "Identity comedy; tag-your-friends energy."
+
+  - id: C6-24
+    category: Fun and Internet Chaos
+    mode: tier_placement
+    text: "Rank these tiny victories."
+    options: "Green lights all the way | Exact change | Perfect parking spot | Last item in your size | The 'ok' that actually ends a chat"
+    primary_dv: R3 Podium
+    insight_type: "Your joy profile vs crowd"
+    emotion: Wholesome
+    priority: High
+    rationale: "Positive chaos; wholesome results travel."
+
+  - id: C6-25
+    category: Fun and Internet Chaos
+    mode: tradeoff_cards
+    text: "Fight one cow-sized pigeon, or a hundred pigeon-sized cows?"
+    options: "One giant pigeon | Hundred tiny cows"
+    primary_dv: S2 Radial Split
+    insight_type: "Which army did you choose"
+    emotion: Chaotic
+    priority: High
+    rationale: "Canonical internet chaos, structured."
+
+  - id: C6-26
+    category: Fun and Internet Chaos
+    mode: swipe_stack
+    text: "Cursed food combos: would you?"
+    options: "Cards: Pineapple pizza | Milk-first cereal | Maggi + curd | Fanta + masala | Bread dipped in rasgulla syrup — Directions: Would try / Crime"
+    primary_dv: R2 Dynamic Leaderboard
+    insight_type: "Your culinary courage score"
+    emotion: Disgusted
+    priority: High
+    rationale: "Food chaos = peak shareability."
+
+  - id: C6-27
+    category: Fun and Internet Chaos
+    mode: quick_pick
+    text: "Phone at 1%. Your behavior:"
+    options: "Airplane-mode monk | Use it harder | Panic-charge anywhere | Let it die dramatically"
+    primary_dv: S1 Split Cards
+    insight_type: "Majority vs you"
+    emotion: Playful
+    priority: Medium
+    rationale: "Micro-behavior comedy."
+
+  - id: C6-28
+    category: Fun and Internet Chaos
+    mode: quick_pick
+    text: "Unread notifications right now:"
+    options: "Zero, inbox hero | Under 10 | Hundreds | Badges turned off, peace"
+    primary_dv: S2 Radial Split
+    insight_type: "You vs the distribution"
+    emotion: Seen
+    priority: Medium
+    rationale: "Phone-screenshot adjacent; self-sorting tribes."
+
+  - id: C6-29
+    category: Fun and Internet Chaos
+    mode: tier_placement
+    text: "Rank these by household chaos caused."
+    options: "Missing remote | One AirPod gone | Family-group forward gone wrong | Reply-all 'good morning' | Autoplay at full volume at 2am"
+    primary_dv: R1 Tier Board
+    insight_type: "Your chaos tolerance"
+    emotion: Playful
+    priority: Medium
+    rationale: "Modern-household comedy."
+
+  - id: C6-30
+    category: Fun and Internet Chaos
+    mode: tradeoff_cards
+    text: "Know every WiFi password forever, or never wait in any queue again?"
+    options: "All the WiFi | No more queues"
+    primary_dv: S3 Liquid Fill
+    insight_type: "Which superpower tribe"
+    emotion: Torn
+    priority: High
+    rationale: "Mundane superpowers; perfect liquid-fill split."
+
+  - id: C6-31
+    category: Fun and Internet Chaos
+    mode: bucket_sort
+    text: "Sort these internet eras by how much you miss them."
+    options: "Items: Orkut testimonials | Cybercafe gaming | Bluetooth ringtone trading | MSN/Yahoo chatrooms | When WhatsApp forwards were new — Buckets: Miss it / Better gone / Too young to know"
+    primary_dv: P1 Treemap
+    insight_type: "Your internet age revealed"
+    emotion: Nostalgic
+    priority: High
+    rationale: "Generational sorting hat; 'Too young to know' bucket is the joke."
+
+  - id: C6-32
+    category: Fun and Internet Chaos
+    mode: swipe_stack
+    text: "Keep, or yeet from the internet forever?"
+    options: "Cards: Infinite scroll | Autoplay with sound | 'Wait for it' captions | Podcast clips of podcasts | Like-and-subscribe reminders — Directions: Keep / Yeet"
+    primary_dv: R2 Dynamic Leaderboard
+    insight_type: "Your yeet rate vs crowd"
+    emotion: Judgy
+    priority: High
+    overlap_note: "Existing C6 swipe covers internet behaviors; these cards are content formats."
+    rationale: "Collective internet grievances; satisfying purge fantasy."
+
+  - id: C6-33
+    category: Fun and Internet Chaos
+    mode: quick_pick
+    text: "The correct number of alarms:"
+    options: "One, and I rise | Three, with strategy | Seven+, it's warfare | None, I trust my body"
+    primary_dv: S1 Split Cards
+    insight_type: "Majority vs you"
+    emotion: Seen
+    priority: Medium
+    rationale: "Morning warfare; self-deprecating shares."
+
+  - id: C6-34
+    category: Fun and Internet Chaos
+    mode: quick_pick
+    text: "Mosquito defense systems you actually believe in:"
+    options: "The coil | Racket (sport mode) | Cream | Fan at max | Accept fate"
+    primary_dv: S1 Split Cards
+    secondary_dv: G2 Bubble Map
+    insight_type: "Your weapon vs your region's"
+    emotion: Playful
+    priority: High
+    rationale: "Hyper-relatable chaos with a sneaky regional angle."
+    geo: true
