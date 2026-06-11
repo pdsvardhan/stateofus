@@ -98,10 +98,13 @@ policy:
   rate_limit_rpm: 60
 auth_config:
   project_slug: comwatch
-  strategy: none
+  strategy: custom
+  providers:
+    - "admin-gate: token or CF Access — mechanism decided at Stage 2; public
+      product remains fully anonymous"
   session_management: cookie
   mfa_supported: false
-  auth_library: n-a
+  auth_library: custom
 third_party_services:
   - id: 24
     project_slug: comwatch
