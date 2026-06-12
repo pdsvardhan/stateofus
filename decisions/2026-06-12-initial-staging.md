@@ -1,6 +1,6 @@
 ---
-id: adr-001-comwatch-staging
-title: "ComWatch: scope and rails locked from a 10-document product package"
+id: adr-001-stateofus-staging
+title: "State of Us: scope and rails locked from a 10-document product package"
 date: 2026-06-12
 status: accepted
 tags: [staging, initial, curated, "cat:product"]
@@ -10,7 +10,7 @@ linked_risks: [no-rate-limit, public-admin, no-tests, no-backup]
 
 ## Context
 
-ComWatch arrived as a Type 2 package: 10 intent PDFs (master PRD through builder handoff,
+State of Us (then ComWatch) arrived as a Type 2 package: 10 intent PDFs (master PRD through builder handoff,
 written under the working title "Public Pulse"), a 116-row question catalogue XLSX
 (25 content-ready), and a 23-image DV reference board. The product: a mobile-first
 public-opinion platform where answering a structured question is instantly rewarded

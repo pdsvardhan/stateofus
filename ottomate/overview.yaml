@@ -1,4 +1,4 @@
-slug: comwatch
+slug: stateofus
 display_name: State of Us
 summary:
   tagline: Answer one question. See what everyone thinks.
@@ -28,8 +28,8 @@ scope_size: large
 target_devices: both
 hosting_target: vault7a-docker
 port: 8510
-public_url: https://comwatch.vault7a.xyz
-repository_url: http://localhost:3300/pdsv/comwatch
+public_url: https://stateofus.vault7a.xyz
+repository_url: http://localhost:3300/pdsv/stateofus
 problem_statement: "Surveys and polls feel like work: you fill a form and get
   nothing back. There is no satisfying way to answer structured public questions
   and immediately discover what other people think. Existing tools optimize for

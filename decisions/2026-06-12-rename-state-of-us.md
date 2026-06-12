@@ -1,5 +1,5 @@
 ---
-id: adr-004-rename-state-of-us
+id: adr-004-stateofus-rename
 title: "Renamed to State of Us — Public Pulse and ComWatch retire as working titles"
 date: 2026-06-12
 status: accepted
@@ -20,7 +20,7 @@ name **State of Us** with a wordmark (navy STATE/US, coral OF).
 
 - Product name everywhere user-facing: **State of Us**.
 - Tracker display_name, overview copy, guidelines, and future UI carry the new name.
-- Infra identifiers stay `comwatch` (slug, repo, port registry) — they are hidden
+- Identity migrated fully: tracker slug, repo, dir all renamed to stateofus (owner: ALL indications change — supersedes the earlier keep-slug plan) (slug, repo, port registry) — they are hidden
   plumbing; renaming them buys nothing and risks breaking the pipeline's referential
   integrity. Public URL/domain decision tracked separately (owner input pending).
 - Logo: wordmark integration planned at Stage 3 masthead build; asset file or in-system

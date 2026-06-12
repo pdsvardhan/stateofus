@@ -1,5 +1,5 @@
 ---
-id: adr-003-comwatch-build-plan
+id: adr-003-stateofus-build-plan
 title: "Build order: data foundation first, content pipeline early, admin UI last"
 date: 2026-06-12
 status: accepted

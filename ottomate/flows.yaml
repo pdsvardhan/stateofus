@@ -47,7 +47,7 @@ flows:
       - feat-result-reveal
       - feat-vote-dedup
     linked_pages:
-      - page-comwatch-question
+      - page-stateofus-question
   - id: flow-inbound-share
     title: Inbound share landing
     type: ui
@@ -80,7 +80,7 @@ flows:
       - feat-question-experience-page
       - feat-share-landing
     linked_pages:
-      - page-comwatch-question
+      - page-stateofus-question
   - id: flow-discovery-browse
     title: Discovery / browse
     type: ui
@@ -108,11 +108,11 @@ flows:
       - feat-discovery
       - feat-homepage-curation
     linked_pages:
-      - page-comwatch-category
-      - page-comwatch-explore
-      - page-comwatch-home
-      - page-comwatch-question
-      - page-comwatch-search
+      - page-stateofus-category
+      - page-stateofus-explore
+      - page-stateofus-home
+      - page-stateofus-question
+      - page-stateofus-search
   - id: flow-admin-question
     title: Admin question management
     type: mixed
@@ -151,8 +151,8 @@ flows:
       - feat-question-lifecycle
       - feat-seed-content-pipeline
     linked_pages:
-      - page-comwatch-admin
-      - page-comwatch-admin-question-edit
+      - page-stateofus-admin
+      - page-stateofus-admin-question-edit
   - id: flow-result-lifecycle
     title: Result lifecycle (automated)
     type: automated
@@ -186,4 +186,4 @@ flows:
       - feat-question-lifecycle
       - feat-result-reveal
     linked_pages:
-      - page-comwatch-question
+      - page-stateofus-question

@@ -1,4 +1,24 @@
 features:
+  - id: feat-og-image-gen
+    title: OG / share image generation
+    short_description: Server-rendered share cards for image export + link unfurls (DOC 5 s14).
+    type: backend
+    status: planned
+    priority: P1
+    size: M
+    test_status: not-tested
+    acceptance_criteria:
+      - content: Server renders a share-card image with question + primary result +
+          sample size
+        test_status: not-tested
+        linked_test: null
+      - content: OG/Twitter meta tags serve the generated image per question
+        test_status: not-tested
+        linked_test: null
+      - content: Image generation completes <2s or serves from cache
+        test_status: not-tested
+        linked_test: null
+    dependencies: []
   - id: feat-question-experience-page
     title: Unified question experience page
     short_description: Question + interaction + result + exploration as ONE page;
@@ -45,6 +65,11 @@ features:
         test_status: not-tested
         linked_test: null
       - content: Drag/swipe modes also offer a tap-only fallback that works at 375px
+        test_status: not-tested
+        linked_test: null
+      - content: "Design-added modes render and submit per design/v4 (adr-005): Rank
+          Order (drag + arrow fallback, FB-019), Podium Slots (tap-to-place),
+          Logo Quick Pick (brand tiles)"
         test_status: not-tested
         linked_test: null
     dependencies: []
@@ -96,6 +121,12 @@ features:
         test_status: not-tested
         linked_test: null
       - content: Secondary DVs never duplicate the primary's information shape
+        test_status: not-tested
+        linked_test: null
+      - content: "All 14 v4 DV renderers ship per design/v4 (adr-005): radial donut,
+          split cards, verdict bars, liquid coins, liquid cups, treemap, tier
+          board, leaderboard, heat matrix, podium, medal board, winner map,
+          vote-bubble map, sankey - plus the still-counting state"
         test_status: not-tested
         linked_test: null
     dependencies: []
@@ -362,26 +393,6 @@ features:
         test_status: not-tested
         linked_test: null
       - content: A continue affordance leads to related questions
-        test_status: not-tested
-        linked_test: null
-    dependencies: []
-  - id: feat-og-image-gen
-    title: OG / share image generation
-    short_description: Server-rendered share cards for image export + link unfurls (DOC 5 s14).
-    type: backend
-    status: planned
-    priority: P1
-    size: M
-    test_status: not-tested
-    acceptance_criteria:
-      - content: Server renders a share-card image with question + primary result +
-          sample size
-        test_status: not-tested
-        linked_test: null
-      - content: OG/Twitter meta tags serve the generated image per question
-        test_status: not-tested
-        linked_test: null
-      - content: Image generation completes <2s or serves from cache
         test_status: not-tested
         linked_test: null
     dependencies: []

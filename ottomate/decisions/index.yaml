@@ -1,7 +1,7 @@
 decisions:
-  - id: adr-001-comwatch-staging
-    project_slug: comwatch
-    title: "ComWatch: scope and rails locked from a 10-document product package"
+  - id: adr-001-stateofus-staging
+    project_slug: stateofus
+    title: "State of Us: scope and rails locked from a 10-document product package"
     status: accepted
     date: 2026-06-12T00:00:00.000Z
     tags:
@@ -10,8 +10,8 @@ decisions:
       - curated
       - cat:product
     body_path: decisions/2026-06-12-initial-staging.md
-  - id: adr-002-comwatch-tech-stack
-    project_slug: comwatch
+  - id: adr-002-stateofus-tech-stack
+    project_slug: stateofus
     title: Custom SVG visualization engine over a chart library, on the house
       Next.js + SQLite stack
     status: accepted
@@ -22,8 +22,8 @@ decisions:
       - curated
       - cat:system
     body_path: decisions/2026-06-12-tech-stack.md
-  - id: adr-003-comwatch-build-plan
-    project_slug: comwatch
+  - id: adr-003-stateofus-build-plan
+    project_slug: stateofus
     title: "Build order: data foundation first, content pipeline early, admin UI last"
     status: accepted
     date: 2026-06-12T00:00:00.000Z
@@ -32,8 +32,8 @@ decisions:
       - build-plan
       - curated
     body_path: decisions/2026-06-12-build-plan.md
-  - id: adr-004-rename-state-of-us
-    project_slug: comwatch
+  - id: adr-004-stateofus-rename
+    project_slug: stateofus
     title: Renamed to State of Us — Public Pulse and ComWatch retire as working titles
     status: accepted
     date: 2026-06-12T00:00:00.000Z
@@ -43,3 +43,15 @@ decisions:
       - curated
       - cat:product
     body_path: decisions/2026-06-12-rename-state-of-us.md
+  - id: adr-005-stateofus-ui-master-plan
+    project_slug: stateofus
+    title: Light-only newspaper theme locked from the user-tested v4 prototype (with
+      design-driven scope deltas)
+    status: accepted
+    date: 2026-06-12T00:00:00.000Z
+    tags:
+      - stage-2
+      - ui-master-plan
+      - curated
+      - cat:product
+    body_path: decisions/2026-06-12-ui-master-plan.md

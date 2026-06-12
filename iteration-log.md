@@ -41,3 +41,18 @@ must be saved BEFORE component picking. MVP DV-set trimming flagged for Stage 2 
   Key asks: reduced-motion + focus tokens, region-capture affordance, share-card
   design, 6th desk (Identity/Society), archived-state treatment.
 - Pending owner decisions: dark-mode exception, logo asset, public domain.
+
+## 2026-06-12 — Full identity migration + UI master plan lock
+
+- Owner: "ALL indications of comwatch change to State of Us" → full migration:
+  new tracker slug `stateofus` (346-call data migration, same feature/flow ids,
+  pages re-prefixed page-stateofus-*, ADRs re-id'd adr-00N-stateofus-*),
+  dir moved to /mnt/storage/websites/stateofus, Gitea repo renamed pdsv/stateofus,
+  public URL stateofus.vault7a.xyz. Old comwatch row archived (history preserved).
+- UI master plan LOCKED from v4 tokens: light-only per owner (adr-005; house
+  dark+light rule relaxed plugin-side to default-with-opt-out).
+- Component picking: v4 prototype seeded as mc-stateofus-v4 in the asset library;
+  30/48 slots picked against it; 18 deliberately unpicked (admin/explore/search/
+  region-chip — documented in adr-005).
+- Design deltas accepted via adr-005: 8 interaction modes, 14 DVs, @svg-maps/india.
+- Coding Agent Review delivered to design agent via V5 Feedback.md.

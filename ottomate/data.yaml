@@ -1,5 +1,5 @@
 conceptual:
-  project_slug: comwatch
+  project_slug: stateofus
   has_data_layer: true
   retention_policy_type: forever
   retention_reason: "Results are historical artifacts (DOC 6 G2): answers +
@@ -8,8 +8,8 @@ conceptual:
   freshness_threshold_hours: 24
   freshness_notification_target: log
 sources:
-  - id: 32
-    project_slug: comwatch
+  - id: 35
+    project_slug: stateofus
     name: Question catalogue (XLSX import)
     source_type: csv-upload
     url_or_path: inputs/Public_Pulse_Final_Question_Catalogue_Merged.xlsx
@@ -19,8 +19,8 @@ sources:
     refresh_strategy: upsert
     watermark_field: question_id
     backfill_supported: false
-  - id: 33
-    project_slug: comwatch
+  - id: 36
+    project_slug: stateofus
     name: User answers + reactions (runtime)
     source_type: user-input
     ingestion_method: real-time-stream
@@ -28,8 +28,8 @@ sources:
     failure_handling: retry-with-backoff
     refresh_strategy: append-only
     backfill_supported: false
-  - id: 34
-    project_slug: comwatch
+  - id: 37
+    project_slug: stateofus
     name: IP geolocation lookup (provider TBD at Stage 2)
     source_type: external-api
     authentication: api-key
@@ -38,7 +38,7 @@ sources:
     failure_handling: silent-skip
     backfill_supported: false
 contract:
-  project_slug: comwatch
+  project_slug: stateofus
   database_engine: sqlite
   storage_location: in-project-sqlite
   migration_tooling: drizzle

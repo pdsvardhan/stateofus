@@ -1,272 +1,5 @@
 pages:
-  - id: page-comwatch-home
-    title: Homepage
-    route: /
-    purpose: "Curated multi-source discovery surface: editorial, trending, recent,
-      explore modules with category diversity"
-    layout_type: dashboard
-    empty_state: "First-visit: hero question + category rail render even with low data"
-    loading_state: skeleton
-    error_state: "Module fetch failure: render remaining modules, hide broken one"
-    permissions: anonymous
-    mobile_handling: responsive
-    entry_points:
-      - Direct URL / brand entry
-      - Share link to homepage
-      - Return visit
-    components:
-      - name: header-nav
-        purpose_on_page: "Top navigation: logo, categories entry, search entry"
-        category: navigation
-        picked: false
-        variants: []
-      - name: hero-question-card
-        purpose_on_page: Featured/editorial question with one-tap entry
-        category: display
-        picked: false
-        variants: []
-      - name: trending-module
-        purpose_on_page: Trending questions rail
-        category: display
-        picked: false
-        variants: []
-      - name: recent-module
-        purpose_on_page: Recently added questions
-        category: display
-        picked: false
-        variants: []
-      - name: explore-module
-        purpose_on_page: Explore/random entry module
-        category: display
-        picked: false
-        variants: []
-      - name: question-card
-        purpose_on_page: Reusable question summary card (category, title, participation)
-        category: display
-        picked: false
-        variants: []
-      - name: category-rail
-        purpose_on_page: Horizontal category chips/rail
-        category: navigation
-        picked: false
-        variants: []
-  - id: page-comwatch-question
-    title: Question experience page
-    route: /q/[questionId]
-    purpose: "THE core surface: question + interaction + result + insight +
-      exploration as one unified page"
-    layout_type: detail
-    empty_state: "Question without answers yet: interaction renders, result area
-      shows pre-reveal placeholder"
-    loading_state: skeleton
-    error_state: "Question fetch failure: friendly error + related questions"
-    permissions: anonymous
-    mobile_handling: responsive
-    entry_points:
-      - Question card tap from any discovery surface
-      - Shared link (with share context)
-      - Related/next question chain
-    components:
-      - name: question-header
-        purpose_on_page: Category, status, sample size, question text (1-2 lines)
-        category: display
-        picked: false
-        variants: []
-      - name: interaction-quick-pick
-        purpose_on_page: Q1 single-decision tap interaction
-        category: input
-        picked: false
-        variants: []
-      - name: interaction-bucket-sort
-        purpose_on_page: Q2 group items into buckets (drag + tap fallback)
-        category: input
-        picked: false
-        variants: []
-      - name: interaction-tier-placement
-        purpose_on_page: Q3 rank through tier buckets (drag + tap fallback)
-        category: input
-        picked: false
-        variants: []
-      - name: interaction-tradeoff-cards
-        purpose_on_page: Q4 choose between competing values
-        category: input
-        picked: false
-        variants: []
-      - name: interaction-swipe-stack
-        purpose_on_page: Q5 swipe cards (swipe + tap fallback)
-        category: input
-        picked: false
-        variants: []
-      - name: skip-button
-        purpose_on_page: Always-available skip control
-        category: input
-        picked: false
-        variants: []
-      - name: dv-split-cards
-        purpose_on_page: S1 primary split visualization
-        category: display
-        picked: false
-        variants: []
-      - name: dv-radial-split
-        purpose_on_page: S2 radial split visualization
-        category: display
-        picked: false
-        variants: []
-      - name: dv-liquid-fill
-        purpose_on_page: S3 liquid fill visualization
-        category: display
-        picked: false
-        variants: []
-      - name: dv-heat-map
-        purpose_on_page: G1 gradient heat map (region)
-        category: display
-        picked: false
-        variants: []
-      - name: dv-bubble-map
-        purpose_on_page: G2 bubble map (region)
-        category: display
-        picked: false
-        variants: []
-      - name: dv-tier-board
-        purpose_on_page: R1 tier board ranking
-        category: display
-        picked: false
-        variants: []
-      - name: dv-leaderboard
-        purpose_on_page: R2 dynamic leaderboard
-        category: display
-        picked: false
-        variants: []
-      - name: dv-podium
-        purpose_on_page: R3 podium ranking
-        category: display
-        picked: false
-        variants: []
-      - name: insight-card
-        purpose_on_page: Template-driven insight card
-        category: display
-        picked: false
-        variants: []
-      - name: personal-insight-banner
-        purpose_on_page: You-vs-crowd personal layer
-        category: display
-        picked: false
-        variants: []
-      - name: result-placeholder
-        purpose_on_page: Pre-threshold placeholder with encouragement
-        category: feedback
-        picked: false
-        variants: []
-      - name: reaction-bar
-        purpose_on_page: Like/dislike + share entry
-        category: input
-        picked: false
-        variants: []
-      - name: share-sheet
-        purpose_on_page: Share link copy + image export
-        category: overlay
-        picked: false
-        variants: []
-      - name: related-questions-rail
-        purpose_on_page: Next/related question discovery
-        category: navigation
-        picked: false
-        variants: []
-      - name: region-correction-chip
-        purpose_on_page: One-tap region refine on geo questions
-        category: input
-        picked: false
-        variants: []
-  - id: page-comwatch-category
-    title: Category browse
-    route: /c/[categorySlug]
-    purpose: All active questions in one category
-    layout_type: list
-    empty_state: "Empty category: empty state + alternative categories"
-    loading_state: skeleton
-    error_state: "Category not found: 404 with category rail"
-    permissions: anonymous
-    mobile_handling: responsive
-    entry_points:
-      - Category rail/chips
-      - Search result
-      - Footer/category index
-    components:
-      - name: category-header
-        purpose_on_page: Category name, description, question count
-        category: display
-        picked: false
-        variants: []
-      - name: question-list
-        purpose_on_page: Paginated/incremental question card list
-        category: display
-        picked: false
-        variants: []
-      - name: empty-state
-        purpose_on_page: Category empty state with alternates
-        category: feedback
-        picked: false
-        variants: []
-  - id: page-comwatch-explore
-    title: Explore + trending
-    route: /explore
-    purpose: "Serendipitous discovery: trending, random, category grid"
-    layout_type: list
-    empty_state: "Low data: show category grid + random even without trending"
-    loading_state: skeleton
-    error_state: "Fetch failure: retry affordance"
-    permissions: anonymous
-    mobile_handling: responsive
-    entry_points:
-      - Header nav
-      - Homepage explore module
-      - Post-answer continue
-    components:
-      - name: trending-list
-        purpose_on_page: Trending questions list
-        category: display
-        picked: false
-        variants: []
-      - name: random-question-button
-        purpose_on_page: "Random discovery: jump to a random active question"
-        category: input
-        picked: false
-        variants: []
-      - name: category-grid
-        purpose_on_page: All categories grid
-        category: navigation
-        picked: false
-        variants: []
-  - id: page-comwatch-search
-    title: Search
-    route: /search
-    purpose: Search questions + categories (not result content)
-    layout_type: list
-    empty_state: "No query yet: popular questions + categories"
-    loading_state: spinner
-    error_state: "No hits: suggestions + popular questions"
-    permissions: anonymous
-    mobile_handling: responsive
-    entry_points:
-      - Header search entry
-      - Keyboard shortcut
-    components:
-      - name: search-bar
-        purpose_on_page: Query input with debounce
-        category: input
-        picked: false
-        variants: []
-      - name: search-results-list
-        purpose_on_page: Mixed question + category results
-        category: display
-        picked: false
-        variants: []
-      - name: search-empty-state
-        purpose_on_page: No-hit suggestions
-        category: feedback
-        picked: false
-        variants: []
-  - id: page-comwatch-admin
+  - id: page-stateofus-admin
     title: Admin console
     route: /admin
     purpose: "Protected question governance: table, lifecycle actions, editorial
@@ -305,7 +38,7 @@ pages:
         category: input
         picked: false
         variants: []
-  - id: page-comwatch-admin-question-edit
+  - id: page-stateofus-admin-question-edit
     title: Admin question editor
     route: /admin/q/[questionId]
     purpose: Create/edit a question across the 34-column schema with live preview
@@ -342,5 +75,302 @@ pages:
       - name: question-preview
         purpose_on_page: Live preview as the public question page
         category: display
+        picked: false
+        variants: []
+  - id: page-stateofus-category
+    title: Category browse
+    route: /c/[categorySlug]
+    purpose: All active questions in one category
+    layout_type: list
+    empty_state: "Empty category: empty state + alternative categories"
+    loading_state: skeleton
+    error_state: "Category not found: 404 with category rail"
+    permissions: anonymous
+    mobile_handling: responsive
+    entry_points:
+      - Category rail/chips
+      - Search result
+      - Footer/category index
+    components:
+      - name: category-header
+        purpose_on_page: Category name, description, question count
+        category: display
+        picked: true
+        asset_library_ref: mc-stateofus-v4
+        variants: []
+      - name: question-list
+        purpose_on_page: Paginated/incremental question card list
+        category: display
+        picked: true
+        asset_library_ref: mc-stateofus-v4
+        variants: []
+      - name: empty-state
+        purpose_on_page: Category empty state with alternates
+        category: feedback
+        picked: false
+        variants: []
+  - id: page-stateofus-explore
+    title: Explore + trending
+    route: /explore
+    purpose: "Serendipitous discovery: trending, random, category grid"
+    layout_type: list
+    empty_state: "Low data: show category grid + random even without trending"
+    loading_state: skeleton
+    error_state: "Fetch failure: retry affordance"
+    permissions: anonymous
+    mobile_handling: responsive
+    entry_points:
+      - Header nav
+      - Homepage explore module
+      - Post-answer continue
+    components:
+      - name: trending-list
+        purpose_on_page: Trending questions list
+        category: display
+        picked: false
+        variants: []
+      - name: random-question-button
+        purpose_on_page: "Random discovery: jump to a random active question"
+        category: input
+        picked: false
+        variants: []
+      - name: category-grid
+        purpose_on_page: All categories grid
+        category: navigation
+        picked: false
+        variants: []
+  - id: page-stateofus-home
+    title: Homepage
+    route: /
+    purpose: "Curated multi-source discovery surface: editorial, trending, recent,
+      explore modules with category diversity"
+    layout_type: dashboard
+    empty_state: "First-visit: hero question + category rail render even with low data"
+    loading_state: skeleton
+    error_state: "Module fetch failure: render remaining modules, hide broken one"
+    permissions: anonymous
+    mobile_handling: responsive
+    entry_points:
+      - Direct URL / brand entry
+      - Share link to homepage
+      - Return visit
+    components:
+      - name: header-nav
+        purpose_on_page: "Top navigation: logo, categories entry, search entry"
+        category: navigation
+        picked: true
+        asset_library_ref: mc-stateofus-v4
+        variants: []
+      - name: hero-question-card
+        purpose_on_page: Featured/editorial question with one-tap entry
+        category: display
+        picked: true
+        asset_library_ref: mc-stateofus-v4
+        variants: []
+      - name: trending-module
+        purpose_on_page: Trending questions rail
+        category: display
+        picked: true
+        asset_library_ref: mc-stateofus-v4
+        variants: []
+      - name: recent-module
+        purpose_on_page: Recently added questions
+        category: display
+        picked: true
+        asset_library_ref: mc-stateofus-v4
+        variants: []
+      - name: explore-module
+        purpose_on_page: Explore/random entry module
+        category: display
+        picked: true
+        asset_library_ref: mc-stateofus-v4
+        variants: []
+      - name: question-card
+        purpose_on_page: Reusable question summary card (category, title, participation)
+        category: display
+        picked: true
+        asset_library_ref: mc-stateofus-v4
+        variants: []
+      - name: category-rail
+        purpose_on_page: Horizontal category chips/rail
+        category: navigation
+        picked: true
+        asset_library_ref: mc-stateofus-v4
+        variants: []
+  - id: page-stateofus-question
+    title: Question experience page
+    route: /q/[questionId]
+    purpose: "THE core surface: question + interaction + result + insight +
+      exploration as one unified page"
+    layout_type: detail
+    empty_state: "Question without answers yet: interaction renders, result area
+      shows pre-reveal placeholder"
+    loading_state: skeleton
+    error_state: "Question fetch failure: friendly error + related questions"
+    permissions: anonymous
+    mobile_handling: responsive
+    entry_points:
+      - Question card tap from any discovery surface
+      - Shared link (with share context)
+      - Related/next question chain
+    components:
+      - name: question-header
+        purpose_on_page: Category, status, sample size, question text (1-2 lines)
+        category: display
+        picked: true
+        asset_library_ref: mc-stateofus-v4
+        variants: []
+      - name: interaction-quick-pick
+        purpose_on_page: Q1 single-decision tap interaction
+        category: input
+        picked: true
+        asset_library_ref: mc-stateofus-v4
+        variants: []
+      - name: interaction-bucket-sort
+        purpose_on_page: Q2 group items into buckets (drag + tap fallback)
+        category: input
+        picked: true
+        asset_library_ref: mc-stateofus-v4
+        variants: []
+      - name: interaction-tier-placement
+        purpose_on_page: Q3 rank through tier buckets (drag + tap fallback)
+        category: input
+        picked: true
+        asset_library_ref: mc-stateofus-v4
+        variants: []
+      - name: interaction-tradeoff-cards
+        purpose_on_page: Q4 choose between competing values
+        category: input
+        picked: true
+        asset_library_ref: mc-stateofus-v4
+        variants: []
+      - name: interaction-swipe-stack
+        purpose_on_page: Q5 swipe cards (swipe + tap fallback)
+        category: input
+        picked: true
+        asset_library_ref: mc-stateofus-v4
+        variants: []
+      - name: skip-button
+        purpose_on_page: Always-available skip control
+        category: input
+        picked: true
+        asset_library_ref: mc-stateofus-v4
+        variants: []
+      - name: dv-split-cards
+        purpose_on_page: S1 primary split visualization
+        category: display
+        picked: true
+        asset_library_ref: mc-stateofus-v4
+        variants: []
+      - name: dv-radial-split
+        purpose_on_page: S2 radial split visualization
+        category: display
+        picked: true
+        asset_library_ref: mc-stateofus-v4
+        variants: []
+      - name: dv-liquid-fill
+        purpose_on_page: S3 liquid fill visualization
+        category: display
+        picked: true
+        asset_library_ref: mc-stateofus-v4
+        variants: []
+      - name: dv-heat-map
+        purpose_on_page: G1 gradient heat map (region)
+        category: display
+        picked: true
+        asset_library_ref: mc-stateofus-v4
+        variants: []
+      - name: dv-bubble-map
+        purpose_on_page: G2 bubble map (region)
+        category: display
+        picked: true
+        asset_library_ref: mc-stateofus-v4
+        variants: []
+      - name: dv-tier-board
+        purpose_on_page: R1 tier board ranking
+        category: display
+        picked: true
+        asset_library_ref: mc-stateofus-v4
+        variants: []
+      - name: dv-leaderboard
+        purpose_on_page: R2 dynamic leaderboard
+        category: display
+        picked: true
+        asset_library_ref: mc-stateofus-v4
+        variants: []
+      - name: dv-podium
+        purpose_on_page: R3 podium ranking
+        category: display
+        picked: true
+        asset_library_ref: mc-stateofus-v4
+        variants: []
+      - name: insight-card
+        purpose_on_page: Template-driven insight card
+        category: display
+        picked: true
+        asset_library_ref: mc-stateofus-v4
+        variants: []
+      - name: personal-insight-banner
+        purpose_on_page: You-vs-crowd personal layer
+        category: display
+        picked: true
+        asset_library_ref: mc-stateofus-v4
+        variants: []
+      - name: result-placeholder
+        purpose_on_page: Pre-threshold placeholder with encouragement
+        category: feedback
+        picked: true
+        asset_library_ref: mc-stateofus-v4
+        variants: []
+      - name: reaction-bar
+        purpose_on_page: Like/dislike + share entry
+        category: input
+        picked: true
+        asset_library_ref: mc-stateofus-v4
+        variants: []
+      - name: share-sheet
+        purpose_on_page: Share link copy + image export
+        category: overlay
+        picked: true
+        asset_library_ref: mc-stateofus-v4
+        variants: []
+      - name: related-questions-rail
+        purpose_on_page: Next/related question discovery
+        category: navigation
+        picked: true
+        asset_library_ref: mc-stateofus-v4
+        variants: []
+      - name: region-correction-chip
+        purpose_on_page: One-tap region refine on geo questions
+        category: input
+        picked: false
+        variants: []
+  - id: page-stateofus-search
+    title: Search
+    route: /search
+    purpose: Search questions + categories (not result content)
+    layout_type: list
+    empty_state: "No query yet: popular questions + categories"
+    loading_state: spinner
+    error_state: "No hits: suggestions + popular questions"
+    permissions: anonymous
+    mobile_handling: responsive
+    entry_points:
+      - Header search entry
+      - Keyboard shortcut
+    components:
+      - name: search-bar
+        purpose_on_page: Query input with debounce
+        category: input
+        picked: false
+        variants: []
+      - name: search-results-list
+        purpose_on_page: Mixed question + category results
+        category: display
+        picked: false
+        variants: []
+      - name: search-empty-state
+        purpose_on_page: No-hit suggestions
+        category: feedback
         picked: false
         variants: []

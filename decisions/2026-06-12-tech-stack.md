@@ -1,5 +1,5 @@
 ---
-id: adr-002-comwatch-tech-stack
+id: adr-002-stateofus-tech-stack
 title: "Custom SVG visualization engine over a chart library, on the house Next.js + SQLite stack"
 date: 2026-06-12
 status: accepted
@@ -10,7 +10,7 @@ linked_risks: []
 
 ## Context
 
-ComWatch's product docs are unusually opinionated about what results must NOT feel
+State of Us's product docs are unusually opinionated about what results must NOT feel
 like: corporate dashboard, dense BI, static charts (DOC 4 §3). The visualization IS
 the product reward — split cards, radial splits, liquid fills, heat maps, tier boards,
 podiums, leaderboards, treemaps — each with 300-700ms purposeful motion. A chart

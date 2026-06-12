@@ -1,6 +1,6 @@
 risks:
-  - id: 61
-    project_slug: comwatch
+  - id: 71
+    project_slug: stateofus
     risk_type_id: no-rate-limit
     status: open
     hidden_by_default: false
@@ -9,18 +9,18 @@ risks:
       risk: no auth means dedup + rate limits are the only defense. Mitigation:
       feat-vote-dedup (device+IP heuristics, burst rejection). DOC 3 S9: reduce
       impact, not eliminate."
-    created_at: 2026-06-11T22:13:09.000Z
-  - id: 62
-    project_slug: comwatch
+    created_at: 2026-06-12T09:59:16.000Z
+  - id: 72
+    project_slug: stateofus
     risk_type_id: data-drift-undetected
     status: open
     hidden_by_default: false
     notes: "Region accuracy: IP-geo is coarse/wrong on mobile carrier NAT -> wrong
       your-region insights + skewed G1/G2 maps. Mitigation: feat-region-capture
       one-tap correction; city/state granularity only."
-    created_at: 2026-06-11T22:13:09.000Z
-  - id: 63
-    project_slug: comwatch
+    created_at: 2026-06-12T09:59:16.000Z
+  - id: 73
+    project_slug: stateofus
     risk_type_id: no-caching
     status: open
     hidden_by_default: false
@@ -28,76 +28,69 @@ risks:
     notes: "Aggregation performance: per-answer live aggregation needs a
       caching/refresh strategy (refresh on answer / periodic / manual per DOC 4
       s6). Design caching early even at MVP scale."
-    created_at: 2026-06-11T22:13:09.000Z
-  - id: 64
-    project_slug: comwatch
+    created_at: 2026-06-12T09:59:16.000Z
+  - id: 74
+    project_slug: stateofus
     risk_type_id: mobile-broken
     status: open
     hidden_by_default: false
     notes: "Gesture-heavy interactions (bucket sort, tier placement, swipe stack)
       are notoriously fiddly on mobile web. Mitigation: tap-only fallbacks (AC
       on feat-interaction-modes), prototype early at 375px."
-    created_at: 2026-06-11T22:13:09.000Z
-  - id: 65
-    project_slug: comwatch
+    created_at: 2026-06-12T09:59:16.000Z
+  - id: 75
+    project_slug: stateofus
     risk_type_id: public-admin
     status: open
     hidden_by_default: false
     notes: auth_intent=none for the public product, but the admin console mutates
       content. Admin MUST be protected (token/CF Access/separate surface) before
       deploy - 3->deploy gate requires auth strategy for non-anonymous pages.
-    created_at: 2026-06-11T22:13:09.000Z
-  - id: 66
-    project_slug: comwatch
+    created_at: 2026-06-12T09:59:16.000Z
+  - id: 76
+    project_slug: stateofus
     risk_type_id: no-tests
     status: open
     hidden_by_default: false
     notes: "Baseline: no test framework yet. cv-tagged project: critical-flow E2Es
       BLOCK deploy on red at Stage 3."
-    created_at: 2026-06-11T22:13:09.000Z
-  - id: 67
-    project_slug: comwatch
+    created_at: 2026-06-12T09:59:16.000Z
+  - id: 77
+    project_slug: stateofus
     risk_type_id: no-error-tracking
     status: open
     hidden_by_default: false
     notes: "Baseline: wire GlitchTip or equivalent at Stage 3."
-    created_at: 2026-06-11T22:13:09.000Z
-  - id: 68
-    project_slug: comwatch
+    created_at: 2026-06-12T09:59:16.000Z
+  - id: 78
+    project_slug: stateofus
     risk_type_id: no-backup
     status: open
     hidden_by_default: false
     notes: Answers DB is the product's accumulated value (results are historical
       artifacts). Backup plan is a 3->deploy gate condition.
-    created_at: 2026-06-11T22:13:09.000Z
-  - id: 69
-    project_slug: comwatch
+    created_at: 2026-06-12T09:59:16.000Z
+  - id: 79
+    project_slug: stateofus
     risk_type_id: no-auth
     status: accepted
     hidden_by_default: false
     notes: "ACCEPTED BY DESIGN: anonymous participation is the product model for MVP
       (DOC 7 s7). Migration hooks only. Revisit at Phase 3 (Trust Systems).
       Admin surface protected separately (see public-admin)."
-    created_at: 2026-06-11T22:13:09.000Z
-  - id: 70
-    project_slug: comwatch
+    created_at: 2026-06-12T09:59:16.000Z
+  - id: 80
+    project_slug: stateofus
     risk_type_id: xss-html-injection
     status: open
     hidden_by_default: false
     notes: Question content + options are admin-authored and rendered widely (incl.
       share cards). Sanitize rendering; no user-generated text in MVP (no
       comments) keeps exposure low.
-    created_at: 2026-06-11T22:13:09.000Z
-policy:
-  project_slug: comwatch
-  exposure: public
-  access_control: anonymous-ok
-  data_sensitivity_tier: personal-pii
-  encryption_in_transit: true
-  rate_limiting_enabled: true
-  rate_limit_rpm: 60
+    created_at: 2026-06-12T09:59:16.000Z
+policy: null
 auth_config:
-  project_slug: comwatch
+  project_slug: stateofus
   strategy: custom
   providers:
     - "admin-gate: token or CF Access — mechanism decided at Stage 2; public
@@ -106,53 +99,53 @@ auth_config:
   mfa_supported: false
   auth_library: custom
 third_party_services:
-  - id: 24
-    project_slug: comwatch
-    name: Gitea
-    purpose: Source repo pdsv/comwatch
-    auth_method: bearer-token
-    failure_mode: Push blocked; work continues locally
-    terms_acceptance: n-a
-  - id: 25
-    project_slug: comwatch
-    name: NPM Proxy Manager
-    purpose: Reverse proxy comwatch.vault7a.xyz -> :8510
-    auth_method: bearer-token
-    failure_mode: Site unreachable externally
-    terms_acceptance: n-a
-  - id: 26
-    project_slug: comwatch
+  - id: 28
+    project_slug: stateofus
     name: Cloudflare Tunnel
     purpose: Public exposure of comwatch.vault7a.xyz
     auth_method: bearer-token
     failure_mode: Site unreachable externally; LAN access remains
     terms_acceptance: n-a
-  - id: 27
-    project_slug: comwatch
+  - id: 29
+    project_slug: stateofus
+    name: Gitea
+    purpose: Source repo pdsv/comwatch
+    auth_method: bearer-token
+    failure_mode: Push blocked; work continues locally
+    terms_acceptance: n-a
+  - id: 30
+    project_slug: stateofus
     name: IP geolocation provider (TBD Stage 2)
     purpose: Coarse region for geographic DVs + region insights
     auth_method: api-key
     failure_mode: "Silent-skip: geo DVs show national aggregate, region insights hidden"
     terms_acceptance: n-a
+  - id: 31
+    project_slug: stateofus
+    name: NPM Proxy Manager
+    purpose: Reverse proxy comwatch.vault7a.xyz -> :8510
+    auth_method: bearer-token
+    failure_mode: Site unreachable externally
+    terms_acceptance: n-a
 secrets:
-  - id: 17
-    project_slug: comwatch
+  - id: 20
+    project_slug: stateofus
     name: ADMIN_TOKEN
     where_stored: env-vars
     what_for: Protects /admin surface (token gate or CF Access service token) -
       required before deploy
     rotation_cadence: quarterly
-  - id: 18
-    project_slug: comwatch
-    name: IPGEO_API_KEY
-    where_stored: env-vars
-    what_for: IP geolocation provider key (provider TBD at Stage 2); silent-skip on
-      failure
-    rotation_cadence: quarterly
-  - id: 19
-    project_slug: comwatch
+  - id: 21
+    project_slug: stateofus
     name: DEVICE_HASH_SALT
     where_stored: env-vars
     what_for: Salt for device-scoped pseudonymous identity hashing (vote dedup +
       comparisons)
+    rotation_cadence: quarterly
+  - id: 22
+    project_slug: stateofus
+    name: IPGEO_API_KEY
+    where_stored: env-vars
+    what_for: IP geolocation provider key (provider TBD at Stage 2); silent-skip on
+      failure
     rotation_cadence: quarterly
