@@ -32,3 +32,14 @@ decisions:
       - build-plan
       - curated
     body_path: decisions/2026-06-12-build-plan.md
+  - id: adr-004-rename-state-of-us
+    project_slug: comwatch
+    title: Renamed to State of Us — Public Pulse and ComWatch retire as working titles
+    status: accepted
+    date: 2026-06-12T00:00:00.000Z
+    tags:
+      - naming
+      - branding
+      - curated
+      - cat:product
+    body_path: decisions/2026-06-12-rename-state-of-us.md

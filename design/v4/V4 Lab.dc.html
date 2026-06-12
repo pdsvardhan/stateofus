@@ -1,0 +1,731 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous">
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800;900&family=Spectral:ital,wght@0,500;0,600;1,500&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    body { margin: 0; background: #E7E0CD; }
+    * { box-sizing: border-box; }
+    button { cursor: pointer; }
+    textarea { resize: vertical; }
+    @keyframes cwPopIn { from { opacity: 0; transform: scale(.5); } to { opacity: 1; transform: scale(1); } }
+    @keyframes cwStamp { 0% { opacity: 0; transform: scale(2.4) rotate(-16deg); } 55% { opacity: 1; transform: scale(.92) rotate(-7deg); } 75% { transform: scale(1.06) rotate(-7deg); } 100% { opacity: 1; transform: scale(1) rotate(-7deg); } }
+    @keyframes cwFadeSwap { 0% { opacity: 0; transform: translateY(12px); } 100% { opacity: 1; transform: translateY(0); } }
+    @keyframes cwSlideL { 0% { opacity: 0; transform: translateX(44px); } 100% { opacity: 1; transform: translateX(0); } }
+    @keyframes cwRing { 0% { box-shadow: 0 0 0 0 rgba(191,238,79,.9); } 100% { box-shadow: 0 0 0 16px rgba(191,238,79,0); } }
+    @keyframes cwRingR { 0% { box-shadow: 0 0 0 0 rgba(255,90,71,.9); } 100% { box-shadow: 0 0 0 16px rgba(255,90,71,0); } }
+    @keyframes cwDice { 0%, 100% { transform: rotate(0); } 20% { transform: rotate(-22deg) scale(1.1); } 45% { transform: rotate(18deg) scale(1.15); } 70% { transform: rotate(-10deg) scale(1.05); } }
+    @keyframes cwWobble { 0%, 88%, 100% { transform: rotate(0); } 90% { transform: rotate(-9deg); } 94% { transform: rotate(8deg); } 97% { transform: rotate(-4deg); } }
+    @keyframes cwFlood { from { height: 0; } }
+    @keyframes cwGrow { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+  </style>
+</helmet>
+
+<div style="min-height: 100vh; font-family: 'Archivo', sans-serif; color: #18162A; background-color: #E7E0CD; background-image: radial-gradient(rgba(24,22,42,.055) 1px, transparent 1px); background-size: 7px 7px; padding-bottom: 120px;">
+
+  <div style="background: #F2ECDF; border-bottom: 2px solid #18162A;">
+    <div style="max-width: 1320px; margin: 0 auto; padding: 14px 22px; display: flex; align-items: center; gap: 12px; flex-wrap: wrap;">
+      <span style="font-weight: 900; letter-spacing: -.03em; font-size: 21px; text-transform: uppercase;">ComWatch</span>
+      <span style="font-family: 'Space Mono', monospace; font-size: 10.5px; letter-spacing: .18em; text-transform: uppercase; color: #6B6478;">/ v4 lab · like + comment each · copy at the bottom · press everything</span>
+    </div>
+  </div>
+
+  <div style="max-width: 1320px; margin: 0 auto; padding: 36px 22px 0;">
+
+    <div style="max-width: 840px; margin-bottom: 38px;">
+      <h1 style="font-weight: 900; font-size: 38px; line-height: 1; letter-spacing: -.02em; text-transform: uppercase; margin: 0 0 12px;">v4 features. <span style="color: #FF5A47;">Press everything.</span></h1>
+      <div style="font-family: 'Spectral', serif; font-style: italic; font-size: 16px; color: #4A4744; line-height: 1.45;">Every variant is alive — click the thumbs, skip the questions, flip the charts, roll the dice. Like what works, type notes, copy the lot at the bottom.</div>
+    </div>
+
+    <!-- ════ REACTIONS ════ -->
+    <div style="display: flex; align-items: baseline; gap: 12px; border-bottom: 3px solid #18162A; padding-bottom: 10px; margin-bottom: 22px;">
+      <span style="font-weight: 900; font-size: 22px; text-transform: uppercase;">Like / Dislike the question</span>
+      <span style="font-family: 'Space Mono', monospace; font-size: 10px; letter-spacing: .12em; text-transform: uppercase; color: #6B6478;">quality signal · counts appear after you react</span>
+    </div>
+    <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(330px, 1fr)); gap: 20px; margin-bottom: 48px;">
+
+      <!-- REA1 -->
+      <div style="border: 2px solid #18162A; border-radius: 12px; background: #FFFFFF; overflow: hidden; box-shadow: 5px 5px 0 rgba(24,22,42,.14); outline: {{ ol.REA1 }}; outline-offset: 3px; display: flex; flex-direction: column;">
+        <div style="display: flex; align-items: center; gap: 10px; background: #18162A; color: #F2ECDF; padding: 9px 14px;">
+          <span style="font-family: 'Space Mono', monospace; font-size: 11px; font-weight: 700; letter-spacing: .08em;">REA1 · Quiet pair, pop confirm</span>
+          <button onClick="{{ pick.REA1 }}" style="margin-left: auto; font-family: 'Space Mono', monospace; font-size: 10px; letter-spacing: .08em; text-transform: uppercase; border: 1.5px solid #F2ECDF; border-radius: 100px; padding: 4px 11px; background: {{ pbg.REA1 }}; color: {{ pfg.REA1 }}; font-weight: 700;">{{ plabel.REA1 }}</button>
+        </div>
+        <div style="padding: 16px; background: #E7E0CD; flex: 1;">
+          <div style="border: 2px solid #18162A; border-radius: 10px; background: #F7F1E2; padding: 16px;">
+            <div style="font-family: 'Spectral', serif; font-weight: 600; font-size: 15px; margin-bottom: 4px;">What is the scientifically superior shape for a potato?</div>
+            <div style="font-family: 'Space Mono', monospace; font-size: 9px; letter-spacing: .1em; text-transform: uppercase; color: #6B6478; margin-bottom: 12px;">Result · 13.5K votes</div>
+            <div style="height: 8px; border: 1.5px solid #18162A; border-radius: 100px; background: #EFE8D6; overflow: hidden; margin-bottom: 14px;"><div style="height: 100%; width: 34%; background: #FF5A47;"></div></div>
+            <div style="display: flex; align-items: center; gap: 9px; border-top: 1.5px dashed rgba(24,22,42,.3); padding-top: 11px;">
+              <span style="font-family: 'Space Mono', monospace; font-size: 9px; letter-spacing: .1em; text-transform: uppercase; color: #6B6478; flex: 1;">Rate the question</span>
+              <button onClick="{{ rea1Up }}" style="border: 2px solid #18162A; border-radius: 100px; padding: 7px 13px; background: {{ rea1UpBg }}; font-size: 14px; transition: transform .2s cubic-bezier(.34,1.56,.64,1); animation: {{ rea1UpAnim }};" style-hover="transform: translateY(-2px) scale(1.08);">👍 {{ rea1UpCount }}</button>
+              <button onClick="{{ rea1Dn }}" style="border: 2px solid #18162A; border-radius: 100px; padding: 7px 13px; background: {{ rea1DnBg }}; font-size: 14px; opacity: {{ rea1DnOp }}; transition: transform .2s cubic-bezier(.34,1.56,.64,1); animation: {{ rea1DnAnim }};" style-hover="transform: translateY(-2px) scale(1.08);">👎 {{ rea1DnCount }}</button>
+            </div>
+            <sc-if value="{{ rea1Done }}" hint-placeholder-val="{{ false }}">
+              <div style="font-family: 'Space Mono', monospace; font-size: 9.5px; letter-spacing: .1em; text-transform: uppercase; color: #2B8A3E; font-weight: 700; margin-top: 8px; animation: cwFadeSwap .35s;">Noted ✓ · your signal shapes tomorrow's edition</div>
+            </sc-if>
+          </div>
+        </div>
+        <div style="padding: 10px 14px 12px; background: #F2ECDF; border-top: 2px solid #18162A;">
+          <textarea value="{{ note.REA1 }}" onChange="{{ setNote.REA1 }}" placeholder="Comment for me (optional)…" style="width: 100%; min-height: 38px; border: 2px solid #18162A; border-radius: 7px; background: #F7F1E2; font-family: 'Space Mono', monospace; font-size: 11px; padding: 8px 10px; color: #18162A;"></textarea>
+        </div>
+      </div>
+
+      <!-- REA2 -->
+      <div style="border: 2px solid #18162A; border-radius: 12px; background: #FFFFFF; overflow: hidden; box-shadow: 5px 5px 0 rgba(24,22,42,.14); outline: {{ ol.REA2 }}; outline-offset: 3px; display: flex; flex-direction: column;">
+        <div style="display: flex; align-items: center; gap: 10px; background: #18162A; color: #F2ECDF; padding: 9px 14px;">
+          <span style="font-family: 'Space Mono', monospace; font-size: 11px; font-weight: 700; letter-spacing: .08em;">REA2 · Floating side pill + ring</span>
+          <button onClick="{{ pick.REA2 }}" style="margin-left: auto; font-family: 'Space Mono', monospace; font-size: 10px; letter-spacing: .08em; text-transform: uppercase; border: 1.5px solid #F2ECDF; border-radius: 100px; padding: 4px 11px; background: {{ pbg.REA2 }}; color: {{ pfg.REA2 }}; font-weight: 700;">{{ plabel.REA2 }}</button>
+        </div>
+        <div style="padding: 16px; background: #E7E0CD; flex: 1;">
+          <div style="position: relative; border: 2px solid #18162A; border-radius: 10px; background: #F7F1E2; padding: 16px 16px 22px;">
+            <div style="font-family: 'Spectral', serif; font-weight: 600; font-size: 15px; margin-bottom: 4px;">Choose your torture.</div>
+            <div style="font-family: 'Space Mono', monospace; font-size: 9px; letter-spacing: .1em; text-transform: uppercase; color: #6B6478; margin-bottom: 12px;">Result · 14.8K votes</div>
+            <div style="display: flex; height: 20px; border: 2px solid #18162A; border-radius: 100px; overflow: hidden; margin-bottom: 6px;"><div style="width: 58%; background: #BFEE4F;"></div><div style="flex: 1; background: #FFD9D3; border-left: 2px solid #18162A;"></div></div>
+            <div style="position: absolute; right: 12px; bottom: -16px; display: flex; gap: 7px; background: #18162A; border: 2px solid #18162A; border-radius: 100px; padding: 5px;">
+              <button onClick="{{ rea2Up }}" style="border: none; border-radius: 100px; width: 36px; height: 36px; background: {{ rea2UpBg }}; font-size: 15px; display: inline-flex; align-items: center; justify-content: center; animation: {{ rea2UpAnim }}; transition: transform .2s;" style-hover="transform: scale(1.15) rotate(-8deg);">👍</button>
+              <button onClick="{{ rea2Dn }}" style="border: none; border-radius: 100px; width: 36px; height: 36px; background: {{ rea2DnBg }}; font-size: 15px; display: inline-flex; align-items: center; justify-content: center; animation: {{ rea2DnAnim }}; transition: transform .2s;" style-hover="transform: scale(1.15) rotate(8deg);">👎</button>
+            </div>
+          </div>
+          <div style="font-family: 'Space Mono', monospace; font-size: 9.5px; letter-spacing: .1em; text-transform: uppercase; color: {{ rea2MsgColor }}; font-weight: 700; margin-top: 24px; min-height: 14px;">{{ rea2Msg }}</div>
+        </div>
+        <div style="padding: 10px 14px 12px; background: #F2ECDF; border-top: 2px solid #18162A;">
+          <textarea value="{{ note.REA2 }}" onChange="{{ setNote.REA2 }}" placeholder="Comment for me (optional)…" style="width: 100%; min-height: 38px; border: 2px solid #18162A; border-radius: 7px; background: #F7F1E2; font-family: 'Space Mono', monospace; font-size: 11px; padding: 8px 10px; color: #18162A;"></textarea>
+        </div>
+      </div>
+
+      <!-- REA3 -->
+      <div style="border: 2px solid #18162A; border-radius: 12px; background: #FFFFFF; overflow: hidden; box-shadow: 5px 5px 0 rgba(24,22,42,.14); outline: {{ ol.REA3 }}; outline-offset: 3px; display: flex; flex-direction: column;">
+        <div style="display: flex; align-items: center; gap: 10px; background: #18162A; color: #F2ECDF; padding: 9px 14px;">
+          <span style="font-family: 'Space Mono', monospace; font-size: 11px; font-weight: 700; letter-spacing: .08em;">REA3 · Rubber stamp verdict</span>
+          <button onClick="{{ pick.REA3 }}" style="margin-left: auto; font-family: 'Space Mono', monospace; font-size: 10px; letter-spacing: .08em; text-transform: uppercase; border: 1.5px solid #F2ECDF; border-radius: 100px; padding: 4px 11px; background: {{ pbg.REA3 }}; color: {{ pfg.REA3 }}; font-weight: 700;">{{ plabel.REA3 }}</button>
+        </div>
+        <div style="padding: 16px; background: #E7E0CD; flex: 1;">
+          <div style="position: relative; border: 2px solid #18162A; border-radius: 10px; background: #F7F1E2; padding: 16px; overflow: hidden;">
+            <div style="font-family: 'Spectral', serif; font-weight: 600; font-size: 15px; margin-bottom: 4px;">Is this public behaviour acceptable?</div>
+            <div style="font-family: 'Space Mono', monospace; font-size: 9px; letter-spacing: .1em; text-transform: uppercase; color: #6B6478; margin-bottom: 12px;">Result · 9.1K votes</div>
+            <div style="height: 8px; border: 1.5px solid #18162A; border-radius: 100px; background: #FFD9D3; overflow: hidden; margin-bottom: 14px;"><div style="height: 100%; width: 12%; background: #BFEE4F;"></div></div>
+            <div style="display: flex; gap: 9px;">
+              <button onClick="{{ rea3Up }}" style="flex: 1; border: 2px solid #18162A; border-radius: 8px; padding: 9px; background: #F2ECDF; font-family: 'Space Mono', monospace; font-size: 10px; letter-spacing: .08em; text-transform: uppercase; font-weight: 700;" style-hover="background: #BFEE4F; transform: translate(-1px,-1px); box-shadow: 3px 3px 0 #18162A;">👍 Good question</button>
+              <button onClick="{{ rea3Dn }}" style="flex: 1; border: 2px solid #18162A; border-radius: 8px; padding: 9px; background: #F2ECDF; font-family: 'Space Mono', monospace; font-size: 10px; letter-spacing: .08em; text-transform: uppercase; font-weight: 700;" style-hover="background: #FFD9D3; transform: translate(-1px,-1px); box-shadow: 3px 3px 0 #18162A;">👎 Weak one</button>
+            </div>
+            <sc-if value="{{ rea3Stamped }}" hint-placeholder-val="{{ false }}">
+              <span key="{{ rea3Key }}" style="position: absolute; right: 10px; top: 8px; font-weight: 900; font-size: 13px; text-transform: uppercase; color: {{ rea3Color }}; border: 3px solid {{ rea3Color }}; border-radius: 7px; padding: 5px 9px; animation: cwStamp .5s cubic-bezier(.2,.7,.2,1) both; background: rgba(242,236,223,.75);">{{ rea3Text }}</span>
+            </sc-if>
+          </div>
+        </div>
+        <div style="padding: 10px 14px 12px; background: #F2ECDF; border-top: 2px solid #18162A;">
+          <textarea value="{{ note.REA3 }}" onChange="{{ setNote.REA3 }}" placeholder="Comment for me (optional)…" style="width: 100%; min-height: 38px; border: 2px solid #18162A; border-radius: 7px; background: #F7F1E2; font-family: 'Space Mono', monospace; font-size: 11px; padding: 8px 10px; color: #18162A;"></textarea>
+        </div>
+      </div>
+    </div>
+
+    <!-- ════ SKIP + LINKS ════ -->
+    <div style="display: flex; align-items: baseline; gap: 12px; border-bottom: 3px solid #18162A; padding-bottom: 10px; margin-bottom: 22px;">
+      <span style="font-weight: 900; font-size: 22px; text-transform: uppercase;">Skip & question links</span>
+    </div>
+    <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(330px, 1fr)); gap: 20px; margin-bottom: 48px;">
+
+      <!-- SKIP1 -->
+      <div style="border: 2px solid #18162A; border-radius: 12px; background: #FFFFFF; overflow: hidden; box-shadow: 5px 5px 0 rgba(24,22,42,.14); outline: {{ ol.SKIP1 }}; outline-offset: 3px; display: flex; flex-direction: column;">
+        <div style="display: flex; align-items: center; gap: 10px; background: #18162A; color: #F2ECDF; padding: 9px 14px;">
+          <span style="font-family: 'Space Mono', monospace; font-size: 11px; font-weight: 700; letter-spacing: .08em;">SKIP1 · Quiet line under options</span>
+          <button onClick="{{ pick.SKIP1 }}" style="margin-left: auto; font-family: 'Space Mono', monospace; font-size: 10px; letter-spacing: .08em; text-transform: uppercase; border: 1.5px solid #F2ECDF; border-radius: 100px; padding: 4px 11px; background: {{ pbg.SKIP1 }}; color: {{ pfg.SKIP1 }}; font-weight: 700;">{{ plabel.SKIP1 }}</button>
+        </div>
+        <div style="padding: 16px; background: #E7E0CD; flex: 1;">
+          <div key="{{ skip1Key }}" style="animation: cwFadeSwap .4s;">
+            <div style="font-family: 'Spectral', serif; font-weight: 600; font-size: 15px; margin-bottom: 10px;">{{ skip1Q }}</div>
+            <div style="display: flex; flex-direction: column; gap: 6px; margin-bottom: 12px;">
+              <div style="border: 2px solid #18162A; border-radius: 7px; background: #F7F1E2; padding: 9px 11px; font-weight: 600; font-size: 12.5px;">{{ skip1A }}</div>
+              <div style="border: 2px solid #18162A; border-radius: 7px; background: #F7F1E2; padding: 9px 11px; font-weight: 600; font-size: 12.5px;">{{ skip1B }}</div>
+            </div>
+          </div>
+          <button onClick="{{ skip1Go }}" style="display: block; margin: 0 auto; background: none; border: none; font-family: 'Space Mono', monospace; font-size: 10.5px; letter-spacing: .12em; text-transform: uppercase; color: #6B6478; padding: 8px; border-bottom: 1.5px dashed #6B6478;" style-hover="color: #FF5A47; border-color: #FF5A47;">Not for me — skip to the next ↷</button>
+        </div>
+        <div style="padding: 10px 14px 12px; background: #F2ECDF; border-top: 2px solid #18162A;">
+          <textarea value="{{ note.SKIP1 }}" onChange="{{ setNote.SKIP1 }}" placeholder="Comment for me (optional)…" style="width: 100%; min-height: 38px; border: 2px solid #18162A; border-radius: 7px; background: #F7F1E2; font-family: 'Space Mono', monospace; font-size: 11px; padding: 8px 10px; color: #18162A;"></textarea>
+        </div>
+      </div>
+
+      <!-- SKIP2 -->
+      <div style="border: 2px solid #18162A; border-radius: 12px; background: #FFFFFF; overflow: hidden; box-shadow: 5px 5px 0 rgba(24,22,42,.14); outline: {{ ol.SKIP2 }}; outline-offset: 3px; display: flex; flex-direction: column;">
+        <div style="display: flex; align-items: center; gap: 10px; background: #18162A; color: #F2ECDF; padding: 9px 14px;">
+          <span style="font-family: 'Space Mono', monospace; font-size: 11px; font-weight: 700; letter-spacing: .08em;">SKIP2 · Deal-me-another chip</span>
+          <button onClick="{{ pick.SKIP2 }}" style="margin-left: auto; font-family: 'Space Mono', monospace; font-size: 10px; letter-spacing: .08em; text-transform: uppercase; border: 1.5px solid #F2ECDF; border-radius: 100px; padding: 4px 11px; background: {{ pbg.SKIP2 }}; color: {{ pfg.SKIP2 }}; font-weight: 700;">{{ plabel.SKIP2 }}</button>
+        </div>
+        <div style="padding: 16px; background: #E7E0CD; flex: 1;">
+          <div style="display: flex; justify-content: flex-end; margin-bottom: 8px;">
+            <button onClick="{{ skip2Go }}" style="display: inline-flex; align-items: center; gap: 7px; border: 2px solid #18162A; border-radius: 100px; padding: 7px 13px; background: #FFC53D; font-family: 'Space Mono', monospace; font-size: 10px; letter-spacing: .08em; text-transform: uppercase; font-weight: 700;" style-hover="transform: translate(-1px,-2px) rotate(-2deg); box-shadow: 3px 4px 0 #18162A;">Skip ↷ <span style="background: #18162A; color: #FFC53D; border-radius: 3px; padding: 1px 6px;">{{ skip2Left }} left</span></button>
+          </div>
+          <div key="{{ skip2Key }}" style="border: 2px solid #18162A; border-radius: 10px; background: #F7F1E2; box-shadow: 4px 4px 0 #18162A; padding: 18px; animation: cwSlideL .4s cubic-bezier(.2,.7,.2,1);">
+            <div style="font-family: 'Space Mono', monospace; font-size: 9px; letter-spacing: .12em; text-transform: uppercase; color: #6B6478; margin-bottom: 6px;">{{ skip2Cat }}</div>
+            <div style="font-family: 'Spectral', serif; font-weight: 600; font-size: 16.5px; line-height: 1.2;">{{ skip2Q }}</div>
+          </div>
+          <div style="font-family: 'Space Mono', monospace; font-size: 8.5px; letter-spacing: .08em; text-transform: uppercase; color: #6B6478; margin-top: 9px; text-align: center;">Card slides out, next slides in — skipped ones return at the end</div>
+        </div>
+        <div style="padding: 10px 14px 12px; background: #F2ECDF; border-top: 2px solid #18162A;">
+          <textarea value="{{ note.SKIP2 }}" onChange="{{ setNote.SKIP2 }}" placeholder="Comment for me (optional)…" style="width: 100%; min-height: 38px; border: 2px solid #18162A; border-radius: 7px; background: #F7F1E2; font-family: 'Space Mono', monospace; font-size: 11px; padding: 8px 10px; color: #18162A;"></textarea>
+        </div>
+      </div>
+
+      <!-- LINK1 -->
+      <div style="border: 2px solid #18162A; border-radius: 12px; background: #FFFFFF; overflow: hidden; box-shadow: 5px 5px 0 rgba(24,22,42,.14); outline: {{ ol.LINK1 }}; outline-offset: 3px; display: flex; flex-direction: column;">
+        <div style="display: flex; align-items: center; gap: 10px; background: #18162A; color: #F2ECDF; padding: 9px 14px;">
+          <span style="font-family: 'Space Mono', monospace; font-size: 11px; font-weight: 700; letter-spacing: .08em;">LINK1 · Chain chip by the title</span>
+          <button onClick="{{ pick.LINK1 }}" style="margin-left: auto; font-family: 'Space Mono', monospace; font-size: 10px; letter-spacing: .08em; text-transform: uppercase; border: 1.5px solid #F2ECDF; border-radius: 100px; padding: 4px 11px; background: {{ pbg.LINK1 }}; color: {{ pfg.LINK1 }}; font-weight: 700;">{{ plabel.LINK1 }}</button>
+        </div>
+        <div style="padding: 16px; background: #E7E0CD; flex: 1;">
+          <div style="border: 2px solid #18162A; border-radius: 10px; background: #F7F1E2; padding: 16px;">
+            <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
+              <span style="font-family: 'Space Mono', monospace; font-size: 9px; letter-spacing: .1em; text-transform: uppercase; border: 1.5px solid #18162A; border-radius: 4px; padding: 3px 7px; background: #BFEE4F;">Internet Chaos</span>
+              <button onClick="{{ link1Go }}" style="margin-left: auto; display: inline-flex; align-items: center; gap: 5px; border: 2px solid #18162A; border-radius: 100px; padding: 5px 11px; background: {{ link1Bg }}; font-family: 'Space Mono', monospace; font-size: 9.5px; letter-spacing: .08em; text-transform: uppercase; font-weight: 700; transition: background .25s;" style-hover="transform: translate(-1px,-1px); box-shadow: 2px 2px 0 #18162A;">{{ link1Label }}</button>
+            </div>
+            <div style="font-family: 'Spectral', serif; font-weight: 600; font-size: 15.5px;">What is the scientifically superior shape for a potato?</div>
+            <div style="font-family: 'Space Mono', monospace; font-size: 9.5px; color: #6B6478; margin-top: 8px;">comwatch.in/q/potato-shape</div>
+          </div>
+        </div>
+        <div style="padding: 10px 14px 12px; background: #F2ECDF; border-top: 2px solid #18162A;">
+          <textarea value="{{ note.LINK1 }}" onChange="{{ setNote.LINK1 }}" placeholder="Comment for me (optional)…" style="width: 100%; min-height: 38px; border: 2px solid #18162A; border-radius: 7px; background: #F7F1E2; font-family: 'Space Mono', monospace; font-size: 11px; padding: 8px 10px; color: #18162A;"></textarea>
+        </div>
+      </div>
+
+      <!-- LINK2 -->
+      <div style="border: 2px solid #18162A; border-radius: 12px; background: #FFFFFF; overflow: hidden; box-shadow: 5px 5px 0 rgba(24,22,42,.14); outline: {{ ol.LINK2 }}; outline-offset: 3px; display: flex; flex-direction: column;">
+        <div style="display: flex; align-items: center; gap: 10px; background: #18162A; color: #F2ECDF; padding: 9px 14px;">
+          <span style="font-family: 'Space Mono', monospace; font-size: 11px; font-weight: 700; letter-spacing: .08em;">LINK2 · In the actions row + toast</span>
+          <button onClick="{{ pick.LINK2 }}" style="margin-left: auto; font-family: 'Space Mono', monospace; font-size: 10px; letter-spacing: .08em; text-transform: uppercase; border: 1.5px solid #F2ECDF; border-radius: 100px; padding: 4px 11px; background: {{ pbg.LINK2 }}; color: {{ pfg.LINK2 }}; font-weight: 700;">{{ plabel.LINK2 }}</button>
+        </div>
+        <div style="padding: 16px; background: #E7E0CD; flex: 1; position: relative;">
+          <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+            <button style="flex: 1; min-width: 110px; border: 2px solid #18162A; border-radius: 8px; background: #18162A; color: #F2ECDF; font-weight: 800; font-size: 12px; text-transform: uppercase; padding: 12px;" style-hover="transform: translate(-1px,-2px); box-shadow: 3px 4px 0 rgba(24,22,42,.3);">Next →</button>
+            <button style="border: 2px solid #18162A; border-radius: 8px; background: #F2ECDF; font-weight: 800; font-size: 12px; text-transform: uppercase; padding: 12px 14px;" style-hover="transform: translate(-1px,-2px); box-shadow: 3px 4px 0 #18162A;">Share</button>
+            <button onClick="{{ link2Go }}" style="border: 2px solid #18162A; border-radius: 8px; background: {{ link2Bg }}; font-weight: 800; font-size: 12px; text-transform: uppercase; padding: 12px 14px; transition: background .25s;" style-hover="transform: translate(-1px,-2px); box-shadow: 3px 4px 0 #18162A;">{{ link2Label }}</button>
+          </div>
+          <sc-if value="{{ link2Toast }}" hint-placeholder-val="{{ false }}">
+            <div style="position: absolute; left: 50%; bottom: 12px; transform: translateX(-50%); background: #18162A; color: #BFEE4F; border-radius: 100px; padding: 8px 16px; font-family: 'Space Mono', monospace; font-size: 10px; letter-spacing: .1em; text-transform: uppercase; font-weight: 700; animation: cwPopIn .3s cubic-bezier(.34,1.56,.64,1) both; white-space: nowrap;">🔗 Link copied — paste it anywhere</div>
+          </sc-if>
+        </div>
+        <div style="padding: 10px 14px 12px; background: #F2ECDF; border-top: 2px solid #18162A;">
+          <textarea value="{{ note.LINK2 }}" onChange="{{ setNote.LINK2 }}" placeholder="Comment for me (optional)…" style="width: 100%; min-height: 38px; border: 2px solid #18162A; border-radius: 7px; background: #F7F1E2; font-family: 'Space Mono', monospace; font-size: 11px; padding: 8px 10px; color: #18162A;"></textarea>
+        </div>
+      </div>
+    </div>
+
+    <!-- ════ RELATED + SURPRISE ════ -->
+    <div style="display: flex; align-items: baseline; gap: 12px; border-bottom: 3px solid #18162A; padding-bottom: 10px; margin-bottom: 22px;">
+      <span style="font-weight: 900; font-size: 22px; text-transform: uppercase;">Related & Surprise me</span>
+      <span style="font-family: 'Space Mono', monospace; font-size: 10px; letter-spacing: .12em; text-transform: uppercase; color: #6B6478;">deliberately cross-category</span>
+    </div>
+    <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(330px, 1fr)); gap: 20px; margin-bottom: 48px;">
+
+      <!-- REL1 -->
+      <div style="border: 2px solid #18162A; border-radius: 12px; background: #FFFFFF; overflow: hidden; box-shadow: 5px 5px 0 rgba(24,22,42,.14); outline: {{ ol.REL1 }}; outline-offset: 3px; display: flex; flex-direction: column;">
+        <div style="display: flex; align-items: center; gap: 10px; background: #18162A; color: #F2ECDF; padding: 9px 14px;">
+          <span style="font-family: 'Space Mono', monospace; font-size: 11px; font-weight: 700; letter-spacing: .08em;">REL1 · "Keep going" mini-row</span>
+          <button onClick="{{ pick.REL1 }}" style="margin-left: auto; font-family: 'Space Mono', monospace; font-size: 10px; letter-spacing: .08em; text-transform: uppercase; border: 1.5px solid #F2ECDF; border-radius: 100px; padding: 4px 11px; background: {{ pbg.REL1 }}; color: {{ pfg.REL1 }}; font-weight: 700;">{{ plabel.REL1 }}</button>
+        </div>
+        <div style="padding: 16px; background: #E7E0CD; flex: 1;">
+          <div style="font-family: 'Space Mono', monospace; font-size: 9.5px; letter-spacing: .14em; text-transform: uppercase; color: #6B6478; margin-bottom: 9px;">Keep going · from other desks</div>
+          <div style="display: flex; gap: 9px; overflow-x: auto; padding-bottom: 6px;">
+            <div style="width: 150px; flex-shrink: 0; border: 2px solid #18162A; border-radius: 9px; background: #F7F1E2; padding: 11px; cursor: pointer;" style-hover="transform: translate(-1px,-3px) rotate(-1deg); box-shadow: 4px 5px 0 #18162A;">
+              <span style="font-family: 'Space Mono', monospace; font-size: 8px; letter-spacing: .1em; text-transform: uppercase; color: #FF5A47; font-weight: 700;">City & Place</span>
+              <div style="font-family: 'Spectral', serif; font-weight: 600; font-size: 12.5px; line-height: 1.2; margin-top: 5px;">Is this public behaviour a crime?</div>
+            </div>
+            <div style="width: 150px; flex-shrink: 0; border: 2px solid #18162A; border-radius: 9px; background: #F7F1E2; padding: 11px; cursor: pointer;" style-hover="transform: translate(-1px,-3px) rotate(1deg); box-shadow: 4px 5px 0 #18162A;">
+              <span style="font-family: 'Space Mono', monospace; font-size: 8px; letter-spacing: .1em; text-transform: uppercase; color: #7DA7FF; font-weight: 700;">Daily Life</span>
+              <div style="font-family: 'Spectral', serif; font-weight: 600; font-size: 12.5px; line-height: 1.2; margin-top: 5px;">Which chore drains the most energy?</div>
+            </div>
+            <div style="width: 150px; flex-shrink: 0; border: 2px dashed #18162A; border-radius: 9px; background: rgba(247,241,226,.6); padding: 11px; cursor: pointer; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 5px;" style-hover="background: #BFEE4F; border-style: solid;">
+              <span style="font-size: 20px; display: inline-block; animation: cwWobble 4s ease-in-out infinite;">🎲</span>
+              <span style="font-family: 'Space Mono', monospace; font-size: 9px; letter-spacing: .1em; text-transform: uppercase; font-weight: 700; text-align: center;">Surprise me</span>
+            </div>
+          </div>
+        </div>
+        <div style="padding: 10px 14px 12px; background: #F2ECDF; border-top: 2px solid #18162A;">
+          <textarea value="{{ note.REL1 }}" onChange="{{ setNote.REL1 }}" placeholder="Comment for me (optional)…" style="width: 100%; min-height: 38px; border: 2px solid #18162A; border-radius: 7px; background: #F7F1E2; font-family: 'Space Mono', monospace; font-size: 11px; padding: 8px 10px; color: #18162A;"></textarea>
+        </div>
+      </div>
+
+      <!-- REL2 -->
+      <div style="border: 2px solid #18162A; border-radius: 12px; background: #FFFFFF; overflow: hidden; box-shadow: 5px 5px 0 rgba(24,22,42,.14); outline: {{ ol.REL2 }}; outline-offset: 3px; display: flex; flex-direction: column;">
+        <div style="display: flex; align-items: center; gap: 10px; background: #18162A; color: #F2ECDF; padding: 9px 14px;">
+          <span style="font-family: 'Space Mono', monospace; font-size: 11px; font-weight: 700; letter-spacing: .08em;">REL2 · One big next + chips</span>
+          <button onClick="{{ pick.REL2 }}" style="margin-left: auto; font-family: 'Space Mono', monospace; font-size: 10px; letter-spacing: .08em; text-transform: uppercase; border: 1.5px solid #F2ECDF; border-radius: 100px; padding: 4px 11px; background: {{ pbg.REL2 }}; color: {{ pfg.REL2 }}; font-weight: 700;">{{ plabel.REL2 }}</button>
+        </div>
+        <div style="padding: 16px; background: #E7E0CD; flex: 1;">
+          <div style="border: 2px solid #18162A; border-radius: 10px; background: #18162A; color: #F2ECDF; padding: 16px; cursor: pointer; position: relative; overflow: hidden;" style-hover="transform: translate(-2px,-2px); box-shadow: 5px 5px 0 rgba(24,22,42,.35);">
+            <span style="font-family: 'Space Mono', monospace; font-size: 9px; letter-spacing: .14em; text-transform: uppercase; color: #BFEE4F;">Up next · picked blind 🎲</span>
+            <div style="font-family: 'Spectral', serif; font-weight: 600; font-size: 16px; line-height: 1.2; margin: 7px 0 4px;">One cup rules your mornings: chai or coffee?</div>
+            <span style="font-weight: 800; font-size: 13px; color: #BFEE4F;">Answer it →</span>
+          </div>
+          <div style="display: flex; gap: 7px; flex-wrap: wrap; margin-top: 10px;">
+            <span style="border: 1.5px solid #18162A; border-radius: 100px; background: #F7F1E2; padding: 6px 11px; font-weight: 600; font-size: 11px; cursor: pointer;" style-hover="background: #BFEE4F;">+ streaming budget cuts</span>
+            <span style="border: 1.5px solid #18162A; border-radius: 100px; background: #F7F1E2; padding: 6px 11px; font-weight: 600; font-size: 11px; cursor: pointer;" style-hover="background: #BFEE4F;">+ transit rage tiers</span>
+          </div>
+        </div>
+        <div style="padding: 10px 14px 12px; background: #F2ECDF; border-top: 2px solid #18162A;">
+          <textarea value="{{ note.REL2 }}" onChange="{{ setNote.REL2 }}" placeholder="Comment for me (optional)…" style="width: 100%; min-height: 38px; border: 2px solid #18162A; border-radius: 7px; background: #F7F1E2; font-family: 'Space Mono', monospace; font-size: 11px; padding: 8px 10px; color: #18162A;"></textarea>
+        </div>
+      </div>
+
+      <!-- SUR1 -->
+      <div style="border: 2px solid #18162A; border-radius: 12px; background: #FFFFFF; overflow: hidden; box-shadow: 5px 5px 0 rgba(24,22,42,.14); outline: {{ ol.SUR1 }}; outline-offset: 3px; display: flex; flex-direction: column;">
+        <div style="display: flex; align-items: center; gap: 10px; background: #18162A; color: #F2ECDF; padding: 9px 14px;">
+          <span style="font-family: 'Space Mono', monospace; font-size: 11px; font-weight: 700; letter-spacing: .08em;">SUR1 · Masthead button + floating die</span>
+          <button onClick="{{ pick.SUR1 }}" style="margin-left: auto; font-family: 'Space Mono', monospace; font-size: 10px; letter-spacing: .08em; text-transform: uppercase; border: 1.5px solid #F2ECDF; border-radius: 100px; padding: 4px 11px; background: {{ pbg.SUR1 }}; color: {{ pfg.SUR1 }}; font-weight: 700;">{{ plabel.SUR1 }}</button>
+        </div>
+        <div style="padding: 16px; background: #E7E0CD; flex: 1; position: relative;">
+          <div style="border-bottom: 2px solid #18162A; padding-bottom: 12px; margin-bottom: 12px;">
+            <div style="font-weight: 900; font-size: 22px; line-height: 1; letter-spacing: -.02em; text-transform: uppercase; margin-bottom: 9px;">What does India <span style="color: #FF5A47;">actually</span> think?</div>
+            <button onClick="{{ surRoll }}" style="display: inline-flex; align-items: center; gap: 8px; border: 2px solid #18162A; border-radius: 8px; background: #BFEE4F; font-weight: 800; font-size: 13px; text-transform: uppercase; padding: 11px 16px;" style-hover="transform: translate(-2px,-2px); box-shadow: 4px 4px 0 #18162A;"><span key="{{ surKey }}" style="display: inline-block; font-size: 16px; animation: cwDice .6s cubic-bezier(.2,.7,.2,1) both;">🎲</span> Surprise me</button>
+            <span style="font-family: 'Space Mono', monospace; font-size: 9.5px; letter-spacing: .08em; text-transform: uppercase; color: #6B6478; margin-left: 10px;">{{ surMsg }}</span>
+          </div>
+          <div style="height: 56px; border: 2px solid rgba(24,22,42,.25); border-radius: 8px; background: rgba(247,241,226,.5);"></div>
+          <button onClick="{{ surRoll }}" style="position: absolute; right: 14px; bottom: 12px; width: 48px; height: 48px; border: 2px solid #18162A; border-radius: 50%; background: #18162A; font-size: 19px; display: inline-flex; align-items: center; justify-content: center; box-shadow: 4px 4px 0 rgba(24,22,42,.3);" style-hover="transform: scale(1.12) rotate(-12deg); background: #FF5A47;"><span style="display: inline-block; animation: cwWobble 5s ease-in-out infinite;">🎲</span></button>
+          <span style="position: absolute; right: 70px; bottom: 24px; font-family: 'Space Mono', monospace; font-size: 8.5px; letter-spacing: .08em; text-transform: uppercase; color: #6B6478;">← always floating</span>
+        </div>
+        <div style="padding: 10px 14px 12px; background: #F2ECDF; border-top: 2px solid #18162A;">
+          <textarea value="{{ note.SUR1 }}" onChange="{{ setNote.SUR1 }}" placeholder="Comment for me (optional)…" style="width: 100%; min-height: 38px; border: 2px solid #18162A; border-radius: 7px; background: #F7F1E2; font-family: 'Space Mono', monospace; font-size: 11px; padding: 8px 10px; color: #18162A;"></textarea>
+        </div>
+      </div>
+    </div>
+
+    <!-- ════ DV SWITCHER ════ -->
+    <div style="display: flex; align-items: baseline; gap: 12px; border-bottom: 3px solid #18162A; padding-bottom: 10px; margin-bottom: 22px;">
+      <span style="font-weight: 900; font-size: 22px; text-transform: uppercase;">Multi-DV switcher</span>
+      <span style="font-family: 'Space Mono', monospace; font-size: 10px; letter-spacing: .12em; text-transform: uppercase; color: #FF5A47; font-weight: 700;">same data, two views — switch them</span>
+    </div>
+    <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(330px, 1fr)); gap: 20px; margin-bottom: 48px;">
+
+      <!-- SW1 tabs -->
+      <div style="border: 2px solid #18162A; border-radius: 12px; background: #FFFFFF; overflow: hidden; box-shadow: 5px 5px 0 rgba(24,22,42,.14); outline: {{ ol.SW1 }}; outline-offset: 3px; display: flex; flex-direction: column;">
+        <div style="display: flex; align-items: center; gap: 10px; background: #18162A; color: #F2ECDF; padding: 9px 14px;">
+          <span style="font-family: 'Space Mono', monospace; font-size: 11px; font-weight: 700; letter-spacing: .08em;">SW1 · Tabs + rise transition</span>
+          <button onClick="{{ pick.SW1 }}" style="margin-left: auto; font-family: 'Space Mono', monospace; font-size: 10px; letter-spacing: .08em; text-transform: uppercase; border: 1.5px solid #F2ECDF; border-radius: 100px; padding: 4px 11px; background: {{ pbg.SW1 }}; color: {{ pfg.SW1 }}; font-weight: 700;">{{ plabel.SW1 }}</button>
+        </div>
+        <div style="padding: 16px; background: #E7E0CD; flex: 1;">
+          <div style="display: inline-flex; border: 2px solid #18162A; border-radius: 100px; background: #F2ECDF; padding: 3px; margin-bottom: 12px;">
+            <button onClick="{{ sw1Cups }}" style="border: none; border-radius: 100px; padding: 7px 14px; font-family: 'Space Mono', monospace; font-size: 10px; letter-spacing: .08em; text-transform: uppercase; font-weight: 700; background: {{ sw1ABg }}; color: {{ sw1AFg }}; transition: all .25s;">Cups</button>
+            <button onClick="{{ sw1Tug }}" style="border: none; border-radius: 100px; padding: 7px 14px; font-family: 'Space Mono', monospace; font-size: 10px; letter-spacing: .08em; text-transform: uppercase; font-weight: 700; background: {{ sw1BBg }}; color: {{ sw1BFg }}; transition: all .25s;">Tug bar</button>
+          </div>
+          <div key="{{ sw1Key }}" style="border: 2px solid #18162A; border-radius: 10px; background: #F7F1E2; box-shadow: 4px 4px 0 #18162A; padding: 16px; min-height: 168px; animation: cwFadeSwap .4s cubic-bezier(.2,.7,.2,1); display: flex; align-items: center; justify-content: center;">
+            <sc-if value="{{ sw1IsCups }}" hint-placeholder-val="{{ true }}">
+              <div style="display: flex; gap: 16px; align-items: flex-end;">
+                <div style="display: flex; flex-direction: column; align-items: center; gap: 5px;"><div style="position: relative; width: 64px; height: 96px; border: 2.5px solid #18162A; border-radius: 7px 7px 20px 20px; background: #F2ECDF; overflow: hidden;"><div style="position: absolute; left: 0; right: 0; bottom: 0; height: 59%; background: #FF5A47; border-radius: 50% 50% 0 0 / 9px; animation: cwFlood 1.4s cubic-bezier(.65,0,.35,1) both;"></div><span style="position: absolute; left: 0; right: 0; top: 8px; text-align: center; font-weight: 900; font-size: 15px;">59%</span></div><span style="font-weight: 800; font-size: 11px; text-transform: uppercase;">Chai</span></div>
+                <div style="display: flex; flex-direction: column; align-items: center; gap: 5px;"><div style="position: relative; width: 64px; height: 96px; border: 2.5px solid #18162A; border-radius: 7px 7px 20px 20px; background: #F2ECDF; overflow: hidden;"><div style="position: absolute; left: 0; right: 0; bottom: 0; height: 41%; background: #34304E; border-radius: 50% 50% 0 0 / 9px; animation: cwFlood 1.4s .2s cubic-bezier(.65,0,.35,1) both;"></div><span style="position: absolute; left: 0; right: 0; top: 8px; text-align: center; font-weight: 900; font-size: 15px;">41%</span></div><span style="font-weight: 800; font-size: 11px; text-transform: uppercase;">Coffee</span></div>
+              </div>
+            </sc-if>
+            <sc-if value="{{ sw1IsTug }}" hint-placeholder-val="{{ false }}">
+              <div style="width: 100%;">
+                <div style="display: flex; justify-content: space-between; font-size: 12px; font-weight: 700; margin-bottom: 6px;"><span>Chai</span><span style="color: #6B6478;">Coffee</span></div>
+                <div style="display: flex; height: 26px; border: 2px solid #18162A; border-radius: 100px; overflow: hidden;">
+                  <div style="width: 59%; background: #FF5A47; transform-origin: left; animation: cwGrow .8s cubic-bezier(.2,.7,.2,1) both; display: flex; align-items: center; padding-left: 10px; font-family: 'Space Mono', monospace; font-size: 11px; font-weight: 700; color: #F2ECDF;">59%</div>
+                  <div style="flex: 1; background: #C9C5D6; border-left: 2px solid #18162A; display: flex; align-items: center; justify-content: flex-end; padding-right: 10px; font-family: 'Space Mono', monospace; font-size: 11px; font-weight: 700;">41%</div>
+                </div>
+              </div>
+            </sc-if>
+          </div>
+        </div>
+        <div style="padding: 10px 14px 12px; background: #F2ECDF; border-top: 2px solid #18162A;">
+          <textarea value="{{ note.SW1 }}" onChange="{{ setNote.SW1 }}" placeholder="Comment for me (optional)…" style="width: 100%; min-height: 38px; border: 2px solid #18162A; border-radius: 7px; background: #F7F1E2; font-family: 'Space Mono', monospace; font-size: 11px; padding: 8px 10px; color: #18162A;"></textarea>
+        </div>
+      </div>
+
+      <!-- SW2 3D flip -->
+      <div style="border: 2px solid #18162A; border-radius: 12px; background: #FFFFFF; overflow: hidden; box-shadow: 5px 5px 0 rgba(24,22,42,.14); outline: {{ ol.SW2 }}; outline-offset: 3px; display: flex; flex-direction: column;">
+        <div style="display: flex; align-items: center; gap: 10px; background: #18162A; color: #F2ECDF; padding: 9px 14px;">
+          <span style="font-family: 'Space Mono', monospace; font-size: 11px; font-weight: 700; letter-spacing: .08em;">SW2 · 3D card flip</span>
+          <button onClick="{{ pick.SW2 }}" style="margin-left: auto; font-family: 'Space Mono', monospace; font-size: 10px; letter-spacing: .08em; text-transform: uppercase; border: 1.5px solid #F2ECDF; border-radius: 100px; padding: 4px 11px; background: {{ pbg.SW2 }}; color: {{ pfg.SW2 }}; font-weight: 700;">{{ plabel.SW2 }}</button>
+        </div>
+        <div style="padding: 16px; background: #E7E0CD; flex: 1;">
+          <div style="perspective: 1100px;">
+            <div style="position: relative; height: 196px; transform-style: preserve-3d; transition: transform .65s cubic-bezier(.4,.1,.2,1); transform: {{ sw2Transform }};">
+              <div style="position: absolute; inset: 0; backface-visibility: hidden; -webkit-backface-visibility: hidden; border: 2px solid #18162A; border-radius: 10px; background: #F7F1E2; box-shadow: 4px 4px 0 #18162A; padding: 14px; display: flex; flex-direction: column;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;"><span style="font-family: 'Space Mono', monospace; font-size: 9px; letter-spacing: .12em; text-transform: uppercase; color: #6B6478;">View 1 · Cups</span><button onClick="{{ sw2Flip }}" style="border: 2px solid #18162A; border-radius: 100px; padding: 5px 11px; background: #FFC53D; font-family: 'Space Mono', monospace; font-size: 9.5px; font-weight: 700; letter-spacing: .06em;" style-hover="transform: rotate(180deg) scale(1.1);">⟲ flip</button></div>
+                <div style="flex: 1; display: flex; align-items: center; justify-content: center; gap: 14px;">
+                  <div style="position: relative; width: 56px; height: 84px; border: 2.5px solid #18162A; border-radius: 6px 6px 18px 18px; background: #F2ECDF; overflow: hidden;"><div style="position: absolute; left: 0; right: 0; bottom: 0; height: 59%; background: #FF5A47;"></div><span style="position: absolute; left: 0; right: 0; top: 6px; text-align: center; font-weight: 900; font-size: 13px;">59</span></div>
+                  <div style="position: relative; width: 56px; height: 84px; border: 2.5px solid #18162A; border-radius: 6px 6px 18px 18px; background: #F2ECDF; overflow: hidden;"><div style="position: absolute; left: 0; right: 0; bottom: 0; height: 41%; background: #34304E;"></div><span style="position: absolute; left: 0; right: 0; top: 6px; text-align: center; font-weight: 900; font-size: 13px;">41</span></div>
+                </div>
+              </div>
+              <div style="position: absolute; inset: 0; backface-visibility: hidden; transform: rotateY(180deg); border: 2px solid #18162A; border-radius: 10px; background: #18162A; color: #F2ECDF; box-shadow: 4px 4px 0 rgba(24,22,42,.35); padding: 14px; display: flex; flex-direction: column;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;"><span style="font-family: 'Space Mono', monospace; font-size: 9px; letter-spacing: .12em; text-transform: uppercase; color: #BFEE4F;">View 2 · Flow</span><button onClick="{{ sw2Flip }}" style="border: 2px solid #F2ECDF; border-radius: 100px; padding: 5px 11px; background: transparent; color: #F2ECDF; font-family: 'Space Mono', monospace; font-size: 9.5px; font-weight: 700; letter-spacing: .06em;" style-hover="background: #BFEE4F; color: #18162A;">⟲ flip</button></div>
+                <div style="flex: 1; display: flex; flex-direction: column; justify-content: center; gap: 9px;">
+                  <div><div style="display: flex; justify-content: space-between; font-size: 11px; font-weight: 700; margin-bottom: 4px;"><span>Chai</span><span style="color: #BFEE4F;">59%</span></div><div style="height: 9px; border-radius: 100px; background: rgba(242,236,223,.16); overflow: hidden;"><div style="height: 100%; width: 59%; background: #FF5A47; border-radius: 100px;"></div></div></div>
+                  <div><div style="display: flex; justify-content: space-between; font-size: 11px; font-weight: 700; margin-bottom: 4px;"><span>Coffee</span><span style="color: #BFEE4F;">41%</span></div><div style="height: 9px; border-radius: 100px; background: rgba(242,236,223,.16); overflow: hidden;"><div style="height: 100%; width: 41%; background: #BFEE4F; border-radius: 100px;"></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div style="padding: 10px 14px 12px; background: #F2ECDF; border-top: 2px solid #18162A;">
+          <textarea value="{{ note.SW2 }}" onChange="{{ setNote.SW2 }}" placeholder="Comment for me (optional)…" style="width: 100%; min-height: 38px; border: 2px solid #18162A; border-radius: 7px; background: #F7F1E2; font-family: 'Space Mono', monospace; font-size: 11px; padding: 8px 10px; color: #18162A;"></textarea>
+        </div>
+      </div>
+
+      <!-- SW3 deck arrows -->
+      <div style="border: 2px solid #18162A; border-radius: 12px; background: #FFFFFF; overflow: hidden; box-shadow: 5px 5px 0 rgba(24,22,42,.14); outline: {{ ol.SW3 }}; outline-offset: 3px; display: flex; flex-direction: column;">
+        <div style="display: flex; align-items: center; gap: 10px; background: #18162A; color: #F2ECDF; padding: 9px 14px;">
+          <span style="font-family: 'Space Mono', monospace; font-size: 11px; font-weight: 700; letter-spacing: .08em;">SW3 · Slide deck arrows</span>
+          <button onClick="{{ pick.SW3 }}" style="margin-left: auto; font-family: 'Space Mono', monospace; font-size: 10px; letter-spacing: .08em; text-transform: uppercase; border: 1.5px solid #F2ECDF; border-radius: 100px; padding: 4px 11px; background: {{ pbg.SW3 }}; color: {{ pfg.SW3 }}; font-weight: 700;">{{ plabel.SW3 }}</button>
+        </div>
+        <div style="padding: 16px; background: #E7E0CD; flex: 1;">
+          <div style="display: flex; align-items: center; gap: 10px;">
+            <button onClick="{{ sw3Prev }}" style="width: 34px; height: 34px; border: 2px solid #18162A; border-radius: 50%; background: #F2ECDF; font-weight: 800; flex-shrink: 0;" style-hover="background: #BFEE4F; transform: translateX(-2px);">←</button>
+            <div style="flex: 1; overflow: hidden;">
+              <div key="{{ sw3Key }}" style="border: 2px solid #18162A; border-radius: 10px; background: #F7F1E2; box-shadow: 4px 4px 0 #18162A; padding: 14px; min-height: 150px; animation: {{ sw3Anim }} .38s cubic-bezier(.2,.7,.2,1); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px;">
+                <span style="font-family: 'Space Mono', monospace; font-size: 9px; letter-spacing: .12em; text-transform: uppercase; color: #6B6478;">{{ sw3Label }}</span>
+                <sc-if value="{{ sw3IsCups }}" hint-placeholder-val="{{ true }}">
+                  <div style="display: flex; gap: 12px;"><div style="position: relative; width: 52px; height: 76px; border: 2.5px solid #18162A; border-radius: 6px 6px 16px 16px; background: #F2ECDF; overflow: hidden;"><div style="position: absolute; left: 0; right: 0; bottom: 0; height: 59%; background: #FF5A47;"></div></div><div style="position: relative; width: 52px; height: 76px; border: 2.5px solid #18162A; border-radius: 6px 6px 16px 16px; background: #F2ECDF; overflow: hidden;"><div style="position: absolute; left: 0; right: 0; bottom: 0; height: 41%; background: #34304E;"></div></div></div>
+                </sc-if>
+                <sc-if value="{{ sw3IsTug }}" hint-placeholder-val="{{ false }}">
+                  <div style="width: 90%; display: flex; height: 22px; border: 2px solid #18162A; border-radius: 100px; overflow: hidden;"><div style="width: 59%; background: #FF5A47;"></div><div style="flex: 1; background: #C9C5D6; border-left: 2px solid #18162A;"></div></div>
+                </sc-if>
+                <sc-if value="{{ sw3IsDonut }}" hint-placeholder-val="{{ false }}">
+                  <div style="position: relative; width: 84px; height: 84px;"><div style="position: absolute; inset: 0; border-radius: 50%; border: 2px solid #18162A; background: conic-gradient(#FF5A47 0% 59%, #34304E 59% 100%);"></div><div style="position: absolute; inset: 22px; border-radius: 50%; border: 2px solid #18162A; background: #F7F1E2; display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 14px;">59%</div></div>
+                </sc-if>
+              </div>
+            </div>
+            <button onClick="{{ sw3Next }}" style="width: 34px; height: 34px; border: 2px solid #18162A; border-radius: 50%; background: #F2ECDF; font-weight: 800; flex-shrink: 0;" style-hover="background: #BFEE4F; transform: translateX(2px);">→</button>
+          </div>
+          <div style="display: flex; gap: 6px; justify-content: center; margin-top: 10px;">
+            <sc-for list="{{ sw3Dots }}" as="d" hint-placeholder-count="3">
+              <span style="width: {{ d.w }}; height: 9px; border-radius: 100px; border: 1.5px solid #18162A; background: {{ d.bg }}; transition: all .3s;"></span>
+            </sc-for>
+          </div>
+        </div>
+        <div style="padding: 10px 14px 12px; background: #F2ECDF; border-top: 2px solid #18162A;">
+          <textarea value="{{ note.SW3 }}" onChange="{{ setNote.SW3 }}" placeholder="Comment for me (optional)…" style="width: 100%; min-height: 38px; border: 2px solid #18162A; border-radius: 7px; background: #F7F1E2; font-family: 'Space Mono', monospace; font-size: 11px; padding: 8px 10px; color: #18162A;"></textarea>
+        </div>
+      </div>
+    </div>
+
+    <!-- ════ FROZEN ════ -->
+    <div style="display: flex; align-items: baseline; gap: 12px; border-bottom: 3px solid #18162A; padding-bottom: 10px; margin-bottom: 22px;">
+      <span style="font-weight: 900; font-size: 22px; text-transform: uppercase;">Frozen questions</span>
+      <span style="font-family: 'Space Mono', monospace; font-size: 10px; letter-spacing: .12em; text-transform: uppercase; color: #6B6478;">answers closed · result preserved</span>
+    </div>
+    <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(330px, 1fr)); gap: 20px; margin-bottom: 48px;">
+
+      <!-- FRZ1 -->
+      <div style="border: 2px solid #18162A; border-radius: 12px; background: #FFFFFF; overflow: hidden; box-shadow: 5px 5px 0 rgba(24,22,42,.14); outline: {{ ol.FRZ1 }}; outline-offset: 3px; display: flex; flex-direction: column;">
+        <div style="display: flex; align-items: center; gap: 10px; background: #18162A; color: #F2ECDF; padding: 9px 14px;">
+          <span style="font-family: 'Space Mono', monospace; font-size: 11px; font-weight: 700; letter-spacing: .08em;">FRZ1 · Wax-seal stamp</span>
+          <button onClick="{{ pick.FRZ1 }}" style="margin-left: auto; font-family: 'Space Mono', monospace; font-size: 10px; letter-spacing: .08em; text-transform: uppercase; border: 1.5px solid #F2ECDF; border-radius: 100px; padding: 4px 11px; background: {{ pbg.FRZ1 }}; color: {{ pfg.FRZ1 }}; font-weight: 700;">{{ plabel.FRZ1 }}</button>
+        </div>
+        <div style="padding: 16px; background: #E7E0CD; flex: 1;">
+          <div style="position: relative; border: 2px solid #18162A; border-radius: 10px; background: #F7F1E2; padding: 16px; overflow: hidden;">
+            <div style="opacity: .72; filter: saturate(.55);">
+              <div style="font-family: 'Spectral', serif; font-weight: 600; font-size: 15px; margin-bottom: 4px;">IPL final: who deserved the cup?</div>
+              <div style="font-family: 'Space Mono', monospace; font-size: 9px; letter-spacing: .1em; text-transform: uppercase; color: #6B6478; margin-bottom: 12px;">Final · 22.7K votes · closed 02 Jun</div>
+              <div style="height: 8px; border: 1.5px solid #18162A; border-radius: 100px; background: #EFE8D6; overflow: hidden; margin-bottom: 5px;"><div style="height: 100%; width: 64%; background: #FF5A47;"></div></div>
+              <div style="height: 8px; border: 1.5px solid #18162A; border-radius: 100px; background: #EFE8D6; overflow: hidden;"><div style="height: 100%; width: 36%; background: #34304E;"></div></div>
+            </div>
+            <span style="position: absolute; right: 12px; top: 12px; font-weight: 900; font-size: 13px; text-transform: uppercase; color: #2E5FB7; border: 3px solid #2E5FB7; border-radius: 50%; width: 76px; height: 76px; display: inline-flex; flex-direction: column; align-items: center; justify-content: center; transform: rotate(-12deg); background: rgba(242,236,223,.85); line-height: 1.1; text-align: center;">❄<br>Frozen</span>
+          </div>
+          <div style="font-family: 'Space Mono', monospace; font-size: 8.5px; letter-spacing: .08em; text-transform: uppercase; color: #6B6478; margin-top: 9px;">Chart desaturates slightly · seal says final</div>
+        </div>
+        <div style="padding: 10px 14px 12px; background: #F2ECDF; border-top: 2px solid #18162A;">
+          <textarea value="{{ note.FRZ1 }}" onChange="{{ setNote.FRZ1 }}" placeholder="Comment for me (optional)…" style="width: 100%; min-height: 38px; border: 2px solid #18162A; border-radius: 7px; background: #F7F1E2; font-family: 'Space Mono', monospace; font-size: 11px; padding: 8px 10px; color: #18162A;"></textarea>
+        </div>
+      </div>
+
+      <!-- FRZ2 -->
+      <div style="border: 2px solid #18162A; border-radius: 12px; background: #FFFFFF; overflow: hidden; box-shadow: 5px 5px 0 rgba(24,22,42,.14); outline: {{ ol.FRZ2 }}; outline-offset: 3px; display: flex; flex-direction: column;">
+        <div style="display: flex; align-items: center; gap: 10px; background: #18162A; color: #F2ECDF; padding: 9px 14px;">
+          <span style="font-family: 'Space Mono', monospace; font-size: 11px; font-weight: 700; letter-spacing: .08em;">FRZ2 · Archival band</span>
+          <button onClick="{{ pick.FRZ2 }}" style="margin-left: auto; font-family: 'Space Mono', monospace; font-size: 10px; letter-spacing: .08em; text-transform: uppercase; border: 1.5px solid #F2ECDF; border-radius: 100px; padding: 4px 11px; background: {{ pbg.FRZ2 }}; color: {{ pfg.FRZ2 }}; font-weight: 700;">{{ plabel.FRZ2 }}</button>
+        </div>
+        <div style="padding: 16px; background: #E7E0CD; flex: 1;">
+          <div style="border: 2px solid #18162A; border-radius: 10px; background: #F7F1E2; overflow: hidden;">
+            <div style="background: repeating-linear-gradient(-45deg, #18162A 0 10px, #34304E 10px 20px); color: #F2ECDF; padding: 8px 14px; display: flex; align-items: center; gap: 9px;">
+              <span style="font-size: 13px;">❄</span>
+              <span style="font-family: 'Space Mono', monospace; font-size: 9.5px; letter-spacing: .14em; text-transform: uppercase; font-weight: 700;">Frozen · counting closed · result preserved in the archive</span>
+            </div>
+            <div style="padding: 14px 16px;">
+              <div style="font-family: 'Spectral', serif; font-weight: 600; font-size: 15px; margin-bottom: 4px;">IPL final: who deserved the cup?</div>
+              <div style="font-family: 'Space Mono', monospace; font-size: 9px; letter-spacing: .1em; text-transform: uppercase; color: #6B6478; margin-bottom: 12px;">Sealed 02 Jun · 22.7K votes stand forever</div>
+              <div style="height: 8px; border: 1.5px solid #18162A; border-radius: 100px; background: #EFE8D6; overflow: hidden; margin-bottom: 5px;"><div style="height: 100%; width: 64%; background: #FF5A47;"></div></div>
+              <div style="height: 8px; border: 1.5px solid #18162A; border-radius: 100px; background: #EFE8D6; overflow: hidden;"><div style="height: 100%; width: 36%; background: #34304E;"></div></div>
+            </div>
+          </div>
+          <div style="font-family: 'Space Mono', monospace; font-size: 8.5px; letter-spacing: .08em; text-transform: uppercase; color: #6B6478; margin-top: 9px;">Chart stays crisp · the band does the talking</div>
+        </div>
+        <div style="padding: 10px 14px 12px; background: #F2ECDF; border-top: 2px solid #18162A;">
+          <textarea value="{{ note.FRZ2 }}" onChange="{{ setNote.FRZ2 }}" placeholder="Comment for me (optional)…" style="width: 100%; min-height: 38px; border: 2px solid #18162A; border-radius: 7px; background: #F7F1E2; font-family: 'Space Mono', monospace; font-size: 11px; padding: 8px 10px; color: #18162A;"></textarea>
+        </div>
+      </div>
+    </div>
+
+    <!-- ════ ABOUT + CATEGORY ════ -->
+    <div style="display: flex; align-items: baseline; gap: 12px; border-bottom: 3px solid #18162A; padding-bottom: 10px; margin-bottom: 22px;">
+      <span style="font-weight: 900; font-size: 22px; text-transform: uppercase;">About page & category desks</span>
+      <span style="font-family: 'Space Mono', monospace; font-size: 10px; letter-spacing: .12em; text-transform: uppercase; color: #6B6478;">layout direction — content I drafted</span>
+    </div>
+    <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(330px, 1fr)); gap: 20px;">
+
+      <!-- ABT1 -->
+      <div style="border: 2px solid #18162A; border-radius: 12px; background: #FFFFFF; overflow: hidden; box-shadow: 5px 5px 0 rgba(24,22,42,.14); outline: {{ ol.ABT1 }}; outline-offset: 3px; display: flex; flex-direction: column;">
+        <div style="display: flex; align-items: center; gap: 10px; background: #18162A; color: #F2ECDF; padding: 9px 14px;">
+          <span style="font-family: 'Space Mono', monospace; font-size: 11px; font-weight: 700; letter-spacing: .08em;">ABT1 · Broadsheet manifesto</span>
+          <button onClick="{{ pick.ABT1 }}" style="margin-left: auto; font-family: 'Space Mono', monospace; font-size: 10px; letter-spacing: .08em; text-transform: uppercase; border: 1.5px solid #F2ECDF; border-radius: 100px; padding: 4px 11px; background: {{ pbg.ABT1 }}; color: {{ pfg.ABT1 }}; font-weight: 700;">{{ plabel.ABT1 }}</button>
+        </div>
+        <div style="padding: 16px; background: #E7E0CD; flex: 1;">
+          <div style="border: 2px solid #18162A; border-radius: 10px; background: #F7F1E2; padding: 16px;">
+            <div style="font-weight: 900; font-size: 21px; line-height: .98; letter-spacing: -.02em; text-transform: uppercase; margin-bottom: 8px;">Your opinion,<br><span style="color: #FF5A47;">never your identity.</span></div>
+            <div style="font-family: 'Spectral', serif; font-style: italic; font-size: 11.5px; color: #4A4744; line-height: 1.4; margin-bottom: 11px;">ComWatch counts what India thinks — not who you are.</div>
+            <div style="display: flex; gap: 6px; margin-bottom: 11px;">
+              <div style="flex: 1; border: 1.5px solid #18162A; border-radius: 7px; padding: 7px; text-align: center;"><div style="font-weight: 900; font-size: 13px;">01</div><div style="font-size: 8.5px; font-weight: 700;">Answer</div></div>
+              <div style="flex: 1; border: 1.5px solid #18162A; border-radius: 7px; padding: 7px; text-align: center; background: #FFC53D;"><div style="font-weight: 900; font-size: 13px;">02</div><div style="font-size: 8.5px; font-weight: 700;">See the split</div></div>
+              <div style="flex: 1; border: 1.5px solid #18162A; border-radius: 7px; padding: 7px; text-align: center;"><div style="font-weight: 900; font-size: 13px;">03</div><div style="font-size: 8.5px; font-weight: 700;">Go deeper</div></div>
+            </div>
+            <div style="border: 1.5px solid #18162A; border-radius: 7px; background: #BFEE4F; padding: 8px 10px; font-family: 'Spectral', serif; font-size: 10.5px; line-height: 1.4; margin-bottom: 9px;">No accounts. No names. No tracking. Every vote anonymous, every result public.</div>
+            <div style="font-family: 'Space Mono', monospace; font-size: 8px; letter-spacing: .1em; text-transform: uppercase; color: #6B6478;">Research → Review → Selection → Launch · how questions get made</div>
+          </div>
+        </div>
+        <div style="padding: 10px 14px 12px; background: #F2ECDF; border-top: 2px solid #18162A;">
+          <textarea value="{{ note.ABT1 }}" onChange="{{ setNote.ABT1 }}" placeholder="Comment for me (optional)…" style="width: 100%; min-height: 38px; border: 2px solid #18162A; border-radius: 7px; background: #F7F1E2; font-family: 'Space Mono', monospace; font-size: 11px; padding: 8px 10px; color: #18162A;"></textarea>
+        </div>
+      </div>
+
+      <!-- ABT2 -->
+      <div style="border: 2px solid #18162A; border-radius: 12px; background: #FFFFFF; overflow: hidden; box-shadow: 5px 5px 0 rgba(24,22,42,.14); outline: {{ ol.ABT2 }}; outline-offset: 3px; display: flex; flex-direction: column;">
+        <div style="display: flex; align-items: center; gap: 10px; background: #18162A; color: #F2ECDF; padding: 9px 14px;">
+          <span style="font-family: 'Space Mono', monospace; font-size: 11px; font-weight: 700; letter-spacing: .08em;">ABT2 · Stacked ink bands</span>
+          <button onClick="{{ pick.ABT2 }}" style="margin-left: auto; font-family: 'Space Mono', monospace; font-size: 10px; letter-spacing: .08em; text-transform: uppercase; border: 1.5px solid #F2ECDF; border-radius: 100px; padding: 4px 11px; background: {{ pbg.ABT2 }}; color: {{ pfg.ABT2 }}; font-weight: 700;">{{ plabel.ABT2 }}</button>
+        </div>
+        <div style="padding: 16px; background: #E7E0CD; flex: 1;">
+          <div style="border: 2px solid #18162A; border-radius: 10px; overflow: hidden;">
+            <div style="background: #F7F1E2; padding: 12px 14px; border-bottom: 2px solid #18162A;"><div style="font-weight: 900; font-size: 16px; text-transform: uppercase; letter-spacing: -.01em;">Your opinion, never your identity.</div></div>
+            <div style="background: #18162A; color: #F2ECDF; padding: 10px 14px; border-bottom: 2px solid #18162A;"><div style="font-family: 'Space Mono', monospace; font-size: 9px; letter-spacing: .12em; text-transform: uppercase; color: #BFEE4F; margin-bottom: 4px;">How it works</div><div style="font-family: 'Spectral', serif; font-size: 11px;">Answer one question → watch the country split open → follow the thread.</div></div>
+            <div style="background: #BFEE4F; padding: 10px 14px; border-bottom: 2px solid #18162A;"><div style="font-family: 'Space Mono', monospace; font-size: 9px; letter-spacing: .12em; text-transform: uppercase; margin-bottom: 4px; font-weight: 700;">The promise</div><div style="font-family: 'Spectral', serif; font-size: 11px;">No accounts, no names, no tracking. Anonymous votes, public results.</div></div>
+            <div style="background: #F7F1E2; padding: 10px 14px;"><div style="font-family: 'Space Mono', monospace; font-size: 9px; letter-spacing: .12em; text-transform: uppercase; color: #FF5A47; margin-bottom: 4px; font-weight: 700;">The kitchen</div><div style="font-family: 'Spectral', serif; font-size: 11px;">Every question is researched, reviewed and hand-picked. Bad questions die in review.</div></div>
+          </div>
+        </div>
+        <div style="padding: 10px 14px 12px; background: #F2ECDF; border-top: 2px solid #18162A;">
+          <textarea value="{{ note.ABT2 }}" onChange="{{ setNote.ABT2 }}" placeholder="Comment for me (optional)…" style="width: 100%; min-height: 38px; border: 2px solid #18162A; border-radius: 7px; background: #F7F1E2; font-family: 'Space Mono', monospace; font-size: 11px; padding: 8px 10px; color: #18162A;"></textarea>
+        </div>
+      </div>
+
+      <!-- CAT1 -->
+      <div style="border: 2px solid #18162A; border-radius: 12px; background: #FFFFFF; overflow: hidden; box-shadow: 5px 5px 0 rgba(24,22,42,.14); outline: {{ ol.CAT1 }}; outline-offset: 3px; display: flex; flex-direction: column;">
+        <div style="display: flex; align-items: center; gap: 10px; background: #18162A; color: #F2ECDF; padding: 9px 14px;">
+          <span style="font-family: 'Space Mono', monospace; font-size: 11px; font-weight: 700; letter-spacing: .08em;">CAT1 · Desk front page</span>
+          <button onClick="{{ pick.CAT1 }}" style="margin-left: auto; font-family: 'Space Mono', monospace; font-size: 10px; letter-spacing: .08em; text-transform: uppercase; border: 1.5px solid #F2ECDF; border-radius: 100px; padding: 4px 11px; background: {{ pbg.CAT1 }}; color: {{ pfg.CAT1 }}; font-weight: 700;">{{ plabel.CAT1 }}</button>
+        </div>
+        <div style="padding: 16px; background: #E7E0CD; flex: 1;">
+          <div style="border: 2px solid #18162A; border-radius: 10px; background: #F7F1E2; padding: 14px; overflow: hidden; position: relative;">
+            <div style="position: absolute; right: -22px; top: -22px; width: 80px; height: 80px; border-radius: 50%; background: #7DA7FF; border: 2px solid #18162A;"></div>
+            <div style="font-family: 'Space Mono', monospace; font-size: 8.5px; letter-spacing: .14em; text-transform: uppercase; color: #6B6478;">The desk of</div>
+            <div style="font-weight: 900; font-size: 19px; text-transform: uppercase; letter-spacing: -.01em; margin-bottom: 10px; position: relative;">Daily Life</div>
+            <div style="display: flex; gap: 6px; margin-bottom: 10px;">
+              <div style="flex: 1; border: 1.5px solid #18162A; border-radius: 7px; padding: 7px 8px; background: #FFE9C7;"><div style="font-family: 'Space Mono', monospace; font-size: 7.5px; letter-spacing: .08em; text-transform: uppercase; color: #6B6478;">Most split</div><div style="font-size: 9.5px; font-weight: 700; line-height: 1.15;">Folding laundry: 33–39</div></div>
+              <div style="flex: 1; border: 1.5px solid #18162A; border-radius: 7px; padding: 7px 8px; background: #DFF3B2;"><div style="font-family: 'Space Mono', monospace; font-size: 7.5px; letter-spacing: .08em; text-transform: uppercase; color: #6B6478;">Consensus</div><div style="font-size: 9.5px; font-weight: 700; line-height: 1.15;">Bathroom: 62% pay</div></div>
+            </div>
+            <div style="display: flex; flex-direction: column; gap: 5px;">
+              <div style="border: 1.5px solid #18162A; border-radius: 7px; background: #F2ECDF; padding: 7px 9px; font-family: 'Spectral', serif; font-weight: 600; font-size: 11px;">Which chore drains the most energy? <span style="font-family: 'Space Mono', monospace; font-size: 8px; color: #6B6478;">11.2K</span></div>
+              <div style="border: 1.5px solid #18162A; border-radius: 7px; background: #F2ECDF; padding: 7px 9px; font-family: 'Spectral', serif; font-weight: 600; font-size: 11px;">Money at chores to make them disappear? <span style="font-family: 'Space Mono', monospace; font-size: 8px; color: #6B6478;">8.6K</span></div>
+            </div>
+          </div>
+        </div>
+        <div style="padding: 10px 14px 12px; background: #F2ECDF; border-top: 2px solid #18162A;">
+          <textarea value="{{ note.CAT1 }}" onChange="{{ setNote.CAT1 }}" placeholder="Comment for me (optional)…" style="width: 100%; min-height: 38px; border: 2px solid #18162A; border-radius: 7px; background: #F7F1E2; font-family: 'Space Mono', monospace; font-size: 11px; padding: 8px 10px; color: #18162A;"></textarea>
+        </div>
+      </div>
+
+      <!-- CAT2 -->
+      <div style="border: 2px solid #18162A; border-radius: 12px; background: #FFFFFF; overflow: hidden; box-shadow: 5px 5px 0 rgba(24,22,42,.14); outline: {{ ol.CAT2 }}; outline-offset: 3px; display: flex; flex-direction: column;">
+        <div style="display: flex; align-items: center; gap: 10px; background: #18162A; color: #F2ECDF; padding: 9px 14px;">
+          <span style="font-family: 'Space Mono', monospace; font-size: 11px; font-weight: 700; letter-spacing: .08em;">CAT2 · Index sheet</span>
+          <button onClick="{{ pick.CAT2 }}" style="margin-left: auto; font-family: 'Space Mono', monospace; font-size: 10px; letter-spacing: .08em; text-transform: uppercase; border: 1.5px solid #F2ECDF; border-radius: 100px; padding: 4px 11px; background: {{ pbg.CAT2 }}; color: {{ pfg.CAT2 }}; font-weight: 700;">{{ plabel.CAT2 }}</button>
+        </div>
+        <div style="padding: 16px; background: #E7E0CD; flex: 1;">
+          <div style="border: 2px solid #18162A; border-radius: 10px; overflow: hidden; background: #F7F1E2;">
+            <div style="background: #7DA7FF; border-bottom: 2px solid #18162A; padding: 10px 14px; display: flex; align-items: baseline; gap: 8px;">
+              <span style="font-weight: 900; font-size: 16px; text-transform: uppercase;">Daily Life</span>
+              <span style="font-family: 'Space Mono', monospace; font-size: 8.5px; letter-spacing: .1em; text-transform: uppercase;">4 live · 1 frozen · 31K votes</span>
+            </div>
+            <div style="padding: 10px 12px; display: flex; flex-direction: column; gap: 4px;">
+              <div style="display: flex; align-items: center; gap: 8px; border-bottom: 1px dashed rgba(24,22,42,.25); padding-bottom: 5px;"><span style="font-family: 'Space Mono', monospace; font-size: 8px; border: 1px solid #18162A; border-radius: 3px; padding: 1px 5px;">QUICK</span><span style="font-family: 'Spectral', serif; font-size: 11px; font-weight: 600; flex: 1;">Which chore drains the most energy?</span><span style="font-family: 'Space Mono', monospace; font-size: 8px; color: #6B6478;">11.2K</span></div>
+              <div style="display: flex; align-items: center; gap: 8px; border-bottom: 1px dashed rgba(24,22,42,.25); padding-bottom: 5px;"><span style="font-family: 'Space Mono', monospace; font-size: 8px; border: 1px solid #18162A; border-radius: 3px; padding: 1px 5px;">SORT</span><span style="font-family: 'Spectral', serif; font-size: 11px; font-weight: 600; flex: 1;">Money at chores to make them vanish?</span><span style="font-family: 'Space Mono', monospace; font-size: 8px; color: #6B6478;">8.6K</span></div>
+              <div style="display: flex; align-items: center; gap: 8px;"><span style="font-family: 'Space Mono', monospace; font-size: 8px; border: 1px solid #18162A; border-radius: 3px; padding: 1px 5px; background: #18162A; color: #F2ECDF;">❄</span><span style="font-family: 'Spectral', serif; font-size: 11px; font-weight: 600; flex: 1; color: #6B6478;">Morning routines, sealed edition</span><span style="font-family: 'Space Mono', monospace; font-size: 8px; color: #6B6478;">9.4K</span></div>
+            </div>
+          </div>
+        </div>
+        <div style="padding: 10px 14px 12px; background: #F2ECDF; border-top: 2px solid #18162A;">
+          <textarea value="{{ note.CAT2 }}" onChange="{{ setNote.CAT2 }}" placeholder="Comment for me (optional)…" style="width: 100%; min-height: 38px; border: 2px solid #18162A; border-radius: 7px; background: #F7F1E2; font-family: 'Space Mono', monospace; font-size: 11px; padding: 8px 10px; color: #18162A;"></textarea>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- sticky tally -->
+  <div style="position: fixed; left: 0; right: 0; bottom: 0; z-index: 80; background: #18162A; color: #F2ECDF; padding: 12px 22px; display: flex; align-items: center; gap: 14px; flex-wrap: wrap;">
+    <span style="font-family: 'Space Mono', monospace; font-size: 10px; letter-spacing: .14em; text-transform: uppercase; color: #BFEE4F; font-weight: 700;">{{ tallyCount }}</span>
+    <span style="font-family: 'Space Mono', monospace; font-size: 11px; flex: 1; min-width: 200px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{ summaryShort }}</span>
+    <button onClick="{{ copyAll }}" style="font-family: 'Space Mono', monospace; font-size: 10px; letter-spacing: .1em; text-transform: uppercase; border: 1.5px solid #BFEE4F; border-radius: 100px; padding: 7px 14px; background: {{ copyBg }}; color: {{ copyFg }}; font-weight: 700;">{{ copyLabel }}</button>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = {
+    likes: {}, notes: {}, copied: false,
+    rea1: null, rea2: null, rea3: null, rea3Key: 0,
+    skip1: 0, skip2: 0,
+    link1: false, link2: false,
+    sw1: 0, sw2: false, sw3: 0, sw3Dir: 1,
+    sur: 0
+  };
+
+  IDS = ['REA1', 'REA2', 'REA3', 'SKIP1', 'SKIP2', 'LINK1', 'LINK2', 'REL1', 'REL2', 'SUR1', 'SW1', 'SW2', 'SW3', 'FRZ1', 'FRZ2', 'ABT1', 'ABT2', 'CAT1', 'CAT2'];
+
+  SKIPQ = [
+    { q: 'How do you actually discover new music now?', a: 'The algorithm feeds it to me', b: 'Friends & word of mouth', cat: 'Entertainment' },
+    { q: 'What would improve your city life overnight?', a: 'Better public transport', b: 'Walkable roads', cat: 'City & Place' },
+    { q: 'Choose your torture.', a: 'No internet for a week', b: 'No phone for a month', cat: 'Internet Chaos' }
+  ];
+
+  toggleLike(id) {
+    const likes = Object.assign({}, this.state.likes);
+    likes[id] = !likes[id];
+    this.setState({ likes: likes });
+  }
+  setNoteVal(id, v) {
+    const notes = Object.assign({}, this.state.notes);
+    notes[id] = v;
+    this.setState({ notes: notes });
+  }
+
+  renderVals() {
+    const s = this.state;
+    const self = this;
+    const pick = {}, pbg = {}, pfg = {}, plabel = {}, ol = {}, note = {}, setNote = {};
+    this.IDS.forEach(function (id) {
+      const liked = !!s.likes[id];
+      pick[id] = function () { self.toggleLike(id); };
+      pbg[id] = liked ? '#BFEE4F' : 'transparent';
+      pfg[id] = liked ? '#18162A' : '#F2ECDF';
+      plabel[id] = liked ? 'Liked ✓' : 'Like this';
+      ol[id] = liked ? '3px solid #BFEE4F' : 'none';
+      note[id] = s.notes[id] || '';
+      setNote[id] = function (e) { self.setNoteVal(id, e.target.value); };
+    });
+
+    const vals = { pick: pick, pbg: pbg, pfg: pfg, plabel: plabel, ol: ol, note: note, setNote: setNote };
+
+    // REA1
+    vals.rea1Done = s.rea1 !== null;
+    vals.rea1UpBg = s.rea1 === 'up' ? '#BFEE4F' : '#F2ECDF';
+    vals.rea1DnBg = s.rea1 === 'down' ? '#FFD9D3' : '#F2ECDF';
+    vals.rea1DnOp = s.rea1 === 'up' ? '.45' : '1';
+    vals.rea1UpAnim = s.rea1 === 'up' ? 'cwRing .6s ease-out both' : 'none';
+    vals.rea1DnAnim = s.rea1 === 'down' ? 'cwRingR .6s ease-out both' : 'none';
+    vals.rea1UpCount = s.rea1 ? '2.1K' : '';
+    vals.rea1DnCount = s.rea1 ? '114' : '';
+    vals.rea1Up = function () { self.setState({ rea1: s.rea1 === 'up' ? null : 'up' }); };
+    vals.rea1Dn = function () { self.setState({ rea1: s.rea1 === 'down' ? null : 'down' }); };
+
+    // REA2
+    vals.rea2UpBg = s.rea2 === 'up' ? '#BFEE4F' : '#F2ECDF';
+    vals.rea2DnBg = s.rea2 === 'down' ? '#FF5A47' : '#F2ECDF';
+    vals.rea2UpAnim = s.rea2 === 'up' ? 'cwRing .6s ease-out both' : 'none';
+    vals.rea2DnAnim = s.rea2 === 'down' ? 'cwRingR .6s ease-out both' : 'none';
+    vals.rea2Msg = s.rea2 === 'up' ? '👍 noted — 2.1K agree it\u2019s a good one' : (s.rea2 === 'down' ? '👎 noted — the desk will hear about it' : '· press a thumb on the pill');
+    vals.rea2MsgColor = s.rea2 ? '#2B8A3E' : '#6B6478';
+    vals.rea2Up = function () { self.setState({ rea2: s.rea2 === 'up' ? null : 'up' }); };
+    vals.rea2Dn = function () { self.setState({ rea2: s.rea2 === 'down' ? null : 'down' }); };
+
+    // REA3
+    vals.rea3Stamped = s.rea3 !== null;
+    vals.rea3Key = 'st' + s.rea3Key;
+    vals.rea3Text = s.rea3 === 'up' ? 'Good question ✓' : 'Weak one ✕';
+    vals.rea3Color = s.rea3 === 'up' ? '#2B8A3E' : '#8A8377';
+    vals.rea3Up = function () { self.setState({ rea3: 'up', rea3Key: s.rea3Key + 1 }); };
+    vals.rea3Dn = function () { self.setState({ rea3: 'down', rea3Key: s.rea3Key + 1 }); };
+
+    // SKIP
+    const sq1 = this.SKIPQ[s.skip1 % 3];
+    vals.skip1Key = 'k' + s.skip1;
+    vals.skip1Q = sq1.q; vals.skip1A = sq1.a; vals.skip1B = sq1.b;
+    vals.skip1Go = function () { self.setState({ skip1: s.skip1 + 1 }); };
+    const sq2 = this.SKIPQ[s.skip2 % 3];
+    vals.skip2Key = 'k' + s.skip2;
+    vals.skip2Q = sq2.q; vals.skip2Cat = sq2.cat;
+    vals.skip2Left = 7 - (s.skip2 % 3);
+    vals.skip2Go = function () { self.setState({ skip2: s.skip2 + 1 }); };
+
+    // LINKS
+    vals.link1Bg = s.link1 ? '#BFEE4F' : '#F2ECDF';
+    vals.link1Label = s.link1 ? '✓ copied' : '🔗 link';
+    vals.link1Go = function () { self.setState({ link1: true }); setTimeout(function () { self.setState({ link1: false }); }, 1800); };
+    vals.link2Bg = s.link2 ? '#BFEE4F' : '#F2ECDF';
+    vals.link2Label = s.link2 ? '✓' : '🔗 Link';
+    vals.link2Toast = s.link2;
+    vals.link2Go = function () { self.setState({ link2: true }); setTimeout(function () { self.setState({ link2: false }); }, 1800); };
+
+    // SUR
+    vals.surKey = 'd' + s.sur;
+    vals.surMsg = s.sur > 0 ? 'rolled → opening a random question…' : '';
+    vals.surRoll = function () { self.setState({ sur: s.sur + 1 }); };
+
+    // SW1
+    vals.sw1Key = 'v' + s.sw1;
+    vals.sw1IsCups = s.sw1 === 0;
+    vals.sw1IsTug = s.sw1 === 1;
+    vals.sw1ABg = s.sw1 === 0 ? '#18162A' : 'transparent';
+    vals.sw1AFg = s.sw1 === 0 ? '#BFEE4F' : '#18162A';
+    vals.sw1BBg = s.sw1 === 1 ? '#18162A' : 'transparent';
+    vals.sw1BFg = s.sw1 === 1 ? '#BFEE4F' : '#18162A';
+    vals.sw1Cups = function () { self.setState({ sw1: 0 }); };
+    vals.sw1Tug = function () { self.setState({ sw1: 1 }); };
+
+    // SW2
+    vals.sw2Transform = s.sw2 ? 'rotateY(180deg)' : 'rotateY(0deg)';
+    vals.sw2Flip = function () { self.setState({ sw2: !s.sw2 }); };
+
+    // SW3
+    const sw3Labels = ['View 1 · Cups', 'View 2 · Tug bar', 'View 3 · Donut'];
+    vals.sw3Key = 'v' + s.sw3 + '-' + s.sw3Dir;
+    vals.sw3Label = sw3Labels[s.sw3];
+    vals.sw3IsCups = s.sw3 === 0;
+    vals.sw3IsTug = s.sw3 === 1;
+    vals.sw3IsDonut = s.sw3 === 2;
+    vals.sw3Anim = s.sw3Dir > 0 ? 'cwSlideL' : 'cwFadeSwap';
+    vals.sw3Dots = [0, 1, 2].map(function (i) {
+      return { w: i === s.sw3 ? '26px' : '9px', bg: i === s.sw3 ? '#FF5A47' : '#F2ECDF' };
+    });
+    vals.sw3Next = function () { self.setState({ sw3: (s.sw3 + 1) % 3, sw3Dir: 1 }); };
+    vals.sw3Prev = function () { self.setState({ sw3: (s.sw3 + 2) % 3, sw3Dir: -1 }); };
+
+    // TALLY
+    const liked = this.IDS.filter(function (id) { return s.likes[id]; });
+    const noted = this.IDS.filter(function (id) { return (s.notes[id] || '').trim().length > 0; });
+    vals.tallyCount = liked.length + ' liked · ' + noted.length + ' notes';
+    vals.summaryShort = liked.length ? liked.join(' · ') : 'nothing liked yet';
+    vals.copyLabel = s.copied ? 'Copied ✓' : 'Copy everything';
+    vals.copyBg = s.copied ? '#BFEE4F' : 'transparent';
+    vals.copyFg = s.copied ? '#18162A' : '#BFEE4F';
+    vals.copyAll = function () {
+      const lines = ['My v4 Lab selections:'];
+      self.IDS.forEach(function (id) {
+        const n = (s.notes[id] || '').trim();
+        if (s.likes[id] || n) lines.push(id + ': ' + (s.likes[id] ? 'LIKED' : '—') + (n ? ' · note: "' + n + '"' : ''));
+      });
+      if (navigator.clipboard) navigator.clipboard.writeText(lines.join('\n'));
+      self.setState({ copied: true });
+      setTimeout(function () { self.setState({ copied: false }); }, 2000);
+    };
+
+    return vals;
+  }
+}
+</script>
+</body>
+</html>

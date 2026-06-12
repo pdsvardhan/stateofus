@@ -1,4 +1,4 @@
-# ComWatch — Coding Guidelines
+# State of Us — Coding Guidelines (project slug: comwatch)
 
 Written at Stage 2 (2026-06-12). Stage 3 reformat + codegen read this file.
 Stack is locked by adr-002; build order by adr-003. Deviations need an ADR.

@@ -1,0 +1,672 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous">
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800;900&family=Spectral:ital,wght@0,500;0,600;1,500&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    body { margin: 0; background: #E7E0CD; }
+    * { box-sizing: border-box; }
+    button { cursor: pointer; }
+    textarea { resize: vertical; }
+    @keyframes cwFlood { from { height: 0; } }
+    @keyframes cwPopIn { from { opacity: 0; transform: scale(.6); } to { opacity: 1; transform: scale(1); } }
+  </style>
+</helmet>
+
+<div style="min-height: 100vh; font-family: 'Archivo', sans-serif; color: #18162A; background-color: #E7E0CD; background-image: radial-gradient(rgba(24,22,42,.055) 1px, transparent 1px); background-size: 7px 7px; padding-bottom: 120px;">
+
+  <div style="background: #F2ECDF; border-bottom: 2px solid #18162A;">
+    <div style="max-width: 1320px; margin: 0 auto; padding: 14px 22px; display: flex; align-items: center; gap: 12px; flex-wrap: wrap;">
+      <span style="font-weight: 900; letter-spacing: -.03em; font-size: 21px; text-transform: uppercase;">ComWatch</span>
+      <span style="font-family: 'Space Mono', monospace; font-size: 10.5px; letter-spacing: .18em; text-transform: uppercase; color: #6B6478;">/ Closing lab · like as many as you want · comment boxes under each · copy at the bottom</span>
+    </div>
+  </div>
+
+  <div style="max-width: 1320px; margin: 0 auto; padding: 36px 22px 0;">
+
+    <div style="max-width: 840px; margin-bottom: 40px;">
+      <h1 style="font-weight: 900; font-size: 38px; line-height: 1; letter-spacing: -.02em; text-transform: uppercase; margin: 0 0 12px;">The closing lab. <span style="color: #FF5A47;">Last major decisions.</span></h1>
+      <div style="font-family: 'Spectral', serif; font-style: italic; font-size: 16.5px; color: #4A4744; line-height: 1.45;">Three sections: untested question formats, pending visualizations, and the map colour fix. Tap <b>Like this</b> on everything you want (multiple per group is fine), type notes in the comment boxes, then hit <b>Copy everything</b> in the bottom bar.</div>
+    </div>
+
+    <!-- ════════ 1 · FORMATS ════════ -->
+    <div style="display: flex; align-items: baseline; gap: 12px; border-bottom: 3px solid #18162A; padding-bottom: 10px; margin-bottom: 24px;">
+      <span style="font-weight: 900; font-size: 24px; text-transform: uppercase;">1 · Question format variants</span>
+      <span style="font-family: 'Space Mono', monospace; font-size: 10px; letter-spacing: .12em; text-transform: uppercase; color: #6B6478;">All working — try them</span>
+    </div>
+
+    <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(330px, 1fr)); gap: 20px; margin-bottom: 52px;">
+
+      <!-- LOGO1 -->
+      <div style="border: 2px solid #18162A; border-radius: 12px; background: #FFFFFF; overflow: hidden; box-shadow: 5px 5px 0 rgba(24,22,42,.14); outline: {{ ol.LOGO1 }}; outline-offset: 3px; display: flex; flex-direction: column;">
+        <div style="display: flex; align-items: center; gap: 10px; background: #18162A; color: #F2ECDF; padding: 9px 14px;">
+          <span style="font-family: 'Space Mono', monospace; font-size: 11px; font-weight: 700; letter-spacing: .08em;">LOGO1 · Brand-tile quick pick</span>
+          <button onClick="{{ pick.LOGO1 }}" style="margin-left: auto; font-family: 'Space Mono', monospace; font-size: 10px; letter-spacing: .08em; text-transform: uppercase; border: 1.5px solid #F2ECDF; border-radius: 100px; padding: 4px 11px; background: {{ pbg.LOGO1 }}; color: {{ pfg.LOGO1 }}; font-weight: 700;">{{ plabel.LOGO1 }}</button>
+        </div>
+        <div style="padding: 16px; background: #E7E0CD; flex: 1;">
+          <div style="font-family: 'Spectral', serif; font-weight: 600; font-size: 15.5px; margin-bottom: 12px;">Which AC brand would you trust with a Delhi summer?</div>
+          <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 9px;">
+            <sc-for list="{{ logoTiles }}" as="lt" hint-placeholder-count="6">
+              <button onClick="{{ lt.onPick }}" style="aspect-ratio: 1.15; border: 2px solid #18162A; border-radius: 10px; background: {{ lt.bg }}; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 5px; transition: transform .15s, box-shadow .15s; position: relative;" style-hover="transform: translate(-2px,-3px); box-shadow: 5px 6px 0 #18162A;">
+                <span style="font-family: {{ lt.font }}; font-weight: 900; font-size: {{ lt.fs }}; letter-spacing: {{ lt.ls }}; color: {{ lt.fg }}; font-style: {{ lt.fstyle }};">{{ lt.mark }}</span>
+                <span style="font-family: 'Space Mono', monospace; font-size: 8.5px; letter-spacing: .08em; text-transform: uppercase; color: {{ lt.fg }}; opacity: .75;">{{ lt.name }}</span>
+                <sc-if value="{{ lt.picked }}" hint-placeholder-val="{{ false }}">
+                  <span style="position: absolute; top: 6px; right: 6px; font-family: 'Space Mono', monospace; font-size: 9px; background: #BFEE4F; border: 1.5px solid #18162A; border-radius: 100px; padding: 1px 6px; font-weight: 700; animation: cwPopIn .25s both;">✓</span>
+                </sc-if>
+              </button>
+            </sc-for>
+          </div>
+          <div style="font-family: 'Space Mono', monospace; font-size: 8.5px; letter-spacing: .08em; text-transform: uppercase; color: #6B6478; margin-top: 10px;">Monogram placeholders — real logos drop in later</div>
+        </div>
+        <div style="padding: 10px 14px 12px; background: #F2ECDF; border-top: 2px solid #18162A;">
+          <textarea value="{{ note.LOGO1 }}" onChange="{{ setNote.LOGO1 }}" placeholder="Comment for me (optional)…" style="width: 100%; min-height: 40px; border: 2px solid #18162A; border-radius: 7px; background: #F7F1E2; font-family: 'Space Mono', monospace; font-size: 11px; padding: 8px 10px; color: #18162A;"></textarea>
+        </div>
+      </div>
+
+      <!-- LOGO2 -->
+      <div style="border: 2px solid #18162A; border-radius: 12px; background: #FFFFFF; overflow: hidden; box-shadow: 5px 5px 0 rgba(24,22,42,.14); outline: {{ ol.LOGO2 }}; outline-offset: 3px; display: flex; flex-direction: column;">
+        <div style="display: flex; align-items: center; gap: 10px; background: #18162A; color: #F2ECDF; padding: 9px 14px;">
+          <span style="font-family: 'Space Mono', monospace; font-size: 11px; font-weight: 700; letter-spacing: .08em;">LOGO2 · Brand chips in the sorter</span>
+          <button onClick="{{ pick.LOGO2 }}" style="margin-left: auto; font-family: 'Space Mono', monospace; font-size: 10px; letter-spacing: .08em; text-transform: uppercase; border: 1.5px solid #F2ECDF; border-radius: 100px; padding: 4px 11px; background: {{ pbg.LOGO2 }}; color: {{ pfg.LOGO2 }}; font-weight: 700;">{{ plabel.LOGO2 }}</button>
+        </div>
+        <div style="padding: 16px; background: #E7E0CD; flex: 1;">
+          <div style="font-family: 'Space Mono', monospace; font-size: 9.5px; letter-spacing: .1em; text-transform: uppercase; color: #6B6478; margin-bottom: 9px;">Tap a bucket to file the highlighted brand · {{ lsProgress }}</div>
+          <div style="border: 2px dashed #18162A; border-radius: 9px; background: rgba(247,241,226,.6); padding: 9px; display: flex; flex-wrap: wrap; gap: 7px; min-height: 52px; margin-bottom: 11px; align-items: center;">
+            <sc-for list="{{ lsPool }}" as="lp" hint-placeholder-count="5">
+              <span style="display: inline-flex; align-items: center; gap: 7px; border: 2px solid #18162A; border-radius: 100px; padding: 7px 12px; background: {{ lp.bg }}; color: {{ lp.fg }};">
+                <span style="width: 22px; height: 22px; border-radius: 5px; border: 1.5px solid #18162A; background: {{ lp.markBg }}; color: {{ lp.markFg }}; display: inline-flex; align-items: center; justify-content: center; font-weight: 900; font-size: 10px;">{{ lp.mark }}</span>
+                <span style="font-weight: 700; font-size: 12.5px;">{{ lp.name }}</span>
+              </span>
+            </sc-for>
+            <sc-if value="{{ lsDone }}" hint-placeholder-val="{{ false }}">
+              <span style="font-family: 'Space Mono', monospace; font-size: 10px; letter-spacing: .1em; text-transform: uppercase; color: #6B6478;">All filed ✓</span>
+            </sc-if>
+          </div>
+          <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px;">
+            <sc-for list="{{ lsBuckets }}" as="lb" hint-placeholder-count="3">
+              <button onClick="{{ lb.file }}" style="border: 2px solid #18162A; border-radius: 9px; background: {{ lb.color }}; padding: 9px 8px; min-height: 74px; display: flex; flex-direction: column; gap: 6px; align-items: center;" style-hover="transform: translate(-1px,-1px); box-shadow: 3px 3px 0 #18162A;">
+                <span style="font-weight: 900; font-size: 10.5px; text-transform: uppercase; text-align: center; line-height: 1.1;">{{ lb.label }}</span>
+                <span style="display: flex; flex-wrap: wrap; gap: 3px; justify-content: center;">
+                  <sc-for list="{{ lb.marks }}" as="lm" hint-placeholder-count="2">
+                    <span style="width: 20px; height: 20px; border-radius: 5px; border: 1.5px solid #18162A; background: {{ lm.bg }}; color: {{ lm.fg }}; display: inline-flex; align-items: center; justify-content: center; font-weight: 900; font-size: 9px; animation: cwPopIn .25s both;">{{ lm.mark }}</span>
+                  </sc-for>
+                </span>
+              </button>
+            </sc-for>
+          </div>
+        </div>
+        <div style="padding: 10px 14px 12px; background: #F2ECDF; border-top: 2px solid #18162A;">
+          <textarea value="{{ note.LOGO2 }}" onChange="{{ setNote.LOGO2 }}" placeholder="Comment for me (optional)…" style="width: 100%; min-height: 40px; border: 2px solid #18162A; border-radius: 7px; background: #F7F1E2; font-family: 'Space Mono', monospace; font-size: 11px; padding: 8px 10px; color: #18162A;"></textarea>
+        </div>
+      </div>
+
+      <!-- RANK1 -->
+      <div style="border: 2px solid #18162A; border-radius: 12px; background: #FFFFFF; overflow: hidden; box-shadow: 5px 5px 0 rgba(24,22,42,.14); outline: {{ ol.RANK1 }}; outline-offset: 3px; display: flex; flex-direction: column;">
+        <div style="display: flex; align-items: center; gap: 10px; background: #18162A; color: #F2ECDF; padding: 9px 14px;">
+          <span style="font-family: 'Space Mono', monospace; font-size: 11px; font-weight: 700; letter-spacing: .08em;">RANK1 · Nudge list (strict order)</span>
+          <button onClick="{{ pick.RANK1 }}" style="margin-left: auto; font-family: 'Space Mono', monospace; font-size: 10px; letter-spacing: .08em; text-transform: uppercase; border: 1.5px solid #F2ECDF; border-radius: 100px; padding: 4px 11px; background: {{ pbg.RANK1 }}; color: {{ pfg.RANK1 }}; font-weight: 700;">{{ plabel.RANK1 }}</button>
+        </div>
+        <div style="padding: 16px; background: #E7E0CD; flex: 1;">
+          <div style="font-family: 'Spectral', serif; font-weight: 600; font-size: 15.5px; margin-bottom: 12px;">Rank these by how much they ruin a movie night.</div>
+          <div style="display: flex; flex-direction: column; gap: 7px;">
+            <sc-for list="{{ rankRows }}" as="rr" hint-placeholder-count="4">
+              <div style="display: flex; align-items: center; gap: 10px; border: 2px solid #18162A; border-radius: 8px; background: #F7F1E2; padding: 9px 11px;">
+                <span style="font-weight: 900; font-style: italic; font-size: 18px; color: #FF5A47; width: 22px;">{{ rr.n }}</span>
+                <span style="font-weight: 600; font-size: 13.5px; flex: 1;">{{ rr.label }}</span>
+                <button onClick="{{ rr.up }}" style="border: 1.5px solid #18162A; border-radius: 6px; background: #F2ECDF; width: 30px; height: 30px; font-weight: 800; font-size: 13px; opacity: {{ rr.upOp }};" style-hover="background: #BFEE4F;">↑</button>
+                <button onClick="{{ rr.down }}" style="border: 1.5px solid #18162A; border-radius: 6px; background: #F2ECDF; width: 30px; height: 30px; font-weight: 800; font-size: 13px; opacity: {{ rr.downOp }};" style-hover="background: #BFEE4F;">↓</button>
+              </div>
+            </sc-for>
+          </div>
+          <div style="font-family: 'Space Mono', monospace; font-size: 8.5px; letter-spacing: .08em; text-transform: uppercase; color: #6B6478; margin-top: 10px;">Production version also gets touch drag — arrows always there as fallback</div>
+        </div>
+        <div style="padding: 10px 14px 12px; background: #F2ECDF; border-top: 2px solid #18162A;">
+          <textarea value="{{ note.RANK1 }}" onChange="{{ setNote.RANK1 }}" placeholder="Comment for me (optional)…" style="width: 100%; min-height: 40px; border: 2px solid #18162A; border-radius: 7px; background: #F7F1E2; font-family: 'Space Mono', monospace; font-size: 11px; padding: 8px 10px; color: #18162A;"></textarea>
+        </div>
+      </div>
+
+      <!-- RANK2 -->
+      <div style="border: 2px solid #18162A; border-radius: 12px; background: #FFFFFF; overflow: hidden; box-shadow: 5px 5px 0 rgba(24,22,42,.14); outline: {{ ol.RANK2 }}; outline-offset: 3px; display: flex; flex-direction: column;">
+        <div style="display: flex; align-items: center; gap: 10px; background: #18162A; color: #F2ECDF; padding: 9px 14px;">
+          <span style="font-family: 'Space Mono', monospace; font-size: 11px; font-weight: 700; letter-spacing: .08em;">RANK2 · Podium slots</span>
+          <button onClick="{{ pick.RANK2 }}" style="margin-left: auto; font-family: 'Space Mono', monospace; font-size: 10px; letter-spacing: .08em; text-transform: uppercase; border: 1.5px solid #F2ECDF; border-radius: 100px; padding: 4px 11px; background: {{ pbg.RANK2 }}; color: {{ pfg.RANK2 }}; font-weight: 700;">{{ plabel.RANK2 }}</button>
+        </div>
+        <div style="padding: 16px; background: #E7E0CD; flex: 1;">
+          <div style="font-family: 'Spectral', serif; font-weight: 600; font-size: 15.5px; margin-bottom: 12px;">Tap snacks in your order of loyalty — they take the next podium spot.</div>
+          <div style="display: flex; gap: 8px; margin-bottom: 13px;">
+            <sc-for list="{{ slotBoxes }}" as="sb" hint-placeholder-count="3">
+              <button onClick="{{ sb.clear }}" style="flex: 1; border: 2px {{ sb.borderStyle }} #18162A; border-radius: 9px; background: {{ sb.bg }}; min-height: 64px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; padding: 6px;">
+                <span style="font-weight: 900; font-style: italic; font-size: 16px; color: {{ sb.nColor }};">{{ sb.n }}</span>
+                <span style="font-weight: 700; font-size: 11px; text-align: center; line-height: 1.1;">{{ sb.label }}</span>
+              </button>
+            </sc-for>
+          </div>
+          <div style="display: flex; flex-wrap: wrap; gap: 7px;">
+            <sc-for list="{{ slotPool }}" as="sp" hint-placeholder-count="4">
+              <button onClick="{{ sp.take }}" style="border: 2px solid #18162A; border-radius: 100px; padding: 8px 14px; font-weight: 700; font-size: 13px; background: {{ sp.bg }}; color: {{ sp.fg }}; text-decoration: {{ sp.deco }};" style-hover="transform: translate(-1px,-1px); box-shadow: 2px 2px 0 #18162A;">{{ sp.label }}</button>
+            </sc-for>
+          </div>
+          <div style="font-family: 'Space Mono', monospace; font-size: 8.5px; letter-spacing: .08em; text-transform: uppercase; color: #6B6478; margin-top: 10px;">Tap a filled slot to release it</div>
+        </div>
+        <div style="padding: 10px 14px 12px; background: #F2ECDF; border-top: 2px solid #18162A;">
+          <textarea value="{{ note.RANK2 }}" onChange="{{ setNote.RANK2 }}" placeholder="Comment for me (optional)…" style="width: 100%; min-height: 40px; border: 2px solid #18162A; border-radius: 7px; background: #F7F1E2; font-family: 'Space Mono', monospace; font-size: 11px; padding: 8px 10px; color: #18162A;"></textarea>
+        </div>
+      </div>
+
+      <!-- MULTI1 -->
+      <div style="border: 2px solid #18162A; border-radius: 12px; background: #FFFFFF; overflow: hidden; box-shadow: 5px 5px 0 rgba(24,22,42,.14); outline: {{ ol.MULTI1 }}; outline-offset: 3px; display: flex; flex-direction: column;">
+        <div style="display: flex; align-items: center; gap: 10px; background: #18162A; color: #F2ECDF; padding: 9px 14px;">
+          <span style="font-family: 'Space Mono', monospace; font-size: 11px; font-weight: 700; letter-spacing: .08em;">MULTI1 · Pick 2, then confirm</span>
+          <button onClick="{{ pick.MULTI1 }}" style="margin-left: auto; font-family: 'Space Mono', monospace; font-size: 10px; letter-spacing: .08em; text-transform: uppercase; border: 1.5px solid #F2ECDF; border-radius: 100px; padding: 4px 11px; background: {{ pbg.MULTI1 }}; color: {{ pfg.MULTI1 }}; font-weight: 700;">{{ plabel.MULTI1 }}</button>
+        </div>
+        <div style="padding: 16px; background: #E7E0CD; flex: 1;">
+          <div style="font-family: 'Spectral', serif; font-weight: 600; font-size: 15.5px; margin-bottom: 4px;">Pick the TWO apps you'd save if your phone purged itself.</div>
+          <div style="font-family: 'Space Mono', monospace; font-size: 10px; letter-spacing: .12em; text-transform: uppercase; color: #FF5A47; font-weight: 700; margin-bottom: 11px;">{{ m1Counter }}</div>
+          <div style="display: flex; flex-direction: column; gap: 7px; margin-bottom: 12px;">
+            <sc-for list="{{ m1Opts }}" as="mo" hint-placeholder-count="4">
+              <button onClick="{{ mo.toggle }}" style="display: flex; align-items: center; gap: 11px; border: 2px solid #18162A; border-radius: 8px; padding: 10px 12px; background: {{ mo.bg }}; text-align: left;" style-hover="transform: translate(-1px,-2px); box-shadow: 3px 4px 0 #18162A;">
+                <span style="width: 20px; height: 20px; border: 2px solid #18162A; border-radius: 5px; background: {{ mo.checkBg }}; display: inline-flex; align-items: center; justify-content: center; font-weight: 900; font-size: 11px; flex-shrink: 0;">{{ mo.check }}</span>
+                <span style="font-weight: 600; font-size: 14px;">{{ mo.label }}</span>
+              </button>
+            </sc-for>
+          </div>
+          <button onClick="{{ m1Confirm }}" style="width: 100%; border: 2px solid #18162A; border-radius: 8px; background: {{ m1Bg }}; color: {{ m1Fg }}; font-weight: 800; font-size: 13px; text-transform: uppercase; letter-spacing: .04em; padding: 12px; min-height: 46px;" style-hover="transform: translate(-1px,-2px); box-shadow: 3px 4px 0 #18162A;">{{ m1Label }}</button>
+        </div>
+        <div style="padding: 10px 14px 12px; background: #F2ECDF; border-top: 2px solid #18162A;">
+          <textarea value="{{ note.MULTI1 }}" onChange="{{ setNote.MULTI1 }}" placeholder="Comment for me (optional)…" style="width: 100%; min-height: 40px; border: 2px solid #18162A; border-radius: 7px; background: #F7F1E2; font-family: 'Space Mono', monospace; font-size: 11px; padding: 8px 10px; color: #18162A;"></textarea>
+        </div>
+      </div>
+
+      <!-- MULTI2 -->
+      <div style="border: 2px solid #18162A; border-radius: 12px; background: #FFFFFF; overflow: hidden; box-shadow: 5px 5px 0 rgba(24,22,42,.14); outline: {{ ol.MULTI2 }}; outline-offset: 3px; display: flex; flex-direction: column;">
+        <div style="display: flex; align-items: center; gap: 10px; background: #18162A; color: #F2ECDF; padding: 9px 14px;">
+          <span style="font-family: 'Space Mono', monospace; font-size: 11px; font-weight: 700; letter-spacing: .08em;">MULTI2 · Auto-counts at 2</span>
+          <button onClick="{{ pick.MULTI2 }}" style="margin-left: auto; font-family: 'Space Mono', monospace; font-size: 10px; letter-spacing: .08em; text-transform: uppercase; border: 1.5px solid #F2ECDF; border-radius: 100px; padding: 4px 11px; background: {{ pbg.MULTI2 }}; color: {{ pfg.MULTI2 }}; font-weight: 700;">{{ plabel.MULTI2 }}</button>
+        </div>
+        <div style="padding: 16px; background: #E7E0CD; flex: 1;">
+          <div style="font-family: 'Spectral', serif; font-weight: 600; font-size: 15.5px; margin-bottom: 4px;">Same question — but the second tap submits instantly.</div>
+          <div style="font-family: 'Space Mono', monospace; font-size: 10px; letter-spacing: .12em; text-transform: uppercase; color: #6B6478; margin-bottom: 11px;">{{ m2Counter }}</div>
+          <div style="display: flex; flex-direction: column; gap: 7px;">
+            <sc-for list="{{ m2Opts }}" as="mo" hint-placeholder-count="4">
+              <button onClick="{{ mo.toggle }}" style="display: flex; align-items: center; gap: 11px; border: 2px solid #18162A; border-radius: 8px; padding: 10px 12px; background: {{ mo.bg }}; text-align: left;" style-hover="transform: translate(-1px,-2px); box-shadow: 3px 4px 0 #18162A;">
+                <span style="width: 20px; height: 20px; border: 2px solid #18162A; border-radius: 5px; background: {{ mo.checkBg }}; display: inline-flex; align-items: center; justify-content: center; font-weight: 900; font-size: 11px; flex-shrink: 0;">{{ mo.check }}</span>
+                <span style="font-weight: 600; font-size: 14px; flex: 1;">{{ mo.label }}</span>
+              </button>
+            </sc-for>
+          </div>
+          <sc-if value="{{ m2Done }}" hint-placeholder-val="{{ false }}">
+            <div style="margin-top: 11px; font-weight: 900; font-size: 13px; text-transform: uppercase; color: #FF5A47; border: 2.5px solid #FF5A47; border-radius: 7px; padding: 6px 10px; display: inline-block; transform: rotate(-3deg); animation: cwPopIn .35s both; background: rgba(242,236,223,.7);">Counted ✓</div>
+          </sc-if>
+        </div>
+        <div style="padding: 10px 14px 12px; background: #F2ECDF; border-top: 2px solid #18162A;">
+          <textarea value="{{ note.MULTI2 }}" onChange="{{ setNote.MULTI2 }}" placeholder="Comment for me (optional)…" style="width: 100%; min-height: 40px; border: 2px solid #18162A; border-radius: 7px; background: #F7F1E2; font-family: 'Space Mono', monospace; font-size: 11px; padding: 8px 10px; color: #18162A;"></textarea>
+        </div>
+      </div>
+    </div>
+
+    <!-- ════════ 2 · PENDING DVs ════════ -->
+    <div style="display: flex; align-items: baseline; gap: 12px; border-bottom: 3px solid #18162A; padding-bottom: 10px; margin-bottom: 24px;">
+      <span style="font-weight: 900; font-size: 24px; text-transform: uppercase;">2 · Pending visualizations</span>
+      <span style="font-family: 'Space Mono', monospace; font-size: 10px; letter-spacing: .12em; text-transform: uppercase; color: #6B6478;">Liquid fill + your greenlit heat matrix</span>
+    </div>
+
+    <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(330px, 1fr)); gap: 20px; margin-bottom: 52px;">
+
+      <!-- LIQ1 -->
+      <div style="border: 2px solid #18162A; border-radius: 12px; background: #FFFFFF; overflow: hidden; box-shadow: 5px 5px 0 rgba(24,22,42,.14); outline: {{ ol.LIQ1 }}; outline-offset: 3px; display: flex; flex-direction: column;">
+        <div style="display: flex; align-items: center; gap: 10px; background: #18162A; color: #F2ECDF; padding: 9px 14px;">
+          <span style="font-family: 'Space Mono', monospace; font-size: 11px; font-weight: 700; letter-spacing: .08em;">LIQ1 · Filling cups</span>
+          <button onClick="{{ pick.LIQ1 }}" style="margin-left: auto; font-family: 'Space Mono', monospace; font-size: 10px; letter-spacing: .08em; text-transform: uppercase; border: 1.5px solid #F2ECDF; border-radius: 100px; padding: 4px 11px; background: {{ pbg.LIQ1 }}; color: {{ pfg.LIQ1 }}; font-weight: 700;">{{ plabel.LIQ1 }}</button>
+        </div>
+        <div style="padding: 16px; background: #E7E0CD; flex: 1;">
+          <div style="font-family: 'Space Mono', monospace; font-size: 9.5px; letter-spacing: .1em; text-transform: uppercase; color: #6B6478; margin-bottom: 12px;">“Chai or coffee?” · each cup fills to its vote share</div>
+          <div style="display: flex; gap: 18px; justify-content: center; align-items: flex-end;">
+            <sc-for list="{{ cups }}" as="cu" hint-placeholder-count="2">
+              <div style="display: flex; flex-direction: column; align-items: center; gap: 7px;">
+                <div style="position: relative; width: 92px; height: 132px; border: 2.5px solid #18162A; border-radius: 8px 8px 26px 26px; background: #F7F1E2; overflow: hidden;">
+                  <div style="position: absolute; left: 0; right: 0; bottom: 0; height: {{ cu.h }}; background: {{ cu.color }}; border-radius: 50% 50% 0 0 / 12px; animation: cwFlood 2s cubic-bezier(.65,0,.35,1) both; animation-delay: {{ cu.delay }};"></div>
+                  <span style="position: absolute; left: 0; right: 0; top: 12px; text-align: center; font-weight: 900; font-size: 21px; color: #18162A;">{{ cu.pct }}</span>
+                </div>
+                <span style="font-weight: 800; font-size: 13px; text-transform: uppercase;">{{ cu.label }}</span>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+        <div style="padding: 10px 14px 12px; background: #F2ECDF; border-top: 2px solid #18162A;">
+          <textarea value="{{ note.LIQ1 }}" onChange="{{ setNote.LIQ1 }}" placeholder="Comment for me (optional)…" style="width: 100%; min-height: 40px; border: 2px solid #18162A; border-radius: 7px; background: #F7F1E2; font-family: 'Space Mono', monospace; font-size: 11px; padding: 8px 10px; color: #18162A;"></textarea>
+        </div>
+      </div>
+
+      <!-- LIQ2 -->
+      <div style="border: 2px solid #18162A; border-radius: 12px; background: #FFFFFF; overflow: hidden; box-shadow: 5px 5px 0 rgba(24,22,42,.14); outline: {{ ol.LIQ2 }}; outline-offset: 3px; display: flex; flex-direction: column;">
+        <div style="display: flex; align-items: center; gap: 10px; background: #18162A; color: #F2ECDF; padding: 9px 14px;">
+          <span style="font-family: 'Space Mono', monospace; font-size: 11px; font-weight: 700; letter-spacing: .08em;">LIQ2 · Liquid coins</span>
+          <button onClick="{{ pick.LIQ2 }}" style="margin-left: auto; font-family: 'Space Mono', monospace; font-size: 10px; letter-spacing: .08em; text-transform: uppercase; border: 1.5px solid #F2ECDF; border-radius: 100px; padding: 4px 11px; background: {{ pbg.LIQ2 }}; color: {{ pfg.LIQ2 }}; font-weight: 700;">{{ plabel.LIQ2 }}</button>
+        </div>
+        <div style="padding: 16px; background: #E7E0CD; flex: 1;">
+          <div style="font-family: 'Space Mono', monospace; font-size: 9.5px; letter-spacing: .1em; text-transform: uppercase; color: #6B6478; margin-bottom: 12px;">Multi-option versions · each coin fills to its share</div>
+          <div style="display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;">
+            <sc-for list="{{ coins }}" as="co" hint-placeholder-count="4">
+              <div style="display: flex; flex-direction: column; align-items: center; gap: 6px;">
+                <div style="position: relative; width: 84px; height: 84px; border: 2.5px solid #18162A; border-radius: 50%; background: #F7F1E2; overflow: hidden;">
+                  <div style="position: absolute; left: 0; right: 0; bottom: 0; height: {{ co.h }}; background: {{ co.color }}; border-radius: 50% 50% 0 0 / 10px; animation: cwFlood 1.8s cubic-bezier(.65,0,.35,1) both; animation-delay: {{ co.delay }};"></div>
+                  <span style="position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 16px; color: #18162A;">{{ co.pct }}</span>
+                </div>
+                <span style="font-weight: 700; font-size: 11px; text-align: center; max-width: 90px; line-height: 1.15;">{{ co.label }}</span>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+        <div style="padding: 10px 14px 12px; background: #F2ECDF; border-top: 2px solid #18162A;">
+          <textarea value="{{ note.LIQ2 }}" onChange="{{ setNote.LIQ2 }}" placeholder="Comment for me (optional)…" style="width: 100%; min-height: 40px; border: 2px solid #18162A; border-radius: 7px; background: #F7F1E2; font-family: 'Space Mono', monospace; font-size: 11px; padding: 8px 10px; color: #18162A;"></textarea>
+        </div>
+      </div>
+
+      <!-- HM variants -->
+      <sc-for list="{{ matrices }}" as="hm" hint-placeholder-count="3">
+        <div style="border: 2px solid #18162A; border-radius: 12px; background: #FFFFFF; overflow: hidden; box-shadow: 5px 5px 0 rgba(24,22,42,.14); outline: {{ hm.outline }}; outline-offset: 3px; display: flex; flex-direction: column;">
+          <div style="display: flex; align-items: center; gap: 10px; background: #18162A; color: #F2ECDF; padding: 9px 14px;">
+            <span style="font-family: 'Space Mono', monospace; font-size: 11px; font-weight: 700; letter-spacing: .08em;">{{ hm.id }} · Heat matrix — {{ hm.name }}</span>
+            <button onClick="{{ hm.onPick }}" style="margin-left: auto; font-family: 'Space Mono', monospace; font-size: 10px; letter-spacing: .08em; text-transform: uppercase; border: 1.5px solid #F2ECDF; border-radius: 100px; padding: 4px 11px; background: {{ hm.btnBg }}; color: {{ hm.btnFg }}; font-weight: 700;">{{ hm.btnLabel }}</button>
+          </div>
+          <div style="padding: 16px; background: #E7E0CD; flex: 1;">
+            <div style="font-family: 'Space Mono', monospace; font-size: 9px; letter-spacing: .1em; text-transform: uppercase; color: #6B6478; margin-bottom: 8px; text-align: center;">“Would pay to skip it” · chore × age</div>
+            <div style="display: grid; grid-template-columns: 80px repeat(3, 1fr); gap: 4px; max-width: 300px; margin: 0 auto;">
+              <span></span>
+              <span style="font-family: 'Space Mono', monospace; font-size: 8.5px; text-align: center; color: #6B6478;">18–24</span>
+              <span style="font-family: 'Space Mono', monospace; font-size: 8.5px; text-align: center; color: #6B6478;">25–34</span>
+              <span style="font-family: 'Space Mono', monospace; font-size: 8.5px; text-align: center; color: #6B6478;">35+</span>
+              <sc-for list="{{ hm.cells }}" as="hc" hint-placeholder-count="12">
+                <sc-if value="{{ hc.isLabel }}" hint-placeholder-val="{{ false }}">
+                  <span style="font-size: 10px; font-weight: 700; display: flex; align-items: center;">{{ hc.label }}</span>
+                </sc-if>
+                <sc-if value="{{ hc.isCell }}" hint-placeholder-val="{{ true }}">
+                  <div style="aspect-ratio: 1.5; border: 1.5px solid #18162A; border-radius: 5px; background: {{ hc.bg }}; display: flex; align-items: center; justify-content: center;"><span style="font-family: 'Space Mono', monospace; font-size: 9.5px; font-weight: 700; color: {{ hc.fg }};">{{ hc.v }}</span></div>
+                </sc-if>
+              </sc-for>
+            </div>
+            <div style="display: flex; align-items: center; gap: 6px; margin-top: 10px; justify-content: center;">
+              <span style="font-family: 'Space Mono', monospace; font-size: 8px; letter-spacing: .08em; text-transform: uppercase; color: #6B6478;">Low</span>
+              <div style="width: 90px; height: 8px; border: 1px solid #18162A; border-radius: 100px; background: {{ hm.swatch }};"></div>
+              <span style="font-family: 'Space Mono', monospace; font-size: 8px; letter-spacing: .08em; text-transform: uppercase; color: #6B6478;">High</span>
+            </div>
+          </div>
+          <div style="padding: 10px 14px 12px; background: #F2ECDF; border-top: 2px solid #18162A;">
+            <textarea value="{{ hm.noteVal }}" onChange="{{ hm.setNote }}" placeholder="Comment for me (optional)…" style="width: 100%; min-height: 40px; border: 2px solid #18162A; border-radius: 7px; background: #F7F1E2; font-family: 'Space Mono', monospace; font-size: 11px; padding: 8px 10px; color: #18162A;"></textarea>
+          </div>
+        </div>
+      </sc-for>
+    </div>
+
+    <!-- ════════ 3 · MAP COLOURS ════════ -->
+    <div style="display: flex; align-items: baseline; gap: 12px; border-bottom: 3px solid #18162A; padding-bottom: 10px; margin-bottom: 24px;">
+      <span style="font-weight: 900; font-size: 24px; text-transform: uppercase;">3 · Map colours, fixed</span>
+      <span style="font-family: 'Space Mono', monospace; font-size: 10px; letter-spacing: .12em; text-transform: uppercase; color: #6B6478;">Same real map · fills from the site's own inks</span>
+    </div>
+
+    <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(330px, 1fr)); gap: 20px;">
+      <sc-for list="{{ mapCards }}" as="mc" hint-placeholder-count="6">
+        <div style="border: 2px solid #18162A; border-radius: 12px; background: #FFFFFF; overflow: hidden; box-shadow: 5px 5px 0 rgba(24,22,42,.14); outline: {{ mc.outline }}; outline-offset: 3px; display: flex; flex-direction: column;">
+          <div style="display: flex; align-items: center; gap: 10px; background: #18162A; color: #F2ECDF; padding: 9px 14px;">
+            <span style="font-family: 'Space Mono', monospace; font-size: 11px; font-weight: 700; letter-spacing: .08em;">{{ mc.id }} · {{ mc.name }}</span>
+            <button onClick="{{ mc.onPick }}" style="margin-left: auto; font-family: 'Space Mono', monospace; font-size: 10px; letter-spacing: .08em; text-transform: uppercase; border: 1.5px solid #F2ECDF; border-radius: 100px; padding: 4px 11px; background: {{ mc.btnBg }}; color: {{ mc.btnFg }}; font-weight: 700;">{{ mc.btnLabel }}</button>
+          </div>
+          <div style="padding: 14px; background: #E7E0CD; flex: 1;">
+            <div>{{ mc.mapEl }}</div>
+            <div style="display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; justify-content: center;">
+              <sc-for list="{{ mc.legend }}" as="lg" hint-placeholder-count="4">
+                <span style="display: inline-flex; align-items: center; gap: 5px; font-family: 'Space Mono', monospace; font-size: 8.5px; letter-spacing: .06em; text-transform: uppercase; font-weight: 700;"><span style="width: 11px; height: 11px; border-radius: 3px; border: 1.5px solid #18162A; background: {{ lg.color }};"></span>{{ lg.label }}</span>
+              </sc-for>
+            </div>
+          </div>
+          <div style="padding: 10px 14px 12px; background: #F2ECDF; border-top: 2px solid #18162A;">
+            <textarea value="{{ mc.noteVal }}" onChange="{{ mc.setNote }}" placeholder="Comment for me (optional)…" style="width: 100%; min-height: 40px; border: 2px solid #18162A; border-radius: 7px; background: #F7F1E2; font-family: 'Space Mono', monospace; font-size: 11px; padding: 8px 10px; color: #18162A;"></textarea>
+          </div>
+        </div>
+      </sc-for>
+    </div>
+  </div>
+
+  <!-- sticky tally -->
+  <div style="position: fixed; left: 0; right: 0; bottom: 0; z-index: 80; background: #18162A; color: #F2ECDF; padding: 12px 22px; display: flex; align-items: center; gap: 14px; flex-wrap: wrap;">
+    <span style="font-family: 'Space Mono', monospace; font-size: 10px; letter-spacing: .14em; text-transform: uppercase; color: #BFEE4F; font-weight: 700;">{{ tallyCount }}</span>
+    <span style="font-family: 'Space Mono', monospace; font-size: 11px; flex: 1; min-width: 200px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{ summaryShort }}</span>
+    <button onClick="{{ copyAll }}" style="font-family: 'Space Mono', monospace; font-size: 10px; letter-spacing: .1em; text-transform: uppercase; border: 1.5px solid #BFEE4F; border-radius: 100px; padding: 7px 14px; background: {{ copyBg }}; color: {{ copyFg }}; font-weight: 700;">{{ copyLabel }}</button>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = {
+    likes: {}, notes: {}, copied: false,
+    logoPick: null,
+    logoSort: {},
+    rankOrder: ['Loud chewers', 'Phone screens at full brightness', 'Plot explainers', 'Seat kickers'],
+    slots: [null, null, null],
+    m1: [], m1Confirmed: false,
+    m2: [], m2Done: false,
+    locations: null, viewBox: '0 0 612 696'
+  };
+
+  IDS = ['LOGO1', 'LOGO2', 'RANK1', 'RANK2', 'MULTI1', 'MULTI2', 'LIQ1', 'LIQ2', 'HM1', 'HM2', 'HM3', 'MAPA', 'MAPB', 'MAPC', 'BUBA', 'BUBB', 'BUBC'];
+
+  BRANDS = [
+    { name: 'Voltas', mark: 'V', bg: '#FF5A47', fg: '#18162A', font: "'Archivo', sans-serif", fs: '26px', ls: '0', fstyle: 'normal' },
+    { name: 'LG', mark: 'LG', bg: '#18162A', fg: '#F2ECDF', font: "'Archivo', sans-serif", fs: '22px', ls: '.05em', fstyle: 'normal' },
+    { name: 'Daikin', mark: 'D', bg: '#F7F1E2', fg: '#18162A', font: "'Spectral', serif", fs: '27px', ls: '0', fstyle: 'italic' },
+    { name: 'Samsung', mark: 'S', bg: '#34304E', fg: '#F2ECDF', font: "'Archivo', sans-serif", fs: '26px', ls: '0', fstyle: 'normal' },
+    { name: 'Blue Star', mark: '★', bg: '#FFC53D', fg: '#18162A', font: "'Archivo', sans-serif", fs: '24px', ls: '0', fstyle: 'normal' },
+    { name: 'Hitachi', mark: 'H', bg: '#BFEE4F', fg: '#18162A', font: "'Space Mono', monospace", fs: '24px', ls: '0', fstyle: 'normal' }
+  ];
+  SORT_BUCKETS = [
+    { label: 'Elite', color: '#BFEE4F' },
+    { label: 'Mid', color: '#FFC53D' },
+    { label: 'Avoid', color: '#FF5A47' }
+  ];
+  SNACKS = ['Popcorn', 'Samosa', 'Nachos', 'Cold coffee'];
+  APPS = ['WhatsApp', 'YouTube', 'Instagram', 'UPI app', 'Maps'];
+
+  HEATVALS = [[71, 65, 52], [55, 48, 38], [49, 41, 30]];
+  CHORES = ['Bathroom', 'Groceries', 'Cooking'];
+  RAMPS = [
+    { id: 'HM1', name: 'Press red', from: [247, 241, 226], to: [216, 67, 31] },
+    { id: 'HM2', name: 'Newspaper ink', from: [247, 241, 226], to: [24, 22, 42] },
+    { id: 'HM3', name: 'Lime → ink', from: [191, 238, 79], to: [24, 22, 42] }
+  ];
+
+  MAPSETS = [
+    { id: 'MAPA', name: 'Winner · brand inks', pal: ['#FF5A47', '#18162A', '#FFC53D', '#BFEE4F'] },
+    { id: 'MAPB', name: 'Winner · ink & fire', pal: ['#FF5A47', '#34304E', '#8B86A2', '#C9C5D6'] },
+    { id: 'MAPC', name: 'Winner · warm press', pal: ['#D8431F', '#E8862D', '#E3B341', '#6E3B25'] }
+  ];
+  BUBSETS = [
+    { id: 'BUBA', name: 'Bubbles · ink on cream', fill: 'rgba(24,22,42,.88)', text: '#BFEE4F' },
+    { id: 'BUBB', name: 'Bubbles · lime on cream', fill: 'rgba(191,238,79,.92)', text: '#18162A' },
+    { id: 'BUBC', name: 'Bubbles · fire on cream', fill: 'rgba(255,90,71,.82)', text: '#18162A' }
+  ];
+  WINNER = {
+    'jammu': 1, 'punjab': 1, 'himachal': 1, 'uttarakhand': 1, 'haryana': 1, 'delhi': 1, 'rajasthan': 1,
+    'uttar pradesh': 1, 'bihar': 1, 'jharkhand': 1, 'gujarat': 0, 'madhya pradesh': 0, 'chhattisgarh': 0,
+    'maharashtra': 0, 'goa': 0, 'telangana': 2, 'andhra': 2, 'karnataka': 2, 'kerala': 2, 'tamil nadu': 2,
+    'puducherry': 2, 'west bengal': 3, 'odisha': 3, 'assam': 3, 'sikkim': 3, 'tripura': 3, 'meghalaya': 3,
+    'manipur': 3, 'mizoram': 3, 'nagaland': 3, 'arunachal': 3
+  };
+  BUBBLE = { 'maharashtra': 3.4, 'delhi': 2.8, 'karnataka': 2.6, 'tamil nadu': 1.9, 'telangana': 1.7, 'west bengal': 1.5, 'uttar pradesh': 1.4, 'gujarat': 1.2 };
+  OPTLABELS = ['Poha', 'Paratha', 'Idli–dosa', 'Bread om.'];
+
+  componentDidMount() {
+    this._centroids = null;
+    this.loadMap();
+  }
+
+  async loadMap() {
+    try {
+      const mod = await import('https://cdn.jsdelivr.net/npm/@svg-maps/india@1.0.1/+esm');
+      const map = mod.default || mod;
+      this.setState({ locations: map.locations, viewBox: map.viewBox });
+      setTimeout(() => {
+        const svg = document.getElementById('clab-map-MAPA');
+        if (!svg) return;
+        const out = {};
+        svg.querySelectorAll('path[data-name]').forEach((p) => {
+          try { const b = p.getBBox(); out[p.getAttribute('data-name')] = { x: b.x + b.width / 2, y: b.y + b.height / 2 }; } catch (e) { }
+        });
+        this._centroids = out;
+        this.forceUpdate();
+      }, 150);
+    } catch (e) { }
+  }
+
+  dataFor(name, table) {
+    const n = (name || '').toLowerCase();
+    const key = Object.keys(table).find(function (k) { return n.indexOf(k) >= 0; });
+    return key !== undefined && key !== null ? table[key] : null;
+  }
+
+  rampColor(rp, v, max) {
+    const t = Math.max(0, Math.min(1, v / max));
+    const mix = (i) => Math.round(rp.from[i] + (rp.to[i] - rp.from[i]) * t);
+    return 'rgb(' + mix(0) + ',' + mix(1) + ',' + mix(2) + ')';
+  }
+
+  toggleLike(id) {
+    const likes = Object.assign({}, this.state.likes);
+    likes[id] = !likes[id];
+    this.setState({ likes: likes });
+  }
+
+  setNoteVal(id, v) {
+    const notes = Object.assign({}, this.state.notes);
+    notes[id] = v;
+    this.setState({ notes: notes });
+  }
+
+  buildMiniMap(domId, mode, pal, bubSet) {
+    const s = this.state;
+    const self = this;
+    if (!s.locations) return React.createElement('div', { style: { height: '260px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: "'Space Mono', monospace", fontSize: '10px', letterSpacing: '.12em', textTransform: 'uppercase', color: '#6B6478' } }, 'Loading geography…');
+    const els = [];
+    s.locations.forEach(function (loc, i) {
+      let fill = '#EFE8D6';
+      if (mode === 'winner') {
+        const w = self.dataFor(loc.name, self.WINNER);
+        if (w !== null) fill = pal[w];
+      } else {
+        fill = '#F2ECDF';
+      }
+      els.push(React.createElement('path', { key: loc.id || i, d: loc.path, 'data-name': loc.name, fill: fill, stroke: '#18162A', strokeWidth: 0.8 }));
+    });
+    if (mode === 'bubble' && this._centroids) {
+      Object.keys(this.BUBBLE).forEach(function (k) {
+        const name = Object.keys(self._centroids).find(function (n) { return n.toLowerCase().indexOf(k) >= 0; });
+        if (!name) return;
+        const c = self._centroids[name];
+        const v = self.BUBBLE[k];
+        const r = 7 + Math.sqrt(v) * 13;
+        els.push(React.createElement('circle', { key: 'b' + k, cx: c.x, cy: c.y, r: r, fill: bubSet.fill, stroke: '#18162A', strokeWidth: 1.5 }));
+        els.push(React.createElement('text', { key: 't' + k, x: c.x, y: c.y + 3.5, textAnchor: 'middle', fontFamily: "'Space Mono', monospace", fontSize: r > 22 ? 12 : 9, fontWeight: 700, fill: bubSet.text }, v + 'K'));
+      });
+    }
+    return React.createElement('svg', { id: 'clab-map-' + domId, viewBox: s.viewBox, style: { width: '100%', height: 'auto', display: 'block', maxHeight: '300px' } }, els);
+  }
+
+  renderVals() {
+    const s = this.state;
+    const self = this;
+    const pick = {}, pbg = {}, pfg = {}, plabel = {}, ol = {}, note = {}, setNote = {};
+    this.IDS.forEach(function (id) {
+      const liked = !!s.likes[id];
+      pick[id] = function () { self.toggleLike(id); };
+      pbg[id] = liked ? '#BFEE4F' : 'transparent';
+      pfg[id] = liked ? '#18162A' : '#F2ECDF';
+      plabel[id] = liked ? 'Liked ✓' : 'Like this';
+      ol[id] = liked ? '3px solid #BFEE4F' : 'none';
+      note[id] = s.notes[id] || '';
+      setNote[id] = function (e) { self.setNoteVal(id, e.target.value); };
+    });
+
+    const vals = { pick: pick, pbg: pbg, pfg: pfg, plabel: plabel, ol: ol, note: note, setNote: setNote };
+
+    // LOGO1
+    vals.logoTiles = this.BRANDS.map(function (b, i) {
+      return Object.assign({}, b, {
+        picked: s.logoPick === i,
+        bg: s.logoPick === i ? '#BFEE4F' : b.bg,
+        fg: s.logoPick === i ? '#18162A' : b.fg,
+        onPick: function () { self.setState({ logoPick: i }); }
+      });
+    });
+
+    // LOGO2
+    const lsItems = this.BRANDS.slice(0, 5);
+    const lsCur = lsItems.find(function (b) { return s.logoSort[b.name] === undefined; });
+    vals.lsProgress = Object.keys(s.logoSort).length + ' of 5 filed';
+    vals.lsDone = !lsCur;
+    vals.lsPool = lsItems.filter(function (b) { return s.logoSort[b.name] === undefined; }).map(function (b) {
+      const cur = lsCur && b.name === lsCur.name;
+      return { name: b.name, mark: b.mark, markBg: b.bg, markFg: b.fg, bg: cur ? '#18162A' : '#F7F1E2', fg: cur ? '#BFEE4F' : '#18162A' };
+    });
+    vals.lsBuckets = this.SORT_BUCKETS.map(function (bk, ti) {
+      return {
+        label: bk.label, color: bk.color,
+        file: function () { if (lsCur) { const m = Object.assign({}, s.logoSort); m[lsCur.name] = ti; self.setState({ logoSort: m }); } },
+        marks: lsItems.filter(function (b) { return s.logoSort[b.name] === ti; }).map(function (b) { return { mark: b.mark, bg: b.bg, fg: b.fg }; })
+      };
+    });
+
+    // RANK1
+    vals.rankRows = s.rankOrder.map(function (label, i) {
+      return {
+        n: (i + 1),
+        label: label,
+        upOp: i === 0 ? '.25' : '1',
+        downOp: i === s.rankOrder.length - 1 ? '.25' : '1',
+        up: function () { if (i === 0) return; const a = s.rankOrder.slice(); const t = a[i - 1]; a[i - 1] = a[i]; a[i] = t; self.setState({ rankOrder: a }); },
+        down: function () { if (i === s.rankOrder.length - 1) return; const a = s.rankOrder.slice(); const t = a[i + 1]; a[i + 1] = a[i]; a[i] = t; self.setState({ rankOrder: a }); }
+      };
+    });
+
+    // RANK2
+    vals.slotBoxes = s.slots.map(function (v, i) {
+      const filled = v !== null;
+      return {
+        n: (i + 1),
+        nColor: filled ? '#18162A' : '#FF5A47',
+        label: filled ? self.SNACKS[v] : 'empty',
+        bg: filled ? '#BFEE4F' : '#F7F1E2',
+        borderStyle: filled ? 'solid' : 'dashed',
+        clear: function () { if (!filled) return; const a = s.slots.slice(); a[i] = null; self.setState({ slots: a }); }
+      };
+    });
+    vals.slotPool = this.SNACKS.map(function (sn, i) {
+      const used = s.slots.indexOf(i) >= 0;
+      return {
+        label: sn,
+        bg: used ? 'transparent' : '#F7F1E2',
+        fg: used ? '#A9A294' : '#18162A',
+        deco: used ? 'line-through' : 'none',
+        take: function () { if (used) return; const a = s.slots.slice(); const slot = a.indexOf(null); if (slot < 0) return; a[slot] = i; self.setState({ slots: a }); }
+      };
+    });
+
+    // MULTI1
+    vals.m1Counter = s.m1Confirmed ? 'Counted ✓' : (s.m1.length + ' of 2 picked');
+    vals.m1Opts = this.APPS.map(function (a, i) {
+      const on = s.m1.indexOf(i) >= 0;
+      return {
+        label: a, bg: on ? '#BFEE4F' : '#F7F1E2', check: on ? '✓' : '', checkBg: on ? '#18162A' : '#F2ECDF',
+        toggle: function () {
+          if (s.m1Confirmed) return;
+          let arr = s.m1.slice();
+          if (on) arr = arr.filter(function (x) { return x !== i; });
+          else if (arr.length < 2) arr.push(i);
+          self.setState({ m1: arr });
+        }
+      };
+    });
+    vals.m1Label = s.m1Confirmed ? 'Counted ✓' : (s.m1.length === 2 ? 'Lock it in' : 'Pick ' + (2 - s.m1.length) + ' more');
+    vals.m1Bg = s.m1Confirmed ? '#BFEE4F' : (s.m1.length === 2 ? '#18162A' : '#EFE8D6');
+    vals.m1Fg = s.m1Confirmed ? '#18162A' : (s.m1.length === 2 ? '#F2ECDF' : '#A9A294');
+    vals.m1Confirm = function () { if (s.m1.length === 2) self.setState({ m1Confirmed: true }); };
+
+    // MULTI2
+    vals.m2Counter = s.m2Done ? 'second tap submitted it' : (s.m2.length + ' of 2 — no confirm button');
+    vals.m2Done = s.m2Done;
+    vals.m2Opts = this.APPS.map(function (a, i) {
+      const on = s.m2.indexOf(i) >= 0;
+      return {
+        label: a, bg: on ? '#BFEE4F' : '#F7F1E2', check: on ? '✓' : '', checkBg: on ? '#18162A' : '#F2ECDF',
+        toggle: function () {
+          if (s.m2Done) return;
+          let arr = s.m2.slice();
+          if (on) arr = arr.filter(function (x) { return x !== i; });
+          else if (arr.length < 2) arr.push(i);
+          self.setState({ m2: arr, m2Done: arr.length === 2 });
+        }
+      };
+    });
+
+    // LIQ
+    vals.cups = [
+      { label: 'Chai', pct: '59%', h: '59%', color: '#FF5A47', delay: '.1s' },
+      { label: 'Coffee', pct: '41%', h: '41%', color: '#34304E', delay: '.35s' }
+    ];
+    vals.coins = [
+      { label: 'The algorithm', pct: '44%', h: '44%', color: '#FF5A47', delay: '.1s' },
+      { label: 'Reels', pct: '26%', h: '26%', color: '#34304E', delay: '.3s' },
+      { label: 'Friends', pct: '21%', h: '21%', color: '#6E6987', delay: '.5s' },
+      { label: 'I search', pct: '9%', h: '9%', color: '#9D98B1', delay: '.7s' }
+    ];
+
+    // HEAT MATRICES
+    vals.matrices = this.RAMPS.map(function (rp) {
+      const cells = [];
+      self.CHORES.forEach(function (c, ri) {
+        cells.push({ isLabel: true, isCell: false, label: c });
+        self.HEATVALS[ri].forEach(function (v) {
+          const t = v / 71;
+          cells.push({ isLabel: false, isCell: true, v: v, bg: self.rampColor(rp, v, 71), fg: t > 0.62 ? '#F2ECDF' : '#18162A' });
+        });
+      });
+      return {
+        id: rp.id, name: rp.name, cells: cells,
+        swatch: 'linear-gradient(90deg, rgb(' + rp.from.join(',') + '), rgb(' + rp.to.join(',') + '))',
+        outline: ol[rp.id], onPick: pick[rp.id], btnBg: pbg[rp.id], btnFg: pfg[rp.id], btnLabel: plabel[rp.id],
+        noteVal: note[rp.id], setNote: setNote[rp.id]
+      };
+    });
+
+    // MAP CARDS
+    const mapCards = this.MAPSETS.map(function (ms) {
+      return {
+        id: ms.id, name: ms.name,
+        mapEl: self.buildMiniMap(ms.id, 'winner', ms.pal, null),
+        legend: ms.pal.map(function (c, i) { return { color: c, label: self.OPTLABELS[i] }; }),
+        outline: ol[ms.id], onPick: pick[ms.id], btnBg: pbg[ms.id], btnFg: pfg[ms.id], btnLabel: plabel[ms.id],
+        noteVal: note[ms.id], setNote: setNote[ms.id]
+      };
+    }).concat(this.BUBSETS.map(function (bs) {
+      return {
+        id: bs.id, name: bs.name,
+        mapEl: self.buildMiniMap(bs.id, 'bubble', null, bs),
+        legend: [{ color: bs.fill, label: 'vote volume' }],
+        outline: ol[bs.id], onPick: pick[bs.id], btnBg: pbg[bs.id], btnFg: pfg[bs.id], btnLabel: plabel[bs.id],
+        noteVal: note[bs.id], setNote: setNote[bs.id]
+      };
+    }));
+    vals.mapCards = mapCards;
+
+    // TALLY
+    const liked = this.IDS.filter(function (id) { return s.likes[id]; });
+    const noted = this.IDS.filter(function (id) { return (s.notes[id] || '').trim().length > 0; });
+    vals.tallyCount = liked.length + ' liked · ' + noted.length + ' notes';
+    vals.summaryShort = liked.length ? liked.join(' · ') : 'nothing liked yet';
+    vals.copyLabel = s.copied ? 'Copied ✓' : 'Copy everything';
+    vals.copyBg = s.copied ? '#BFEE4F' : 'transparent';
+    vals.copyFg = s.copied ? '#18162A' : '#BFEE4F';
+    vals.copyAll = function () {
+      const lines = ['My Closing Lab selections:'];
+      self.IDS.forEach(function (id) {
+        const l = s.likes[id] ? 'LIKED' : '—';
+        const n = (s.notes[id] || '').trim();
+        if (s.likes[id] || n) lines.push(id + ': ' + l + (n ? ' · note: "' + n + '"' : ''));
+      });
+      if (navigator.clipboard) navigator.clipboard.writeText(lines.join('\n'));
+      self.setState({ copied: true });
+      setTimeout(function () { self.setState({ copied: false }); }, 2000);
+    };
+
+    return vals;
+  }
+}
+</script>
+</body>
+</html>

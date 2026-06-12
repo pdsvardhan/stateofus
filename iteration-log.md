@@ -28,3 +28,16 @@
 **Next:** Stage 2 — user is building the design system in parallel; UI master plan
 must be saved BEFORE component picking. MVP DV-set trimming flagged for Stage 2 review
 (risk viz-complexity-creep).
+
+## 2026-06-12 — Design landed + rename (session 1, continued)
+
+- Design system arrived: State of Us v4 prototype (Claude design session export) —
+  neo-brutalist newspaper, 8 interaction modes, 14 DV renderers, personal layer
+  everywhere. Preserved at design/v4/ (prototypes, DECISIONS, FEATURE-AUDIT,
+  BACKLOG, V5 Feedback, dv reference board).
+- Renamed: ComWatch -> State of Us (adr-004). Slug/repo stay comwatch (infra).
+- Coding Agent Review delivered into V5 Feedback.md (CA-001..CA-037 + FB-001/003/
+  006/008 deliverables: tagline, desk names, hero curation, peek-and-page rows).
+  Key asks: reduced-motion + focus tokens, region-capture affordance, share-card
+  design, 6th desk (Identity/Society), archived-state treatment.
+- Pending owner decisions: dark-mode exception, logo asset, public domain.

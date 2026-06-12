@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous">
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800;900&family=Spectral:ital,wght@0,500;0,600;1,500&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    body { margin: 0; background: #E7E0CD; }
+    * { box-sizing: border-box; }
+    button { cursor: pointer; }
+    @keyframes cwPopIn { from { opacity: 0; transform: scale(.6); } to { opacity: 1; transform: scale(1); } }
+    @keyframes cwRise { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: translateY(0); } }
+  </style>
+</helmet>
+
+<div style="min-height: 100vh; font-family: 'Archivo', sans-serif; color: #18162A; background-color: #E7E0CD; background-image: radial-gradient(rgba(24,22,42,.055) 1px, transparent 1px); background-size: 7px 7px; padding-bottom: 90px;">
+
+  <!-- masthead -->
+  <div style="background: #F2ECDF; border-bottom: 2px solid #18162A;">
+    <div style="max-width: 1280px; margin: 0 auto; padding: 14px 22px; display: flex; align-items: center; gap: 12px; flex-wrap: wrap;">
+      <span style="font-weight: 900; letter-spacing: -.03em; font-size: 21px; text-transform: uppercase;">ComWatch</span>
+      <span style="font-family: 'Space Mono', monospace; font-size: 10.5px; letter-spacing: .18em; text-transform: uppercase; color: #6B6478;">/ Bucket sort · 3 one-screen variants · pick one</span>
+    </div>
+  </div>
+
+  <div style="max-width: 1280px; margin: 0 auto; padding: 36px 22px 0;">
+
+    <div style="max-width: 800px; margin-bottom: 36px;">
+      <h1 style="font-weight: 900; font-size: 36px; line-height: 1; letter-spacing: -.02em; text-transform: uppercase; margin: 0 0 10px;">10 items. 3 buckets. <span style="color: #FF5A47;">One screen.</span></h1>
+      <div style="font-family: 'Spectral', serif; font-style: italic; font-size: 16px; color: #4A4744; line-height: 1.45;">Your note, applied: a 10-item bucket question must never take 10 screens. All three variants below are fully working — try each with the same question, then tell me V1, V2 or V3 (or a mix).</div>
+    </div>
+
+    <!-- ============ V1 — SORTING DESK ============ -->
+    <div data-screen-label="V1 Sorting desk" style="border: 2px solid #18162A; border-radius: 14px; background: #FFFFFF; overflow: hidden; box-shadow: 6px 6px 0 rgba(24,22,42,.15); margin-bottom: 40px;">
+      <div style="display: flex; align-items: center; gap: 12px; background: #18162A; color: #F2ECDF; padding: 12px 18px; flex-wrap: wrap;">
+        <span style="font-family: 'Space Mono', monospace; font-size: 12px; font-weight: 700; letter-spacing: .08em;">V1 · The sorting desk</span>
+        <span style="font-family: 'Space Mono', monospace; font-size: 10px; letter-spacing: .1em; text-transform: uppercase; color: #BFEE4F;">Drag any brand into a bucket — or tap brand, then tap bucket</span>
+        <button onClick="{{ resetA }}" style="margin-left: auto; font-family: 'Space Mono', monospace; font-size: 9.5px; letter-spacing: .1em; text-transform: uppercase; border: 1.5px solid #F2ECDF; border-radius: 100px; padding: 4px 11px; background: transparent; color: #F2ECDF;">⟲ reset</button>
+      </div>
+      <div style="padding: 24px; background: #E7E0CD;">
+        <div style="font-family: 'Spectral', serif; font-weight: 600; font-size: 22px; line-height: 1.15; margin-bottom: 4px;">Sort these AC brands into their rightful place.</div>
+        <div style="font-family: 'Space Mono', monospace; font-size: 10px; letter-spacing: .12em; text-transform: uppercase; color: #6B6478; margin-bottom: 16px;">{{ aProgress }} · every brand stays visible, nothing leaves the screen</div>
+
+        <!-- pool -->
+        <div style="border: 2px dashed #18162A; border-radius: 10px; background: rgba(247,241,226,.6); padding: 14px; display: flex; flex-wrap: wrap; gap: 8px; min-height: 64px; margin-bottom: 16px; align-items: center;">
+          <sc-for list="{{ aPool }}" as="ch" hint-placeholder-count="10">
+            <button onPointerDown="{{ ch.down }}" style="touch-action: none; user-select: none; -webkit-user-select: none; border: 2px solid #18162A; border-radius: 100px; padding: 10px 16px; font-weight: 700; font-size: 14px; background: {{ ch.bg }}; box-shadow: {{ ch.shadow }}; cursor: grab; min-height: 44px;" style-hover="transform: translate(-1px,-1px); box-shadow: 3px 3px 0 #18162A;">{{ ch.label }}</button>
+          </sc-for>
+          <sc-if value="{{ aPoolEmpty }}" hint-placeholder-val="{{ false }}">
+            <span style="font-family: 'Space Mono', monospace; font-size: 11px; letter-spacing: .1em; text-transform: uppercase; color: #6B6478;">All sorted — tap any chip below to pull it back</span>
+          </sc-if>
+        </div>
+
+        <!-- buckets -->
+        <div style="display: grid; grid-template-columns: {{ bucketCols }}; gap: 14px;">
+          <sc-for list="{{ aBuckets }}" as="bk" hint-placeholder-count="3">
+            <div id="{{ bk.domId }}" onClick="{{ bk.file }}" style="border: 2px solid #18162A; border-radius: 12px; background: #F7F1E2; overflow: hidden; min-height: 150px; cursor: pointer; outline: {{ bk.outline }}; outline-offset: 3px;">
+              <div style="background: {{ bk.color }}; border-bottom: 2px solid #18162A; padding: 10px 14px; display: flex; align-items: center; justify-content: space-between; gap: 8px;">
+                <span style="font-weight: 900; font-size: 13.5px; text-transform: uppercase; letter-spacing: .02em;">{{ bk.label }}</span>
+                <span style="font-family: 'Space Mono', monospace; font-size: 10.5px; font-weight: 700; border: 1.5px solid #18162A; border-radius: 100px; background: #F2ECDF; padding: 2px 9px;">{{ bk.count }}</span>
+              </div>
+              <div style="padding: 12px; display: flex; flex-wrap: wrap; gap: 7px; align-content: flex-start;">
+                <sc-for list="{{ bk.chips }}" as="fc" hint-placeholder-count="2">
+                  <button onClick="{{ fc.back }}" style="border: 1.5px solid #18162A; border-radius: 100px; padding: 7px 12px; font-weight: 600; font-size: 12.5px; background: #F2ECDF; animation: cwPopIn .25s cubic-bezier(.2,.7,.2,1) both;" style-hover="background: #FFD9D3; text-decoration: line-through;">{{ fc.label }} ×</button>
+                </sc-for>
+              </div>
+            </div>
+          </sc-for>
+        </div>
+
+        <sc-if value="{{ aDone }}" hint-placeholder-val="{{ false }}">
+          <div style="margin-top: 16px; border: 2px solid #18162A; border-radius: 10px; background: #BFEE4F; padding: 14px 18px; display: flex; align-items: center; gap: 12px; animation: cwRise .4s both;">
+            <span style="font-weight: 900; font-size: 15px; text-transform: uppercase; color: #18162A; border: 2.5px solid #18162A; border-radius: 6px; padding: 4px 9px; transform: rotate(-4deg);">Counted ✓</span>
+            <span style="font-family: 'Spectral', serif; font-size: 15px;">All 10 sorted on one screen — zero page hops.</span>
+          </div>
+        </sc-if>
+      </div>
+    </div>
+
+    <!-- ============ V2 — RAPID FILE ============ -->
+    <div data-screen-label="V2 Rapid file" style="border: 2px solid #18162A; border-radius: 14px; background: #FFFFFF; overflow: hidden; box-shadow: 6px 6px 0 rgba(24,22,42,.15); margin-bottom: 40px;">
+      <div style="display: flex; align-items: center; gap: 12px; background: #18162A; color: #F2ECDF; padding: 12px 18px; flex-wrap: wrap;">
+        <span style="font-family: 'Space Mono', monospace; font-size: 12px; font-weight: 700; letter-spacing: .08em;">V2 · Rapid file</span>
+        <span style="font-family: 'Space Mono', monospace; font-size: 10px; letter-spacing: .1em; text-transform: uppercase; color: #BFEE4F;">One tap per item — the queue advances itself · 10 items = 10 taps</span>
+        <button onClick="{{ resetB }}" style="margin-left: auto; font-family: 'Space Mono', monospace; font-size: 9.5px; letter-spacing: .1em; text-transform: uppercase; border: 1.5px solid #F2ECDF; border-radius: 100px; padding: 4px 11px; background: transparent; color: #F2ECDF;">⟲ reset</button>
+      </div>
+      <div style="padding: 24px; background: #E7E0CD;">
+        <div style="font-family: 'Spectral', serif; font-weight: 600; font-size: 22px; line-height: 1.15; margin-bottom: 16px;">Sort these AC brands into their rightful place.</div>
+
+        <div style="display: flex; gap: 20px; flex-direction: {{ v2Flow }};">
+          <!-- queue -->
+          <div style="flex: 1; min-width: 0;">
+            <div style="font-family: 'Space Mono', monospace; font-size: 10px; letter-spacing: .12em; text-transform: uppercase; color: #6B6478; margin-bottom: 9px;">Up next — whole queue in sight</div>
+            <div style="display: flex; flex-wrap: wrap; gap: 7px; margin-bottom: 18px;">
+              <sc-for list="{{ bQueue }}" as="qc" hint-placeholder-count="10">
+                <span style="border: 2px solid #18162A; border-radius: 100px; padding: {{ qc.pad }}; font-weight: {{ qc.weight }}; font-size: {{ qc.fs }}; background: {{ qc.bg }}; color: {{ qc.fg }}; text-decoration: {{ qc.deco }}; transition: all .2s;">{{ qc.label }}</span>
+              </sc-for>
+            </div>
+            <sc-if value="{{ bHasCurrent }}" hint-placeholder-val="{{ true }}">
+              <div style="border: 2px solid #18162A; border-radius: 12px; background: #F7F1E2; box-shadow: 5px 5px 0 #18162A; padding: 22px; text-align: center; margin-bottom: 6px; animation: cwPopIn .25s cubic-bezier(.2,.7,.2,1) both;">
+                <div style="font-family: 'Space Mono', monospace; font-size: 9.5px; letter-spacing: .16em; text-transform: uppercase; color: #6B6478; margin-bottom: 6px;">Now filing · {{ bN }} of 10</div>
+                <div style="font-weight: 900; font-size: 30px; letter-spacing: -.02em;">{{ bCurrent }}</div>
+              </div>
+            </sc-if>
+            <sc-if value="{{ bDone }}" hint-placeholder-val="{{ false }}">
+              <div style="border: 2px solid #18162A; border-radius: 12px; background: #BFEE4F; padding: 20px; text-align: center; animation: cwRise .4s both;">
+                <span style="font-weight: 900; font-size: 17px; text-transform: uppercase;">Counted ✓ — 10 taps, done.</span>
+              </div>
+            </sc-if>
+          </div>
+
+          <!-- bucket buttons -->
+          <div style="width: {{ v2RailW }}; flex-shrink: 0; display: flex; flex-direction: column; gap: 10px;">
+            <sc-for list="{{ bBuckets }}" as="bb" hint-placeholder-count="3">
+              <button onClick="{{ bb.file }}" style="border: 2px solid #18162A; border-radius: 10px; background: {{ bb.color }}; padding: 14px 16px; text-align: left; display: flex; align-items: center; gap: 10px; min-height: 56px;" style-hover="transform: translate(-2px,-2px); box-shadow: 4px 4px 0 #18162A;">
+                <span style="font-weight: 900; font-size: 14px; text-transform: uppercase; flex: 1;">{{ bb.label }}</span>
+                <span style="display: flex; flex-wrap: wrap; gap: 4px; justify-content: flex-end; max-width: 60%;">
+                  <sc-for list="{{ bb.minis }}" as="m" hint-placeholder-count="2">
+                    <span onClick="{{ m.back }}" style="font-family: 'Space Mono', monospace; font-size: 9px; border: 1px solid #18162A; border-radius: 3px; background: rgba(242,236,223,.85); padding: 2px 6px; cursor: pointer;" style-hover="background: #FFD9D3;">{{ m.label }}</span>
+                  </sc-for>
+                </span>
+              </button>
+            </sc-for>
+            <div style="font-family: 'Space Mono', monospace; font-size: 9px; letter-spacing: .08em; text-transform: uppercase; color: #6B6478;">Tap a filed mini-tag to undo it</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============ V3 — DEAL THE DECK ============ -->
+    <div data-screen-label="V3 Deal the deck" style="border: 2px solid #18162A; border-radius: 14px; background: #FFFFFF; overflow: hidden; box-shadow: 6px 6px 0 rgba(24,22,42,.15); margin-bottom: 32px;">
+      <div style="display: flex; align-items: center; gap: 12px; background: #18162A; color: #F2ECDF; padding: 12px 18px; flex-wrap: wrap;">
+        <span style="font-family: 'Space Mono', monospace; font-size: 12px; font-weight: 700; letter-spacing: .08em;">V3 · Deal the deck</span>
+        <span style="font-family: 'Space Mono', monospace; font-size: 10px; letter-spacing: .1em; text-transform: uppercase; color: #BFEE4F;">Drag the top card to a pile — or tap a pile to deal it there</span>
+        <button onClick="{{ resetC }}" style="margin-left: auto; font-family: 'Space Mono', monospace; font-size: 9.5px; letter-spacing: .1em; text-transform: uppercase; border: 1.5px solid #F2ECDF; border-radius: 100px; padding: 4px 11px; background: transparent; color: #F2ECDF;">⟲ reset</button>
+      </div>
+      <div style="padding: 24px; background: #E7E0CD;">
+        <div style="font-family: 'Spectral', serif; font-weight: 600; font-size: 22px; line-height: 1.15; margin-bottom: 16px;">Sort these AC brands into their rightful place.</div>
+
+        <!-- piles -->
+        <div style="display: grid; grid-template-columns: {{ bucketCols }}; gap: 14px; margin-bottom: 20px;">
+          <sc-for list="{{ cBuckets }}" as="ck" hint-placeholder-count="3">
+            <div id="{{ ck.domId }}" onClick="{{ ck.file }}" style="border: 2px solid #18162A; border-radius: 12px; background: {{ ck.color }}; min-height: 140px; cursor: pointer; padding: 12px; position: relative; outline: {{ ck.outline }}; outline-offset: 3px;" style-hover="transform: translate(-1px,-1px); box-shadow: 4px 4px 0 #18162A;">
+              <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px;">
+                <span style="font-weight: 900; font-size: 13.5px; text-transform: uppercase;">{{ ck.label }}</span>
+                <span style="font-family: 'Space Mono', monospace; font-size: 10.5px; font-weight: 700; border: 1.5px solid #18162A; border-radius: 100px; background: #F2ECDF; padding: 2px 9px;">{{ ck.count }}</span>
+              </div>
+              <div style="display: flex; flex-direction: column; gap: 5px;">
+                <sc-for list="{{ ck.cards }}" as="cc" hint-placeholder-count="2">
+                  <span onClick="{{ cc.back }}" style="border: 1.5px solid #18162A; border-radius: 6px; background: #F7F1E2; padding: 6px 10px; font-weight: 600; font-size: 12.5px; animation: cwPopIn .25s both; cursor: pointer;" style-hover="background: #FFD9D3;">{{ cc.label }} ×</span>
+                </sc-for>
+              </div>
+            </div>
+          </sc-for>
+        </div>
+
+        <!-- deck -->
+        <div style="display: flex; align-items: center; justify-content: center; gap: 22px;">
+          <sc-if value="{{ cHasCurrent }}" hint-placeholder-val="{{ true }}">
+            <div style="position: relative; width: 240px; height: 110px;">
+              <sc-if value="{{ cHasThird }}" hint-placeholder-val="{{ true }}">
+                <div style="position: absolute; inset: 0; border: 2px solid #18162A; border-radius: 12px; background: #EFE8D6; transform: rotate(3deg) translateY(8px) scale(.95);"></div>
+              </sc-if>
+              <sc-if value="{{ cHasNext }}" hint-placeholder-val="{{ true }}">
+                <div style="position: absolute; inset: 0; border: 2px solid #18162A; border-radius: 12px; background: #F2ECDF; transform: rotate(-2deg) translateY(4px) scale(.975);"></div>
+              </sc-if>
+              <div onPointerDown="{{ cDown }}" style="touch-action: none; user-select: none; -webkit-user-select: none; position: absolute; inset: 0; border: 2px solid #18162A; border-radius: 12px; background: #F7F1E2; box-shadow: 5px 5px 0 #18162A; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; cursor: grab; opacity: {{ cCardOpacity }};">
+                <span style="font-family: 'Space Mono', monospace; font-size: 9px; letter-spacing: .14em; text-transform: uppercase; color: #6B6478;">card {{ cN }} of 10</span>
+                <span style="font-weight: 900; font-size: 24px; letter-spacing: -.02em;">{{ cCurrent }}</span>
+              </div>
+            </div>
+          </sc-if>
+          <sc-if value="{{ cDone }}" hint-placeholder-val="{{ false }}">
+            <div style="border: 2px solid #18162A; border-radius: 12px; background: #BFEE4F; padding: 18px 28px; animation: cwRise .4s both;">
+              <span style="font-weight: 900; font-size: 16px; text-transform: uppercase;">Counted ✓ — deck dealt.</span>
+            </div>
+          </sc-if>
+        </div>
+      </div>
+    </div>
+
+    <div style="font-family: 'Space Mono', monospace; font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: #6B6478; text-align: center;">Tell me: V1, V2 or V3 — or a mix (e.g. V1 on desktop, V2 on mobile)</div>
+  </div>
+
+  <!-- drag ghost -->
+  <sc-if value="{{ dragging }}" hint-placeholder-val="{{ false }}">
+    <div style="position: fixed; left: 0; top: 0; z-index: 99; pointer-events: none; transform: translate({{ dragX }}px, {{ dragY }}px) translate(-50%, -50%) rotate(-4deg);">
+      <span style="display: inline-block; border: 2px solid #18162A; border-radius: 100px; padding: 10px 16px; font-family: 'Archivo', sans-serif; font-weight: 700; font-size: 14px; background: #BFEE4F; box-shadow: 5px 5px 0 rgba(24,22,42,.3);">{{ dragLabel }}</span>
+    </div>
+  </sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  BRANDS = ['Voltas', 'LG', 'Daikin', 'Blue Star', 'Samsung', 'Lloyd', 'Hitachi', 'Carrier', 'Panasonic', "O'General"];
+  BUCKETS = [
+    { label: 'Elite tier', color: '#BFEE4F' },
+    { label: 'Mid, honestly', color: '#FFC53D' },
+    { label: 'Avoid', color: '#FF5A47' }
+  ];
+
+  state = {
+    A: {}, B: {}, C: {},
+    selA: null,
+    drag: null,
+    wide: typeof window !== 'undefined' ? window.innerWidth > 860 : true
+  };
+
+  componentDidMount() {
+    this._p = null;
+    this._onResize = () => this.setState({ wide: window.innerWidth > 860 });
+    this._onMove = (e) => {
+      if (!this._p) return;
+      const dx = e.clientX - this._p.x0, dy = e.clientY - this._p.y0;
+      if (!this._p.moved && Math.sqrt(dx * dx + dy * dy) > 7) this._p.moved = true;
+      if (this._p.moved) this.setState({ drag: { variant: this._p.variant, brand: this._p.brand, x: e.clientX, y: e.clientY } });
+    };
+    this._onUp = (e) => {
+      if (!this._p) return;
+      const p = this._p; this._p = null;
+      if (p.moved) {
+        for (let i = 0; i < 3; i++) {
+          const el = document.getElementById('bkt' + p.variant + i);
+          if (el) {
+            const r = el.getBoundingClientRect();
+            if (e.clientX >= r.left && e.clientX <= r.right && e.clientY >= r.top && e.clientY <= r.bottom) {
+              this.assign(p.variant, p.brand, i);
+              break;
+            }
+          }
+        }
+        this.setState({ drag: null });
+      } else {
+        if (p.variant === 'A') this.setState({ selA: this.state.selA === p.brand ? null : p.brand, drag: null });
+        else this.setState({ drag: null });
+      }
+    };
+    window.addEventListener('resize', this._onResize);
+    window.addEventListener('pointermove', this._onMove);
+    window.addEventListener('pointerup', this._onUp);
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('resize', this._onResize);
+    window.removeEventListener('pointermove', this._onMove);
+    window.removeEventListener('pointerup', this._onUp);
+  }
+
+  assign(variant, brand, idx) {
+    const map = Object.assign({}, this.state[variant]);
+    map[brand] = idx;
+    const st = {}; st[variant] = map;
+    if (variant === 'A') st.selA = null;
+    this.setState(st);
+  }
+
+  unassign(variant, brand) {
+    const map = Object.assign({}, this.state[variant]);
+    delete map[brand];
+    const st = {}; st[variant] = map;
+    this.setState(st);
+  }
+
+  firstUnassigned(variant) {
+    const map = this.state[variant];
+    return this.BRANDS.find(function (b) { return map[b] === undefined; });
+  }
+
+  renderVals() {
+    const self = this;
+    const s = this.state;
+    const vals = {
+      bucketCols: s.wide ? '1fr 1fr 1fr' : '1fr',
+      v2Flow: s.wide ? 'row' : 'column',
+      v2RailW: s.wide ? '340px' : '100%',
+      dragging: !!s.drag,
+      dragX: s.drag ? s.drag.x : 0,
+      dragY: s.drag ? s.drag.y : 0,
+      dragLabel: s.drag ? s.drag.brand : '',
+      resetA: function () { self.setState({ A: {}, selA: null }); },
+      resetB: function () { self.setState({ B: {} }); },
+      resetC: function () { self.setState({ C: {} }); }
+    };
+
+    // ----- V1 -----
+    const aCount = Object.keys(s.A).length;
+    vals.aProgress = aCount + ' of 10 sorted';
+    vals.aDone = aCount === 10;
+    vals.aPool = this.BRANDS.filter(function (b) { return s.A[b] === undefined; }).map(function (b) {
+      const sel = s.selA === b;
+      const hidden = s.drag && s.drag.variant === 'A' && s.drag.brand === b;
+      return {
+        label: b,
+        bg: hidden ? '#EFE8D6' : (sel ? '#BFEE4F' : '#F7F1E2'),
+        shadow: sel ? '3px 3px 0 #18162A' : 'none',
+        down: function (e) { self._p = { variant: 'A', brand: b, x0: e.clientX, y0: e.clientY, moved: false }; }
+      };
+    });
+    vals.aPoolEmpty = vals.aPool.length === 0;
+    vals.aBuckets = this.BUCKETS.map(function (bk, i) {
+      const chips = self.BRANDS.filter(function (b) { return s.A[b] === i; });
+      const hot = (s.selA !== null) || (s.drag && s.drag.variant === 'A');
+      return {
+        domId: 'bktA' + i,
+        label: bk.label,
+        color: bk.color,
+        count: chips.length,
+        outline: hot ? '2px dashed #18162A' : 'none',
+        file: function () { if (s.selA !== null) self.assign('A', s.selA, i); },
+        chips: chips.map(function (b) {
+          return { label: b, back: function (ev) { ev.stopPropagation(); self.unassign('A', b); } };
+        })
+      };
+    });
+
+    // ----- V2 -----
+    const bCur = this.firstUnassigned('B');
+    const bCount = Object.keys(s.B).length;
+    vals.bHasCurrent = !!bCur;
+    vals.bDone = bCount === 10;
+    vals.bCurrent = bCur || '';
+    vals.bN = Math.min(bCount + 1, 10);
+    vals.bQueue = this.BRANDS.map(function (b) {
+      const filed = s.B[b] !== undefined;
+      const cur = b === bCur;
+      return {
+        label: b,
+        bg: cur ? '#18162A' : (filed ? 'transparent' : '#F7F1E2'),
+        fg: cur ? '#BFEE4F' : (filed ? '#A9A294' : '#18162A'),
+        deco: filed ? 'line-through' : 'none',
+        weight: cur ? '800' : '600',
+        fs: cur ? '13.5px' : '12.5px',
+        pad: cur ? '8px 14px' : '6px 12px'
+      };
+    });
+    vals.bBuckets = this.BUCKETS.map(function (bk, i) {
+      const minis = self.BRANDS.filter(function (b) { return s.B[b] === i; });
+      return {
+        label: bk.label,
+        color: bk.color,
+        file: function () { if (bCur) self.assign('B', bCur, i); },
+        minis: minis.map(function (b) {
+          return { label: b, back: function (ev) { ev.stopPropagation(); self.unassign('B', b); } };
+        })
+      };
+    });
+
+    // ----- V3 -----
+    const cCur = this.firstUnassigned('C');
+    const cCount = Object.keys(s.C).length;
+    const remaining = 10 - cCount;
+    vals.cHasCurrent = !!cCur;
+    vals.cDone = cCount === 10;
+    vals.cCurrent = cCur || '';
+    vals.cN = Math.min(cCount + 1, 10);
+    vals.cHasNext = remaining > 1;
+    vals.cHasThird = remaining > 2;
+    vals.cCardOpacity = s.drag && s.drag.variant === 'C' ? '.25' : '1';
+    vals.cDown = function (e) { if (cCur) self._p = { variant: 'C', brand: cCur, x0: e.clientX, y0: e.clientY, moved: false }; };
+    vals.cBuckets = this.BUCKETS.map(function (bk, i) {
+      const cards = self.BRANDS.filter(function (b) { return s.C[b] === i; });
+      return {
+        domId: 'bktC' + i,
+        label: bk.label,
+        color: bk.color,
+        count: cards.length,
+        outline: s.drag && s.drag.variant === 'C' ? '2px dashed #18162A' : 'none',
+        file: function () { if (cCur) self.assign('C', cCur, i); },
+        cards: cards.map(function (b) {
+          return { label: b, back: function (ev) { ev.stopPropagation(); self.unassign('C', b); } };
+        })
+      };
+    });
+
+    return vals;
+  }
+}
+</script>
+</body>
+</html>
