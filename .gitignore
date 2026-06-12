@@ -1,5 +1,13 @@
 node_modules/
 .next/
+out/
 .env
-*.log
-data/*.db
+.env*.local
+*.db
+*.db-wal
+*.db-shm
+data/
+test-results/
+playwright-report/
+*.tsbuildinfo
+next-env.d.ts

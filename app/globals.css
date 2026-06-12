@@ -1,0 +1,107 @@
+@import "tailwindcss";
+
+/*
+ * State of Us — design tokens, locked by adr-005 (UI master plan) from the
+ * v4/v5 prototype. Light-only by owner decision (adr-005 §2). Components
+ * consume var(--*) or the Tailwind color names below — never hardcoded hex.
+ */
+:root {
+  /* paper */
+  --paper: #f2ecdf; /* main page background */
+  --paper-bright: #f7f1e2; /* cards / raised surfaces */
+  --paper-deep: #e7e0cd; /* recessed bands / rails */
+  --paper-edge: #efe8d6; /* hairline fills */
+  --paper-white: #fffdf6; /* brightest plate */
+
+  /* ink */
+  --ink: #18162a; /* text + borders */
+  --ink-soft: #34304e; /* secondary ink */
+  --muted: #6b6478; /* captions, bylines — min 10px mono (CA-009) */
+  --muted-warm: #8a8377;
+
+  /* brand accents */
+  --fire: #ff5a47;
+  --fire-tint: #ffd9d3;
+  --lime: #bfee4f;
+  --gold: #ffc53d;
+  --gold-tint: #ffe9c7;
+  --blue: #7da7ff;
+  --pink: #f2a0c4;
+  --lavender: #b79ce4; /* The Mirror desk (MR1) */
+  --agree: #2b8a3e; /* the one blessed green (CA-003) */
+
+  /* type */
+  --font-ui: var(--font-archivo), "Archivo", sans-serif;
+  --font-editorial: var(--font-spectral), "Spectral", serif;
+  --font-label: var(--font-space-mono), "Space Mono", monospace;
+}
+
+@theme inline {
+  --color-paper: var(--paper);
+  --color-paper-bright: var(--paper-bright);
+  --color-paper-deep: var(--paper-deep);
+  --color-paper-edge: var(--paper-edge);
+  --color-paper-white: var(--paper-white);
+  --color-ink: var(--ink);
+  --color-ink-soft: var(--ink-soft);
+  --color-muted: var(--muted);
+  --color-muted-warm: var(--muted-warm);
+  --color-fire: var(--fire);
+  --color-fire-tint: var(--fire-tint);
+  --color-lime: var(--lime);
+  --color-gold: var(--gold);
+  --color-gold-tint: var(--gold-tint);
+  --color-blue: var(--blue);
+  --color-pink: var(--pink);
+  --color-lavender: var(--lavender);
+  --color-agree: var(--agree);
+
+  --font-ui: var(--font-ui);
+  --font-editorial: var(--font-editorial);
+  --font-label: var(--font-label);
+}
+
+html {
+  background: var(--paper);
+  color: var(--ink);
+}
+
+body {
+  font-family: var(--font-ui);
+  /* dot-grid cream paper — the house texture from the prototype */
+  background-color: var(--paper);
+  background-image: radial-gradient(
+    circle,
+    rgba(24, 22, 42, 0.07) 1px,
+    transparent 1px
+  );
+  background-size: 22px 22px;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* house focus token — CA-002: 3px lime outline; ink on lime surfaces */
+:focus-visible {
+  outline: 3px solid var(--lime);
+  outline-offset: 2px;
+}
+.on-lime :focus-visible {
+  outline-color: var(--ink);
+}
+
+/* CA-001 — reduced motion: kill non-essential animation globally */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* mono labels never below 10px — CA-009 type floor */
+.font-label,
+[class*="font-label"] {
+  font-size: max(10px, 1em);
+}

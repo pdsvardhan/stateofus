@@ -49,7 +49,7 @@ satori for share images · self-hosted GeoLite2 · Vitest + Playwright.
 
 - Design tokens come from the user's design system (Stage 2.2) via CSS variables
   in `globals.css` — components consume `var(--*)`, never hardcoded colors.
-- Dark + light mode both mandatory (next-themes).
+- Light-only per adr-005 (house dark+light rule waived for this project); no next-themes.
 - Mobile-first: build at 375px, then scale up. Thumb-zone for primary actions.
 - File naming: kebab-case files, PascalCase components, `feat-<id>` referenced in
   PR/commit messages for traceability.
