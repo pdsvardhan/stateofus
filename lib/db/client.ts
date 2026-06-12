@@ -7,8 +7,9 @@
  */
 import Database from "better-sqlite3";
 import { drizzle } from "drizzle-orm/better-sqlite3";
-import { mkdirSync } from "node:fs";
-import { dirname } from "node:path";
+import { migrate } from "drizzle-orm/better-sqlite3/migrator";
+import { existsSync, mkdirSync } from "node:fs";
+import { dirname, join } from "node:path";
 import * as schema from "./schema";
 
 const file = process.env.DATABASE_FILE ?? "./data/stateofus.db";
@@ -20,3 +21,10 @@ rawDb.pragma("foreign_keys = ON");
 rawDb.pragma("busy_timeout = 5000");
 
 export const db = drizzle(rawDb, { schema });
+
+// Migrate on first open. drizzle/ ships in the runner image (Dockerfile COPY);
+// migrations are generated SQL (drizzle-kit generate), applied idempotently.
+const migrationsFolder = join(process.cwd(), "drizzle");
+if (existsSync(migrationsFolder)) {
+  migrate(db, { migrationsFolder });
+}

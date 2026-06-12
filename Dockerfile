@@ -22,6 +22,8 @@ ENV TZ=Asia/Kolkata
 COPY --from=builder /app/.next/standalone ./
 COPY --from=builder /app/.next/static ./.next/static
 COPY --from=builder /app/public ./public
+# drizzle SQL migrations — applied on boot by lib/db/client.ts
+COPY --from=builder /app/drizzle ./drizzle
 
 EXPOSE 3000
 
