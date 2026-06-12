@@ -1,0 +1,20 @@
+feature_id: feat-vote-dedup
+commit: 2ffbfd7
+claimed_files:
+  - { path: lib/rate-limit.ts, change: created }
+  - { path: app/api/answers/route.ts, change: created }
+  - { path: tests/unit/answer-flow.test.ts, change: created }
+claimed_routes:
+  - { method: POST, path: /api/answers }
+claimed_behaviors:
+  - ac_id: 379
+    behavior: "repeat answers update, never duplicate (aggregate reverses previous contribution; sample_n stable)"
+    verify_hint: "npm test (AC 371/379 test); or POST twice w/ same jar, check sample_n stays"
+  - ac_id: 380
+    behavior: "per-IP and per-device sliding-window rate limits on /api/answers (30/min device, 90/min ip)"
+    verify_hint: "npm test rate-limit tests; or loop 35 POSTs -> 429 with reason"
+  - ac_id: 381
+    behavior: "burst patterns (>=10 in 10s device) rejected AND logged to rate_events"
+    verify_hint: "npm test (AC 380/381); sqlite3: SELECT COUNT(*) FROM rate_events WHERE kind='burst-reject'"
+intentional_placeholders:
+  - "in-memory windows reset on container restart - documented in lib/rate-limit.ts header as MVP limitation (single-container deployment)"

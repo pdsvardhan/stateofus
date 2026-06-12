@@ -1,0 +1,20 @@
+feature_id: feat-anonymous-participation
+commit: 2ffbfd7
+claimed_files:
+  - { path: lib/identity.ts, change: created }
+  - { path: app/api/answers/route.ts, change: created }
+  - { path: app/api/questions/[id]/result/route.ts, change: created }
+claimed_routes:
+  - { method: POST, path: /api/answers }
+  - { method: GET, path: /api/questions/[id]/result }
+claimed_behaviors:
+  - ac_id: 369
+    behavior: "answering requires no signup/login anywhere"
+    verify_hint: "curl -X POST http://127.0.0.1:8510/api/answers with only a question payload -> 201, no auth header involved"
+  - ac_id: 370
+    behavior: "device cookie identity persists answers; result endpoint returns your_payload for you-vs-crowd"
+    verify_hint: "curl -c jar POST /api/answers then curl -b jar GET /api/questions/<id>/result -> your_payload non-null"
+  - ac_id: 371
+    behavior: "one answer per question per device enforced via UNIQUE + UPSERT"
+    verify_hint: "POST twice with same cookie jar -> second returns outcome=updated, answers row count stays 1"
+intentional_placeholders: []

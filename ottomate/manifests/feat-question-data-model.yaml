@@ -1,0 +1,21 @@
+feature_id: feat-question-data-model
+commit: 2ffbfd7
+claimed_files:
+  - { path: lib/db/schema.ts, change: modified }
+  - { path: lib/catalogue/enums.ts, change: created }
+  - { path: lib/catalogue/normalize.ts, change: created }
+  - { path: scripts/import-catalogue.ts, change: created }
+  - { path: drizzle/0000_init.sql, change: created }
+  - { path: tests/unit/catalogue.test.ts, change: created }
+claimed_routes: []
+claimed_behaviors:
+  - ac_id: 366
+    behavior: "questions table captures all meaningful catalogue columns (34 incl. 5 dupes -> 39 cols with derived fields)"
+    verify_hint: "ssh: sqlite3 /mnt/storage/stateofus/stateofus.db 'PRAGMA table_info(questions)' | wc -l => 39; compare a Q-1xx row against inputs/catalogue-full.json"
+  - ac_id: 367
+    behavior: "re-import is idempotent: no duplicates, lifecycle+approval preserved"
+    verify_hint: "cd /mnt/storage/websites/stateofus && npm run import:catalogue twice; COUNT(*) unchanged; or npm test (AC 367 tests)"
+  - ac_id: 368
+    behavior: "mode + DV validated against canonical enums; unknown mode rejects row; killed circle-packing remaps to treemap with warning"
+    verify_hint: "npm test (AC 368 tests); grep import_warnings_json in DB for Q-203"
+intentional_placeholders: []

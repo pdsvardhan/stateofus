@@ -1,0 +1,21 @@
+feature_id: feat-seed-content-pipeline
+commit: 2ffbfd7
+claimed_files:
+  - { path: scripts/import-authored.ts, change: created }
+  - { path: scripts/seed.ts, change: created }
+  - { path: inputs/catalogue-full.json, change: created }
+claimed_routes: []
+claimed_behaviors:
+  - ac_id: 372
+    behavior: "all 25 content-ready catalogue questions imported and activated"
+    verify_hint: "sqlite3: SELECT COUNT(*) FROM questions WHERE source='catalogue' AND status='active' => 25"
+  - ac_id: 373
+    behavior: "105 active questions across all 6 categories and all 5 core modes; launch gate in seed.ts enforces >=100/6/5"
+    verify_hint: "DATABASE_FILE=/mnt/storage/stateofus/stateofus.db npm run seed -> launchGate.pass true, totals.active=105"
+  - ac_id: 374
+    behavior: "authored questions follow DOC-3 standards (authored against checklist in YAML header; zod enforces text<=200, structural rails)"
+    verify_hint: "read staging/content/authored-questions-v1.yaml header; npm test enum/shape tests"
+  - ac_id: 375
+    behavior: "activation only via transition with recorded approval (owner sign-off 2026-06-12, adr-006 s4) - approved_by/approved_at set on all 105"
+    verify_hint: "sqlite3: SELECT COUNT(*) FROM questions WHERE status='active' AND approved_by IS NULL => 0"
+intentional_placeholders: []

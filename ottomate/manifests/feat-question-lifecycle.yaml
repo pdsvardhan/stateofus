@@ -1,0 +1,21 @@
+feature_id: feat-question-lifecycle
+commit: 2ffbfd7
+claimed_files:
+  - { path: lib/lifecycle.ts, change: created }
+  - { path: app/api/admin/questions/[id]/transition/route.ts, change: created }
+  - { path: app/api/questions/[id]/route.ts, change: created }
+claimed_routes:
+  - { method: POST, path: /api/admin/questions/[id]/transition }
+  - { method: GET, path: /api/questions/[id] }
+claimed_behaviors:
+  - ac_id: 360
+    behavior: "5-state lifecycle with explicit ALLOWED_TRANSITIONS map enforced server-side; every transition logged to lifecycle_events"
+    verify_hint: "npm test (AC 360 tests); read lib/lifecycle.ts map"
+  - ac_id: 361
+    behavior: "frozen questions reject answers (409 with editorial copy) while results stay readable"
+    verify_hint: "transition a question to frozen then POST /api/answers -> 409; GET result -> 200"
+  - ac_id: 362
+    behavior: "status field returned on every question + result API response (UI render lands with feat-question-experience-page)"
+    verify_hint: "curl GET /api/questions/Q-101 -> .question.status present"
+intentional_placeholders:
+  - "AC 362 page-level status band renders in feat-question-experience-page (build #6) - API half shipped here"
