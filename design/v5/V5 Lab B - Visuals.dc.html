@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous">
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800;900&family=Spectral:ital,wght@0,500;0,600;1,500&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    body { margin: 0; background: #E7E0CD; }
+    * { box-sizing: border-box; }
+    button { cursor: pointer; }
+    textarea { resize: vertical; }
+    @keyframes cwPopIn { from { opacity: 0; transform: scale(.5); } to { opacity: 1; transform: scale(1); } }
+    @keyframes cwGrow { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+    @keyframes cwSheet { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes cwNudge { 0%, 100% { transform: translateX(0); } 50% { transform: translateX(-5px); } }
+  </style>
+</helmet>
+
+<div style="min-height: 100vh; font-family: 'Archivo', sans-serif; color: #18162A; background-color: #E7E0CD; background-image: radial-gradient(rgba(24,22,42,.055) 1px, transparent 1px); background-size: 7px 7px; padding-bottom: 110px;">
+
+  <div style="background: #F2ECDF; border-bottom: 2px solid #18162A;">
+    <div style="max-width: 1340px; margin: 0 auto; padding: 14px 22px; display: flex; align-items: center; gap: 12px; flex-wrap: wrap;">
+      <span style="font-weight: 900; letter-spacing: -.03em; font-size: 21px; text-transform: uppercase;">State of Us</span>
+      <span style="font-family: 'Space Mono', monospace; font-size: 10.5px; letter-spacing: .18em; text-transform: uppercase; color: #6B6478;">/ v5 lab B · visuals — 7 elements, 17 variants</span>
+      <a href="V5 Lab A — Interactions.dc.html" style="margin-left: auto; font-family: 'Space Mono', monospace; font-size: 10px; letter-spacing: .1em; text-transform: uppercase; font-weight: 700; color: #18162A; border: 2px solid #18162A; border-radius: 100px; padding: 7px 14px; background: #FFC53D; text-decoration: none;">← Lab A: interactions</a>
+    </div>
+  </div>
+
+  <div style="max-width: 1340px; margin: 0 auto; padding: 32px 22px 0;">
+
+    <!-- ════ 1 · DESK NOTES (FB-015) ════ -->
+    <div style="display: flex; align-items: baseline; gap: 12px; border-bottom: 3px solid #18162A; padding-bottom: 9px; margin-bottom: 20px;">
+      <span style="font-weight: 900; font-size: 21px; text-transform: uppercase;">1 · Desk notes</span>
+      <span style="font-family: 'Space Mono', monospace; font-size: 10px; letter-spacing: .12em; text-transform: uppercase; color: #6B6478;">FB-015 — new bg + the two notes must read as distinct</span>
+    </div>
+    <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(380px, 1fr)); gap: 20px; margin-bottom: 44px;">
+
+      <!-- N1 -->
+      <div style="border: 2px solid #18162A; border-radius: 12px; background: #FFFFFF; overflow: hidden; box-shadow: 5px 5px 0 rgba(24,22,42,.14); outline: {{ fr.N1.outline }}; outline-offset: 3px; display: flex; flex-direction: column;">
+        <div style="display: flex; align-items: center; gap: 8px; background: #18162A; color: #F2ECDF; padding: 9px 14px; flex-wrap: wrap;">
+          <span style="font-family: 'Space Mono', monospace; font-size: 11px; font-weight: 700;">N1 · Numbered inks</span>
+          <span style="margin-left: auto; display: inline-flex; gap: 5px;"><button onClick="{{ fr.N1.like }}" style="font-family: 'Space Mono', monospace; font-size: 9.5px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; border: 1.5px solid #BFEE4F; border-radius: 100px; padding: 4px 10px; background: {{ fr.N1.likeBg }}; color: {{ fr.N1.likeFg }};">Like</button><button onClick="{{ fr.N1.change }}" style="font-family: 'Space Mono', monospace; font-size: 9.5px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; border: 1.5px solid #FFC53D; border-radius: 100px; padding: 4px 10px; background: {{ fr.N1.changeBg }}; color: {{ fr.N1.changeFg }};">Needs change</button><button onClick="{{ fr.N1.dislike }}" style="font-family: 'Space Mono', monospace; font-size: 9.5px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; border: 1.5px solid #FF5A47; border-radius: 100px; padding: 4px 10px; background: {{ fr.N1.dislikeBg }}; color: {{ fr.N1.dislikeFg }};">Dislike</button></span>
+        </div>
+        <div style="padding: 18px; background: #E7E0CD; flex: 1; display: flex; flex-direction: column; gap: 12px;">
+          <div style="border: 2px solid #18162A; border-radius: 10px; background: #FFFDF6; padding: 16px 18px; display: flex; gap: 14px; align-items: flex-start;">
+            <span style="font-family: 'Spectral', serif; font-weight: 600; font-style: italic; font-size: 38px; line-height: .8; color: #FF5A47; flex-shrink: 0;">01</span>
+            <div>
+              <div style="font-family: 'Space Mono', monospace; font-size: 9px; letter-spacing: .16em; text-transform: uppercase; color: #6B6478; margin-bottom: 5px;">Desk note</div>
+              <div style="font-family: 'Spectral', serif; font-size: 14.5px; line-height: 1.45;">"Stopping at the top of an escalator" is the most unanimous verdict in this entire edition: 93% say crime.</div>
+            </div>
+          </div>
+          <div style="border: 2px solid #18162A; border-radius: 10px; background: #FFFDF6; padding: 16px 18px; display: flex; gap: 14px; align-items: flex-start;">
+            <span style="font-family: 'Spectral', serif; font-weight: 600; font-style: italic; font-size: 38px; line-height: .8; color: #7DA7FF; flex-shrink: 0;">02</span>
+            <div>
+              <div style="font-family: 'Space Mono', monospace; font-size: 9px; letter-spacing: .16em; text-transform: uppercase; color: #6B6478; margin-bottom: 5px;">Desk note</div>
+              <div style="font-family: 'Spectral', serif; font-size: 14.5px; line-height: 1.45;">Under-25s are twice as forgiving of speakerphone calls. Nobody knows why.</div>
+            </div>
+          </div>
+          <div style="font-family: 'Space Mono', monospace; font-size: 8.5px; letter-spacing: .1em; text-transform: uppercase; color: #6B6478;">Brighter paper than the page · giant serif numerals in different inks per note</div>
+        </div>
+        <div style="padding: 10px 14px 12px; background: #F2ECDF; border-top: 2px solid #18162A;"><textarea value="{{ fr.N1.note }}" onChange="{{ fr.N1.setNote }}" placeholder="Comment (optional)…" style="width: 100%; min-height: 36px; border: 2px solid #18162A; border-radius: 7px; background: #F7F1E2; font-family: 'Space Mono', monospace; font-size: 11px; padding: 8px 10px; color: #18162A;"></textarea></div>
+      </div>
+
+      <!-- N2 -->
+      <div style="border: 2px solid #18162A; border-radius: 12px; background: #FFFFFF; overflow: hidden; box-shadow: 5px 5px 0 rgba(24,22,42,.14); outline: {{ fr.N2.outline }}; outline-offset: 3px; display: flex; flex-direction: column;">
+        <div style="display: flex; align-items: center; gap: 8px; background: #18162A; color: #F2ECDF; padding: 9px 14px; flex-wrap: wrap;">
+          <span style="font-family: 'Space Mono', monospace; font-size: 11px; font-weight: 700;">N2 · Highlighter pass</span>
+          <span style="margin-left: auto; display: inline-flex; gap: 5px;"><button onClick="{{ fr.N2.like }}" style="font-family: 'Space Mono', monospace; font-size: 9.5px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; border: 1.5px solid #BFEE4F; border-radius: 100px; padding: 4px 10px; background: {{ fr.N2.likeBg }}; color: {{ fr.N2.likeFg }};">Like</button><button onClick="{{ fr.N2.change }}" style="font-family: 'Space Mono', monospace; font-size: 9.5px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; border: 1.5px solid #FFC53D; border-radius: 100px; padding: 4px 10px; background: {{ fr.N2.changeBg }}; color: {{ fr.N2.changeFg }};">Needs change</button><button onClick="{{ fr.N2.dislike }}" style="font-family: 'Space Mono', monospace; font-size: 9.5px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; border: 1.5px solid #FF5A47; border-radius: 100px; padding: 4px 10px; background: {{ fr.N2.dislikeBg }}; color: {{ fr.N2.dislikeFg }};">Dislike</button></span>
+        </div>
+        <div style="padding: 18px; background: #E7E0CD; flex: 1; display: flex; flex-direction: column; gap: 12px;">
+          <div style="border: 2px solid #18162A; border-radius: 10px; background: #FFFDF6; padding: 15px 18px;">
+            <div style="display: inline-block; font-family: 'Space Mono', monospace; font-size: 9px; letter-spacing: .14em; text-transform: uppercase; font-weight: 700; background: linear-gradient(180deg, transparent 35%, #BFEE4F 35%, #BFEE4F 92%, transparent 92%); padding: 0 3px; margin-bottom: 7px;">The unanimous one</div>
+            <div style="font-family: 'Spectral', serif; font-size: 14.5px; line-height: 1.45;">"Stopping at the top of an escalator" is the most unanimous verdict in this entire edition: <span style="background: linear-gradient(180deg, transparent 40%, #FFD9D3 40%); font-weight: 600;">93% say crime</span>.</div>
+          </div>
+          <div style="border: 2px solid #18162A; border-radius: 10px; background: #FFFDF6; padding: 15px 18px;">
+            <div style="display: inline-block; font-family: 'Space Mono', monospace; font-size: 9px; letter-spacing: .14em; text-transform: uppercase; font-weight: 700; background: linear-gradient(180deg, transparent 35%, #FFD9D3 35%, #FFD9D3 92%, transparent 92%); padding: 0 3px; margin-bottom: 7px;">The generation gap</div>
+            <div style="font-family: 'Spectral', serif; font-size: 14.5px; line-height: 1.45;">Under-25s are <span style="background: linear-gradient(180deg, transparent 40%, #BFEE4F 40%); font-weight: 600;">twice as forgiving</span> of speakerphone calls. Nobody knows why.</div>
+          </div>
+          <div style="font-family: 'Space Mono', monospace; font-size: 8.5px; letter-spacing: .1em; text-transform: uppercase; color: #6B6478;">Each note gets a named kicker + a hand-highlighted phrase · highlight colour alternates</div>
+        </div>
+        <div style="padding: 10px 14px 12px; background: #F2ECDF; border-top: 2px solid #18162A;"><textarea value="{{ fr.N2.note }}" onChange="{{ fr.N2.setNote }}" placeholder="Comment (optional)…" style="width: 100%; min-height: 36px; border: 2px solid #18162A; border-radius: 7px; background: #F7F1E2; font-family: 'Space Mono', monospace; font-size: 11px; padding: 8px 10px; color: #18162A;"></textarea></div>
+      </div>
+
+      <!-- N3 -->
+      <div style="border: 2px solid #18162A; border-radius: 12px; background: #FFFFFF; overflow: hidden; box-shadow: 5px 5px 0 rgba(24,22,42,.14); outline: {{ fr.N3.outline }}; outline-offset: 3px; display: flex; flex-direction: column;">
+        <div style="display: flex; align-items: center; gap: 8px; background: #18162A; color: #F2ECDF; padding: 9px 14px; flex-wrap: wrap;">
+          <span style="font-family: 'Space Mono', monospace; font-size: 11px; font-weight: 700;">N3 · Pinned clippings</span>
+          <span style="margin-left: auto; display: inline-flex; gap: 5px;"><button onClick="{{ fr.N3.like }}" style="font-family: 'Space Mono', monospace; font-size: 9.5px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; border: 1.5px solid #BFEE4F; border-radius: 100px; padding: 4px 10px; background: {{ fr.N3.likeBg }}; color: {{ fr.N3.likeFg }};">Like</button><button onClick="{{ fr.N3.change }}" style="font-family: 'Space Mono', monospace; font-size: 9.5px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; border: 1.5px solid #FFC53D; border-radius: 100px; padding: 4px 10px; background: {{ fr.N3.changeBg }}; color: {{ fr.N3.changeFg }};">Needs change</button><button onClick="{{ fr.N3.dislike }}" style="font-family: 'Space Mono', monospace; font-size: 9.5px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; border: 1.5px solid #FF5A47; border-radius: 100px; padding: 4px 10px; background: {{ fr.N3.dislikeBg }}; color: {{ fr.N3.dislikeFg }};">Dislike</button></span>
+        </div>
+        <div style="padding: 18px; background: #E7E0CD; flex: 1; display: flex; flex-direction: column; gap: 14px;">
+          <div style="position: relative; border: 2px solid #18162A; border-radius: 4px; background: #FFFDF6; padding: 17px 18px 14px; transform: rotate(-1.2deg); box-shadow: 3px 4px 0 rgba(24,22,42,.18);">
+            <span style="position: absolute; top: -9px; left: 50%; transform: translateX(-50%); width: 56px; height: 14px; background: rgba(255,197,61,.75); border: 1px solid rgba(24,22,42,.35);"></span>
+            <div style="font-family: 'Space Mono', monospace; font-size: 9px; letter-spacing: .16em; text-transform: uppercase; color: #FF5A47; font-weight: 700; margin-bottom: 6px;">Desk note · 01</div>
+            <div style="font-family: 'Spectral', serif; font-size: 14.5px; line-height: 1.45;">"Stopping at the top of an escalator" is the most unanimous verdict in this entire edition: 93% say crime.</div>
+          </div>
+          <div style="position: relative; border: 2px solid #18162A; border-radius: 4px; background: #FBF4E0; padding: 17px 18px 14px; transform: rotate(.9deg); box-shadow: 3px 4px 0 rgba(24,22,42,.18); margin-left: 14px;">
+            <span style="position: absolute; top: -9px; left: 26px; width: 56px; height: 14px; background: rgba(125,167,255,.6); border: 1px solid rgba(24,22,42,.35);"></span>
+            <div style="font-family: 'Space Mono', monospace; font-size: 9px; letter-spacing: .16em; text-transform: uppercase; color: #7DA7FF; font-weight: 700; margin-bottom: 6px;">Desk note · 02</div>
+            <div style="font-family: 'Spectral', serif; font-size: 14.5px; line-height: 1.45;">Under-25s are twice as forgiving of speakerphone calls. Nobody knows why.</div>
+          </div>
+          <div style="font-family: 'Space Mono', monospace; font-size: 8.5px; letter-spacing: .1em; text-transform: uppercase; color: #6B6478;">Taped clippings · counter-rotated, offset, two paper tones — most editorial of the three</div>
+        </div>
+        <div style="padding: 10px 14px 12px; background: #F2ECDF; border-top: 2px solid #18162A;"><textarea value="{{ fr.N3.note }}" onChange="{{ fr.N3.setNote }}" placeholder="Comment (optional)…" style="width: 100%; min-height: 36px; border: 2px solid #18162A; border-radius: 7px; background: #F7F1E2; font-family: 'Space Mono', monospace; font-size: 11px; padding: 8px 10px; color: #18162A;"></textarea></div>
+      </div>
+    </div>
+
+    <!-- ════ 2 · SHARE / DOWNLOAD CARD (CA-022 + FB-014) ════ -->
+    <div style="display: flex; align-items: baseline; gap: 12px; border-bottom: 3px solid #18162A; padding-bottom: 9px; margin-bottom: 20px;">
+      <span style="font-weight: 900; font-size: 21px; text-transform: uppercase;">2 · The download card</span>
+      <span style="font-family: 'Space Mono', monospace; font-size: 10px; letter-spacing: .12em; text-transform: uppercase; color: #6B6478;">CA-022 — what "Download PNG" actually exports · portrait 4:5</span>
+    </div>
+    <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 20px; margin-bottom: 44px;">
+
+      <!-- D1 -->
+      <div style="border: 2px solid #18162A; border-radius: 12px; background: #FFFFFF; overflow: hidden; box-shadow: 5px 5px 0 rgba(24,22,42,.14); outline: {{ fr.D1.outline }}; outline-offset: 3px; display: flex; flex-direction: column;">
+        <div style="display: flex; align-items: center; gap: 8px; background: #18162A; color: #F2ECDF; padding: 9px 14px; flex-wrap: wrap;">
+          <span style="font-family: 'Space Mono', monospace; font-size: 11px; font-weight: 700;">D1 · The verdict poster</span>
+          <span style="margin-left: auto; display: inline-flex; gap: 5px;"><button onClick="{{ fr.D1.like }}" style="font-family: 'Space Mono', monospace; font-size: 9.5px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; border: 1.5px solid #BFEE4F; border-radius: 100px; padding: 4px 10px; background: {{ fr.D1.likeBg }}; color: {{ fr.D1.likeFg }};">Like</button><button onClick="{{ fr.D1.change }}" style="font-family: 'Space Mono', monospace; font-size: 9.5px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; border: 1.5px solid #FFC53D; border-radius: 100px; padding: 4px 10px; background: {{ fr.D1.changeBg }}; color: {{ fr.D1.changeFg }};">Needs change</button><button onClick="{{ fr.D1.dislike }}" style="font-family: 'Space Mono', monospace; font-size: 9.5px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; border: 1.5px solid #FF5A47; border-radius: 100px; padding: 4px 10px; background: {{ fr.D1.dislikeBg }}; color: {{ fr.D1.dislikeFg }};">Dislike</button></span>
+        </div>
+        <div style="padding: 18px; background: #E7E0CD; flex: 1; display: flex; align-items: center; justify-content: center;">
+          <div style="width: 270px; aspect-ratio: 4/5; border: 2px solid #18162A; border-radius: 10px; background: #18162A; color: #F2ECDF; padding: 20px; display: flex; flex-direction: column; box-shadow: 6px 6px 0 rgba(24,22,42,.3);">
+            <div style="font-family: 'Space Mono', monospace; font-size: 8.5px; letter-spacing: .18em; text-transform: uppercase; color: #BFEE4F;">India has decided</div>
+            <div style="font-family: 'Spectral', serif; font-weight: 600; font-size: 15.5px; line-height: 1.25; margin-top: 10px;">Is stopping at the top of an escalator acceptable?</div>
+            <div style="font-weight: 900; font-size: 64px; letter-spacing: -.04em; color: #FF5A47; line-height: .9; margin-top: auto;">93%</div>
+            <div style="font-weight: 800; font-size: 14px; text-transform: uppercase; margin-top: 4px;">say crime <span style="color: #BFEE4F;">✓ you too</span></div>
+            <div style="height: 8px; border-radius: 100px; background: rgba(242,236,223,.18); overflow: hidden; margin-top: 10px;"><span style="display: block; height: 100%; width: 93%; background: #FF5A47; border-radius: 100px;"></span></div>
+            <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid rgba(242,236,223,.25); margin-top: 14px; padding-top: 10px;">
+              <span style="font-weight: 900; font-size: 11px; text-transform: uppercase; letter-spacing: -.01em;">State of Us</span>
+              <span style="font-family: 'Space Mono', monospace; font-size: 7.5px; letter-spacing: .1em; text-transform: uppercase; color: #8A8377;">9.1K counted · Jun 2026</span>
+            </div>
+          </div>
+        </div>
+        <div style="padding: 10px 14px 12px; background: #F2ECDF; border-top: 2px solid #18162A;"><textarea value="{{ fr.D1.note }}" onChange="{{ fr.D1.setNote }}" placeholder="Comment (optional)…" style="width: 100%; min-height: 36px; border: 2px solid #18162A; border-radius: 7px; background: #F7F1E2; font-family: 'Space Mono', monospace; font-size: 11px; padding: 8px 10px; color: #18162A;"></textarea></div>
+      </div>
+
+      <!-- D2 -->
+      <div style="border: 2px solid #18162A; border-radius: 12px; background: #FFFFFF; overflow: hidden; box-shadow: 5px 5px 0 rgba(24,22,42,.14); outline: {{ fr.D2.outline }}; outline-offset: 3px; display: flex; flex-direction: column;">
+        <div style="display: flex; align-items: center; gap: 8px; background: #18162A; color: #F2ECDF; padding: 9px 14px; flex-wrap: wrap;">
+          <span style="font-family: 'Space Mono', monospace; font-size: 11px; font-weight: 700;">D2 · The front-page clipping</span>
+          <span style="margin-left: auto; display: inline-flex; gap: 5px;"><button onClick="{{ fr.D2.like }}" style="font-family: 'Space Mono', monospace; font-size: 9.5px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; border: 1.5px solid #BFEE4F; border-radius: 100px; padding: 4px 10px; background: {{ fr.D2.likeBg }}; color: {{ fr.D2.likeFg }};">Like</button><button onClick="{{ fr.D2.change }}" style="font-family: 'Space Mono', monospace; font-size: 9.5px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; border: 1.5px solid #FFC53D; border-radius: 100px; padding: 4px 10px; background: {{ fr.D2.changeBg }}; color: {{ fr.D2.changeFg }};">Needs change</button><button onClick="{{ fr.D2.dislike }}" style="font-family: 'Space Mono', monospace; font-size: 9.5px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; border: 1.5px solid #FF5A47; border-radius: 100px; padding: 4px 10px; background: {{ fr.D2.dislikeBg }}; color: {{ fr.D2.dislikeFg }};">Dislike</button></span>
+        </div>
+        <div style="padding: 18px; background: #E7E0CD; flex: 1; display: flex; align-items: center; justify-content: center;">
+          <div style="width: 270px; aspect-ratio: 4/5; border: 2px solid #18162A; border-radius: 10px; background: #F7F1E2; padding: 18px; display: flex; flex-direction: column; box-shadow: 6px 6px 0 rgba(24,22,42,.3);">
+            <div style="display: flex; justify-content: space-between; align-items: baseline; border-bottom: 2.5px solid #18162A; padding-bottom: 7px;">
+              <span style="font-weight: 900; font-size: 13px; text-transform: uppercase; letter-spacing: -.01em;">State of Us</span>
+              <span style="font-family: 'Space Mono', monospace; font-size: 7.5px; letter-spacing: .1em; text-transform: uppercase; color: #6B6478;">Jun 2026 edition</span>
+            </div>
+            <div style="font-family: 'Spectral', serif; font-weight: 600; font-size: 19px; line-height: 1.15; margin-top: 12px;">Escalator-blockers, the nation has spoken.</div>
+            <div style="font-family: 'Space Mono', monospace; font-size: 8px; letter-spacing: .12em; text-transform: uppercase; color: #FF5A47; font-weight: 700; margin-top: 8px;">9.1K counted · behaviour court</div>
+            <div style="margin-top: auto; display: flex; flex-direction: column; gap: 8px;">
+              <div><div style="display: flex; justify-content: space-between; font-size: 11px; font-weight: 700; margin-bottom: 3px;"><span>Crime</span><span style="font-family: 'Space Mono', monospace;">93%</span></div><div style="height: 13px; border: 1.5px solid #18162A; border-radius: 100px; background: #EFE8D6; overflow: hidden;"><span style="display: block; height: 100%; width: 93%; background: #FF5A47;"></span></div></div>
+              <div><div style="display: flex; justify-content: space-between; font-size: 11px; font-weight: 700; margin-bottom: 3px;"><span>Acceptable</span><span style="font-family: 'Space Mono', monospace;">7%</span></div><div style="height: 13px; border: 1.5px solid #18162A; border-radius: 100px; background: #EFE8D6; overflow: hidden;"><span style="display: block; height: 100%; width: 7%; background: #BFEE4F;"></span></div></div>
+              <div style="font-family: 'Space Mono', monospace; font-size: 8px; letter-spacing: .08em; text-transform: uppercase; color: #6B6478; border-top: 1.5px dashed rgba(24,22,42,.3); padding-top: 8px;">I voted crime ✓ · you answer, India answers back</div>
+            </div>
+          </div>
+        </div>
+        <div style="padding: 10px 14px 12px; background: #F2ECDF; border-top: 2px solid #18162A;"><textarea value="{{ fr.D2.note }}" onChange="{{ fr.D2.setNote }}" placeholder="Comment (optional)…" style="width: 100%; min-height: 36px; border: 2px solid #18162A; border-radius: 7px; background: #F7F1E2; font-family: 'Space Mono', monospace; font-size: 11px; padding: 8px 10px; color: #18162A;"></textarea></div>
+      </div>
+
+      <!-- D3 -->
+      <div style="border: 2px solid #18162A; border-radius: 12px; background: #FFFFFF; overflow: hidden; box-shadow: 5px 5px 0 rgba(24,22,42,.14); outline: {{ fr.D3.outline }}; outline-offset: 3px; display: flex; flex-direction: column;">
+        <div style="display: flex; align-items: center; gap: 8px; background: #18162A; color: #F2ECDF; padding: 9px 14px; flex-wrap: wrap;">
+          <span style="font-family: 'Space Mono', monospace; font-size: 11px; font-weight: 700;">D3 · The split ticket</span>
+          <span style="margin-left: auto; display: inline-flex; gap: 5px;"><button onClick="{{ fr.D3.like }}" style="font-family: 'Space Mono', monospace; font-size: 9.5px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; border: 1.5px solid #BFEE4F; border-radius: 100px; padding: 4px 10px; background: {{ fr.D3.likeBg }}; color: {{ fr.D3.likeFg }};">Like</button><button onClick="{{ fr.D3.change }}" style="font-family: 'Space Mono', monospace; font-size: 9.5px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; border: 1.5px solid #FFC53D; border-radius: 100px; padding: 4px 10px; background: {{ fr.D3.changeBg }}; color: {{ fr.D3.changeFg }};">Needs change</button><button onClick="{{ fr.D3.dislike }}" style="font-family: 'Space Mono', monospace; font-size: 9.5px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; border: 1.5px solid #FF5A47; border-radius: 100px; padding: 4px 10px; background: {{ fr.D3.dislikeBg }}; color: {{ fr.D3.dislikeFg }};">Dislike</button></span>
+        </div>
+        <div style="padding: 18px; background: #E7E0CD; flex: 1; display: flex; align-items: center; justify-content: center;">
+          <div style="width: 270px; aspect-ratio: 4/5; border: 2px solid #18162A; border-radius: 10px; overflow: hidden; display: flex; flex-direction: column; box-shadow: 6px 6px 0 rgba(24,22,42,.3);">
+            <div style="flex: 93; background: #FF5A47; padding: 16px 18px; display: flex; flex-direction: column; justify-content: center; min-height: 0;">
+              <div style="font-weight: 900; font-size: 46px; letter-spacing: -.03em; line-height: .9;">93%</div>
+              <div style="font-weight: 800; font-size: 15px; text-transform: uppercase; margin-top: 4px;">Crime</div>
+              <div style="font-family: 'Space Mono', monospace; font-size: 8.5px; letter-spacing: .1em; text-transform: uppercase; margin-top: 6px;">← your side</div>
+            </div>
+            <div style="flex: 25; background: #F7F1E2; border-top: 2px solid #18162A; padding: 10px 18px; display: flex; flex-direction: column; justify-content: center; min-height: 0;">
+              <div style="display: flex; justify-content: space-between; align-items: baseline;"><span style="font-weight: 800; font-size: 13px; text-transform: uppercase;">Acceptable</span><span style="font-weight: 900; font-size: 20px;">7%</span></div>
+            </div>
+            <div style="background: #18162A; color: #F2ECDF; padding: 9px 18px; display: flex; justify-content: space-between; align-items: center;">
+              <span style="font-weight: 900; font-size: 10.5px; text-transform: uppercase;">State of Us</span>
+              <span style="font-family: 'Space Mono', monospace; font-size: 7.5px; letter-spacing: .08em; text-transform: uppercase; color: #BFEE4F;">escalator verdict · 9.1K</span>
+            </div>
+          </div>
+        </div>
+        <div style="padding: 10px 14px 12px; background: #F2ECDF; border-top: 2px solid #18162A;"><textarea value="{{ fr.D3.note }}" onChange="{{ fr.D3.setNote }}" placeholder="Comment (optional)…" style="width: 100%; min-height: 36px; border: 2px solid #18162A; border-radius: 7px; background: #F7F1E2; font-family: 'Space Mono', monospace; font-size: 11px; padding: 8px 10px; color: #18162A;"></textarea></div>
+      </div>
+    </div>
+
+    <!-- ════ 3 · ARCHIVED BAND ════ -->
+    <div style="display: flex; align-items: baseline; gap: 12px; border-bottom: 3px solid #18162A; padding-bottom: 9px; margin-bottom: 20px;">
+      <span style="font-weight: 900; font-size: 21px; text-transform: uppercase;">3 · Archived state</span>
+      <span style="font-family: 'Space Mono', monospace; font-size: 10px; letter-spacing: .12em; text-transform: uppercase; color: #6B6478;">CA-024 — distinct from Frozen (sealed early) — archived = retired with honour</span>
+    </div>
+    <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(380px, 1fr)); gap: 20px; margin-bottom: 44px;">
+
+      <!-- AR1 -->
+      <div style="border: 2px solid #18162A; border-radius: 12px; background: #FFFFFF; overflow: hidden; box-shadow: 5px 5px 0 rgba(24,22,42,.14); outline: {{ fr.AR1.outline }}; outline-offset: 3px; display: flex; flex-direction: column;">
+        <div style="display: flex; align-items: center; gap: 8px; background: #18162A; color: #F2ECDF; padding: 9px 14px; flex-wrap: wrap;">
+          <span style="font-family: 'Space Mono', monospace; font-size: 11px; font-weight: 700;">AR1 · Sepia archive plate</span>
+          <span style="margin-left: auto; display: inline-flex; gap: 5px;"><button onClick="{{ fr.AR1.like }}" style="font-family: 'Space Mono', monospace; font-size: 9.5px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; border: 1.5px solid #BFEE4F; border-radius: 100px; padding: 4px 10px; background: {{ fr.AR1.likeBg }}; color: {{ fr.AR1.likeFg }};">Like</button><button onClick="{{ fr.AR1.change }}" style="font-family: 'Space Mono', monospace; font-size: 9.5px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; border: 1.5px solid #FFC53D; border-radius: 100px; padding: 4px 10px; background: {{ fr.AR1.changeBg }}; color: {{ fr.AR1.changeFg }};">Needs change</button><button onClick="{{ fr.AR1.dislike }}" style="font-family: 'Space Mono', monospace; font-size: 9.5px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; border: 1.5px solid #FF5A47; border-radius: 100px; padding: 4px 10px; background: {{ fr.AR1.dislikeBg }}; color: {{ fr.AR1.dislikeFg }};">Dislike</button></span>
+        </div>
+        <div style="padding: 18px; background: #E7E0CD; flex: 1;">
+          <div style="border: 2px solid #8A7B5C; border-radius: 10px; background: #F3EAD3; overflow: hidden;">
+            <div style="background: #E9DDBC; border-bottom: 2px solid #8A7B5C; padding: 9px 14px; display: flex; align-items: center; gap: 9px;">
+              <span style="font-family: 'Space Mono', monospace; font-size: 9.5px; letter-spacing: .16em; text-transform: uppercase; color: #6B5D3E; font-weight: 700;">🗞 From the archives</span>
+              <span style="margin-left: auto; font-family: 'Space Mono', monospace; font-size: 9px; letter-spacing: .08em; text-transform: uppercase; color: #8A7B5C;">counted Mar 2026 · final</span>
+            </div>
+            <div style="padding: 14px; filter: sepia(.25) saturate(.8);">
+              <div style="font-family: 'Spectral', serif; font-weight: 600; font-size: 15.5px; line-height: 1.2; color: #3E3625;">Which IPL ritual is non-negotiable on match night?</div>
+              <div style="display: flex; align-items: center; gap: 9px; margin-top: 10px;">
+                <span style="font-weight: 900; font-size: 30px; color: #6B5D3E;">41%</span>
+                <span style="font-weight: 700; font-size: 12.5px; color: #6B5D3E;">say "the lucky seat" — final count, 18.2K votes</span>
+              </div>
+            </div>
+          </div>
+          <div style="font-family: 'Space Mono', monospace; font-size: 8.5px; letter-spacing: .1em; text-transform: uppercase; color: #6B6478; margin-top: 10px;">Whole card shifts to aged-paper sepia · warm, like a kept clipping</div>
+        </div>
+        <div style="padding: 10px 14px 12px; background: #F2ECDF; border-top: 2px solid #18162A;"><textarea value="{{ fr.AR1.note }}" onChange="{{ fr.AR1.setNote }}" placeholder="Comment (optional)…" style="width: 100%; min-height: 36px; border: 2px solid #18162A; border-radius: 7px; background: #F7F1E2; font-family: 'Space Mono', monospace; font-size: 11px; padding: 8px 10px; color: #18162A;"></textarea></div>
+      </div>
+
+      <!-- AR2 -->
+      <div style="border: 2px solid #18162A; border-radius: 12px; background: #FFFFFF; overflow: hidden; box-shadow: 5px 5px 0 rgba(24,22,42,.14); outline: {{ fr.AR2.outline }}; outline-offset: 3px; display: flex; flex-direction: column;">
+        <div style="display: flex; align-items: center; gap: 8px; background: #18162A; color: #F2ECDF; padding: 9px 14px; flex-wrap: wrap;">
+          <span style="font-family: 'Space Mono', monospace; font-size: 11px; font-weight: 700;">AR2 · Grey ink stripes (frozen's cousin)</span>
+          <span style="margin-left: auto; display: inline-flex; gap: 5px;"><button onClick="{{ fr.AR2.like }}" style="font-family: 'Space Mono', monospace; font-size: 9.5px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; border: 1.5px solid #BFEE4F; border-radius: 100px; padding: 4px 10px; background: {{ fr.AR2.likeBg }}; color: {{ fr.AR2.likeFg }};">Like</button><button onClick="{{ fr.AR2.change }}" style="font-family: 'Space Mono', monospace; font-size: 9.5px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; border: 1.5px solid #FFC53D; border-radius: 100px; padding: 4px 10px; background: {{ fr.AR2.changeBg }}; color: {{ fr.AR2.changeFg }};">Needs change</button><button onClick="{{ fr.AR2.dislike }}" style="font-family: 'Space Mono', monospace; font-size: 9.5px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; border: 1.5px solid #FF5A47; border-radius: 100px; padding: 4px 10px; background: {{ fr.AR2.dislikeBg }}; color: {{ fr.AR2.dislikeFg }};">Dislike</button></span>
+        </div>
+        <div style="padding: 18px; background: #E7E0CD; flex: 1;">
+          <div style="border: 2px solid #18162A; border-radius: 10px; background: #F7F1E2; overflow: hidden;">
+            <div style="background: repeating-linear-gradient(-45deg, #C9C5D6 0 10px, #B5B0C4 10px 20px); border-bottom: 2px solid #18162A; padding: 9px 14px; display: flex; align-items: center; gap: 9px;">
+              <span style="font-family: 'Space Mono', monospace; font-size: 9.5px; letter-spacing: .16em; text-transform: uppercase; color: #18162A; font-weight: 700; background: rgba(247,241,226,.85); border-radius: 4px; padding: 3px 9px;">▣ Archived · count closed</span>
+              <span style="margin-left: auto; font-family: 'Space Mono', monospace; font-size: 9px; letter-spacing: .08em; text-transform: uppercase; color: #34304E; background: rgba(247,241,226,.85); border-radius: 4px; padding: 3px 8px;">Mar 2026 · 18.2K</span>
+            </div>
+            <div style="padding: 14px; opacity: .82;">
+              <div style="font-family: 'Spectral', serif; font-weight: 600; font-size: 15.5px; line-height: 1.2;">Which IPL ritual is non-negotiable on match night?</div>
+              <div style="display: flex; align-items: center; gap: 9px; margin-top: 10px;">
+                <span style="font-weight: 900; font-size: 30px; color: #34304E;">41%</span>
+                <span style="font-weight: 700; font-size: 12.5px; color: #34304E;">say "the lucky seat" — final count</span>
+              </div>
+            </div>
+          </div>
+          <div style="font-family: 'Space Mono', monospace; font-size: 8.5px; letter-spacing: .1em; text-transform: uppercase; color: #6B6478; margin-top: 10px;">Same striped language as Frozen, but grey-violet ink · system stays one family</div>
+        </div>
+        <div style="padding: 10px 14px 12px; background: #F2ECDF; border-top: 2px solid #18162A;"><textarea value="{{ fr.AR2.note }}" onChange="{{ fr.AR2.setNote }}" placeholder="Comment (optional)…" style="width: 100%; min-height: 36px; border: 2px solid #18162A; border-radius: 7px; background: #F7F1E2; font-family: 'Space Mono', monospace; font-size: 11px; padding: 8px 10px; color: #18162A;"></textarea></div>
+      </div>
+    </div>
+
+    <!-- ════ 4 · REGION CHIP ════ -->
+    <div style="display: flex; align-items: baseline; gap: 12px; border-bottom: 3px solid #18162A; padding-bottom: 9px; margin-bottom: 20px;">
+      <span style="font-weight: 900; font-size: 21px; text-transform: uppercase;">4 · Region capture chip</span>
+      <span style="font-family: 'Space Mono', monospace; font-size: 10px; letter-spacing: .12em; text-transform: uppercase; color: #6B6478;">CA-021 — keeps the maps honest, zero accounts · both are clickable</span>
+    </div>
+    <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(380px, 1fr)); gap: 20px; margin-bottom: 44px;">
+
+      <!-- RG1 -->
+      <div style="border: 2px solid #18162A; border-radius: 12px; background: #FFFFFF; overflow: hidden; box-shadow: 5px 5px 0 rgba(24,22,42,.14); outline: {{ fr.RG1.outline }}; outline-offset: 3px; display: flex; flex-direction: column;">
+        <div style="display: flex; align-items: center; gap: 8px; background: #18162A; color: #F2ECDF; padding: 9px 14px; flex-wrap: wrap;">
+          <span style="font-family: 'Space Mono', monospace; font-size: 11px; font-weight: 700;">RG1 · Byline chip + corrector sheet</span>
+          <span style="margin-left: auto; display: inline-flex; gap: 5px;"><button onClick="{{ fr.RG1.like }}" style="font-family: 'Space Mono', monospace; font-size: 9.5px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; border: 1.5px solid #BFEE4F; border-radius: 100px; padding: 4px 10px; background: {{ fr.RG1.likeBg }}; color: {{ fr.RG1.likeFg }};">Like</button><button onClick="{{ fr.RG1.change }}" style="font-family: 'Space Mono', monospace; font-size: 9.5px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; border: 1.5px solid #FFC53D; border-radius: 100px; padding: 4px 10px; background: {{ fr.RG1.changeBg }}; color: {{ fr.RG1.changeFg }};">Needs change</button><button onClick="{{ fr.RG1.dislike }}" style="font-family: 'Space Mono', monospace; font-size: 9.5px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; border: 1.5px solid #FF5A47; border-radius: 100px; padding: 4px 10px; background: {{ fr.RG1.dislikeBg }}; color: {{ fr.RG1.dislikeFg }};">Dislike</button></span>
+        </div>
+        <div style="padding: 18px; background: #E7E0CD; flex: 1;">
+          <div style="border: 2px solid #18162A; border-radius: 10px; background: #F7F1E2; padding: 14px;">
+            <div style="font-family: 'Space Mono', monospace; font-size: 9px; letter-spacing: .14em; text-transform: uppercase; color: #6B6478; margin-bottom: 8px;">The breakfast map · winner by state</div>
+            <div style="height: 64px; border: 1.5px dashed rgba(24,22,42,.3); border-radius: 7px; display: flex; align-items: center; justify-content: center; font-family: 'Space Mono', monospace; font-size: 9px; letter-spacing: .12em; text-transform: uppercase; color: #B9B2A2;">[ india map renders here ]</div>
+            <button onClick="{{ rg1Toggle }}" style="margin-top: 10px; display: inline-flex; align-items: center; gap: 7px; border: 1.5px solid #18162A; border-radius: 100px; padding: 7px 13px; background: {{ rg1ChipBg }}; font-family: 'Space Mono', monospace; font-size: 10px; letter-spacing: .06em; font-weight: 700;" style-hover="background: #FFE9C7;">📍 counted you in <span style="text-decoration: underline;">{{ rg1State }}</span> · wrong?</button>
+            <sc-if value="{{ rg1Open }}" hint-placeholder-val="{{ false }}">
+              <div style="margin-top: 10px; border: 2px solid #18162A; border-radius: 9px; background: #FFFDF6; padding: 12px; animation: cwSheet .25s cubic-bezier(.2,.7,.2,1);">
+                <div style="font-family: 'Space Mono', monospace; font-size: 9px; letter-spacing: .14em; text-transform: uppercase; color: #FF5A47; font-weight: 700; margin-bottom: 8px;">Fix my state — stored on this device only</div>
+                <div style="display: flex; flex-wrap: wrap; gap: 6px;">
+                  <sc-for list="{{ rg1Opts }}" as="o" hint-placeholder-count="6">
+                    <button onClick="{{ o.pick }}" style="border: 1.5px solid #18162A; border-radius: 100px; padding: 6px 12px; font-weight: 600; font-size: 11.5px; background: {{ o.bg }}; color: {{ o.fg }};" style-hover="background: #BFEE4F; color: #18162A;">{{ o.label }}</button>
+                  </sc-for>
+                </div>
+              </div>
+            </sc-if>
+          </div>
+          <div style="font-family: 'Space Mono', monospace; font-size: 8.5px; letter-spacing: .1em; text-transform: uppercase; color: #6B6478; margin-top: 10px;">Chip sits under every geo DV · tap → inline sheet, pick state, done</div>
+        </div>
+        <div style="padding: 10px 14px 12px; background: #F2ECDF; border-top: 2px solid #18162A;"><textarea value="{{ fr.RG1.note }}" onChange="{{ fr.RG1.setNote }}" placeholder="Comment (optional)…" style="width: 100%; min-height: 36px; border: 2px solid #18162A; border-radius: 7px; background: #F7F1E2; font-family: 'Space Mono', monospace; font-size: 11px; padding: 8px 10px; color: #18162A;"></textarea></div>
+      </div>
+
+      <!-- RG2 -->
+      <div style="border: 2px solid #18162A; border-radius: 12px; background: #FFFFFF; overflow: hidden; box-shadow: 5px 5px 0 rgba(24,22,42,.14); outline: {{ fr.RG2.outline }}; outline-offset: 3px; display: flex; flex-direction: column;">
+        <div style="display: flex; align-items: center; gap: 8px; background: #18162A; color: #F2ECDF; padding: 9px 14px; flex-wrap: wrap;">
+          <span style="font-family: 'Space Mono', monospace; font-size: 11px; font-weight: 700;">RG2 · Press-pass card in the rail</span>
+          <span style="margin-left: auto; display: inline-flex; gap: 5px;"><button onClick="{{ fr.RG2.like }}" style="font-family: 'Space Mono', monospace; font-size: 9.5px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; border: 1.5px solid #BFEE4F; border-radius: 100px; padding: 4px 10px; background: {{ fr.RG2.likeBg }}; color: {{ fr.RG2.likeFg }};">Like</button><button onClick="{{ fr.RG2.change }}" style="font-family: 'Space Mono', monospace; font-size: 9.5px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; border: 1.5px solid #FFC53D; border-radius: 100px; padding: 4px 10px; background: {{ fr.RG2.changeBg }}; color: {{ fr.RG2.changeFg }};">Needs change</button><button onClick="{{ fr.RG2.dislike }}" style="font-family: 'Space Mono', monospace; font-size: 9.5px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; border: 1.5px solid #FF5A47; border-radius: 100px; padding: 4px 10px; background: {{ fr.RG2.dislikeBg }}; color: {{ fr.RG2.dislikeFg }};">Dislike</button></span>
+        </div>
+        <div style="padding: 18px; background: #E7E0CD; flex: 1;">
+          <div style="border: 2px solid #18162A; border-radius: 10px; background: #34304E; color: #F2ECDF; padding: 16px; max-width: 320px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+              <span style="font-family: 'Space Mono', monospace; font-size: 9px; letter-spacing: .18em; text-transform: uppercase; color: #BFEE4F; font-weight: 700;">Your press pass</span>
+              <span style="font-family: 'Space Mono', monospace; font-size: 8.5px; letter-spacing: .08em; text-transform: uppercase; color: #8A8377;">anonymous</span>
+            </div>
+            <div style="display: flex; align-items: center; gap: 12px;">
+              <span style="width: 44px; height: 44px; border: 2px solid #BFEE4F; border-radius: 9px; display: inline-flex; align-items: center; justify-content: center; font-size: 21px; flex-shrink: 0;">📍</span>
+              <div style="flex: 1;">
+                <div style="font-weight: 800; font-size: 16px;">{{ rg2State }}</div>
+                <div style="font-family: 'Space Mono', monospace; font-size: 8.5px; letter-spacing: .08em; text-transform: uppercase; color: #8A8377;">guessed from network · never stored</div>
+              </div>
+            </div>
+            <button onClick="{{ rg2Toggle }}" style="margin-top: 12px; width: 100%; border: 1.5px solid #BFEE4F; border-radius: 7px; background: {{ rg2BtnBg }}; color: {{ rg2BtnFg }}; font-family: 'Space Mono', monospace; font-size: 10px; letter-spacing: .1em; text-transform: uppercase; font-weight: 700; padding: 9px;">{{ rg2BtnLabel }}</button>
+            <sc-if value="{{ rg2Open }}" hint-placeholder-val="{{ false }}">
+              <div style="display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; animation: cwSheet .25s cubic-bezier(.2,.7,.2,1);">
+                <sc-for list="{{ rg2Opts }}" as="o" hint-placeholder-count="6">
+                  <button onClick="{{ o.pick }}" style="border: 1.5px solid rgba(242,236,223,.5); border-radius: 100px; padding: 6px 12px; font-weight: 600; font-size: 11.5px; background: {{ o.bg }}; color: {{ o.fg }};" style-hover="border-color: #BFEE4F; color: #BFEE4F;">{{ o.label }}</button>
+                </sc-for>
+              </div>
+            </sc-if>
+          </div>
+          <div style="font-family: 'Space Mono', monospace; font-size: 8.5px; letter-spacing: .1em; text-transform: uppercase; color: #6B6478; margin-top: 10px;">Lives once in the result rail · sets region for ALL geo questions · press-pass framing</div>
+        </div>
+        <div style="padding: 10px 14px 12px; background: #F2ECDF; border-top: 2px solid #18162A;"><textarea value="{{ fr.RG2.note }}" onChange="{{ fr.RG2.setNote }}" placeholder="Comment (optional)…" style="width: 100%; min-height: 36px; border: 2px solid #18162A; border-radius: 7px; background: #F7F1E2; font-family: 'Space Mono', monospace; font-size: 11px; padding: 8px 10px; color: #18162A;"></textarea></div>
+      </div>
+    </div>
+
+    <!-- ════ 5 · MODE LABEL CHIP ════ -->
+    <div style="display: flex; align-items: baseline; gap: 12px; border-bottom: 3px solid #18162A; padding-bottom: 9px; margin-bottom: 20px;">
+      <span style="font-weight: 900; font-size: 21px; text-transform: uppercase;">5 · Mode label chip</span>
+      <span style="font-family: 'Space Mono', monospace; font-size: 10px; letter-spacing: .12em; text-transform: uppercase; color: #6B6478;">FB-007 — "too plain, highlight it, not too much" · shown on a live feed card</span>
+    </div>
+    <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 20px; margin-bottom: 44px;">
+      <sc-for list="{{ modeCards }}" as="mc" hint-placeholder-count="3">
+        <div style="border: 2px solid #18162A; border-radius: 12px; background: #FFFFFF; overflow: hidden; box-shadow: 5px 5px 0 rgba(24,22,42,.14); outline: {{ mc.fr.outline }}; outline-offset: 3px; display: flex; flex-direction: column;">
+          <div style="display: flex; align-items: center; gap: 8px; background: #18162A; color: #F2ECDF; padding: 9px 14px; flex-wrap: wrap;">
+            <span style="font-family: 'Space Mono', monospace; font-size: 11px; font-weight: 700;">{{ mc.title }}</span>
+            <span style="margin-left: auto; display: inline-flex; gap: 5px;"><button onClick="{{ mc.fr.like }}" style="font-family: 'Space Mono', monospace; font-size: 9.5px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; border: 1.5px solid #BFEE4F; border-radius: 100px; padding: 4px 10px; background: {{ mc.fr.likeBg }}; color: {{ mc.fr.likeFg }};">Like</button><button onClick="{{ mc.fr.change }}" style="font-family: 'Space Mono', monospace; font-size: 9.5px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; border: 1.5px solid #FFC53D; border-radius: 100px; padding: 4px 10px; background: {{ mc.fr.changeBg }}; color: {{ mc.fr.changeFg }};">Needs change</button><button onClick="{{ mc.fr.dislike }}" style="font-family: 'Space Mono', monospace; font-size: 9.5px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; border: 1.5px solid #FF5A47; border-radius: 100px; padding: 4px 10px; background: {{ mc.fr.dislikeBg }}; color: {{ mc.fr.dislikeFg }};">Dislike</button></span>
+          </div>
+          <div style="padding: 18px; background: #E7E0CD; flex: 1;">
+            <div style="border: 2px solid #18162A; border-radius: 10px; background: #F7F1E2; padding: 15px; position: relative;">
+              <div style="display: flex; align-items: center; gap: 7px; margin-bottom: 9px;">
+                <span style="width: 10px; height: 10px; border-radius: 3px; border: 1.5px solid #18162A; background: #BFEE4F;"></span>
+                <span style="font-family: 'Space Mono', monospace; font-size: 9px; letter-spacing: .12em; text-transform: uppercase; color: #6B6478;">Chaos Bureau</span>
+                <span style="margin-left: auto;">{{ mc.chip }}</span>
+              </div>
+              <div style="font-family: 'Spectral', serif; font-weight: 600; font-size: 15.5px; line-height: 1.2;">What is the scientifically superior shape for a potato?</div>
+              <div style="font-family: 'Space Mono', monospace; font-size: 9px; letter-spacing: .08em; text-transform: uppercase; color: #6B6478; margin-top: 9px;">13.5K voted →</div>
+            </div>
+            <div style="font-family: 'Space Mono', monospace; font-size: 8.5px; letter-spacing: .1em; text-transform: uppercase; color: #6B6478; margin-top: 10px;">{{ mc.caption }}</div>
+          </div>
+          <div style="padding: 10px 14px 12px; background: #F2ECDF; border-top: 2px solid #18162A;"><textarea value="{{ mc.fr.note }}" onChange="{{ mc.fr.setNote }}" placeholder="Comment (optional)…" style="width: 100%; min-height: 36px; border: 2px solid #18162A; border-radius: 7px; background: #F7F1E2; font-family: 'Space Mono', monospace; font-size: 11px; padding: 8px 10px; color: #18162A;"></textarea></div>
+        </div>
+      </sc-for>
+    </div>
+
+    <!-- ════ 6 · BACK BUTTON ════ -->
+    <div style="display: flex; align-items: baseline; gap: 12px; border-bottom: 3px solid #18162A; padding-bottom: 9px; margin-bottom: 20px;">
+      <span style="font-weight: 900; font-size: 21px; text-transform: uppercase;">6 · Back button</span>
+      <span style="font-family: 'Space Mono', monospace; font-size: 10px; letter-spacing: .12em; text-transform: uppercase; color: #6B6478;">FB-013 — must read as chrome, never as an answer option</span>
+    </div>
+    <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(380px, 1fr)); gap: 20px; margin-bottom: 44px;">
+      <sc-for list="{{ backCards }}" as="bc" hint-placeholder-count="2">
+        <div style="border: 2px solid #18162A; border-radius: 12px; background: #FFFFFF; overflow: hidden; box-shadow: 5px 5px 0 rgba(24,22,42,.14); outline: {{ bc.fr.outline }}; outline-offset: 3px; display: flex; flex-direction: column;">
+          <div style="display: flex; align-items: center; gap: 8px; background: #18162A; color: #F2ECDF; padding: 9px 14px; flex-wrap: wrap;">
+            <span style="font-family: 'Space Mono', monospace; font-size: 11px; font-weight: 700;">{{ bc.title }}</span>
+            <span style="margin-left: auto; display: inline-flex; gap: 5px;"><button onClick="{{ bc.fr.like }}" style="font-family: 'Space Mono', monospace; font-size: 9.5px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; border: 1.5px solid #BFEE4F; border-radius: 100px; padding: 4px 10px; background: {{ bc.fr.likeBg }}; color: {{ bc.fr.likeFg }};">Like</button><button onClick="{{ bc.fr.change }}" style="font-family: 'Space Mono', monospace; font-size: 9.5px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; border: 1.5px solid #FFC53D; border-radius: 100px; padding: 4px 10px; background: {{ bc.fr.changeBg }}; color: {{ bc.fr.changeFg }};">Needs change</button><button onClick="{{ bc.fr.dislike }}" style="font-family: 'Space Mono', monospace; font-size: 9.5px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; border: 1.5px solid #FF5A47; border-radius: 100px; padding: 4px 10px; background: {{ bc.fr.dislikeBg }}; color: {{ bc.fr.dislikeFg }};">Dislike</button></span>
+          </div>
+          <div style="padding: 18px; background: #E7E0CD; flex: 1;">
+            <div style="border: 2px solid #18162A; border-radius: 10px; background: #E7E0CD; padding: 14px;">
+              <div style="margin-bottom: 12px;">{{ bc.btn }}</div>
+              <div style="border: 2px solid #18162A; border-radius: 8px; background: #F7F1E2; padding: 11px 13px; display: flex; align-items: center; gap: 10px; opacity: .75;">
+                <span style="font-family: 'Space Mono', monospace; font-size: 10px; font-weight: 700; border: 1.5px solid #18162A; border-radius: 4px; width: 22px; height: 22px; display: inline-flex; align-items: center; justify-content: center; background: #F2ECDF;">A</span>
+                <span style="font-weight: 600; font-size: 13.5px;">The classic French fry</span>
+              </div>
+            </div>
+            <div style="font-family: 'Space Mono', monospace; font-size: 8.5px; letter-spacing: .1em; text-transform: uppercase; color: #6B6478; margin-top: 10px;">{{ bc.caption }}</div>
+          </div>
+          <div style="padding: 10px 14px 12px; background: #F2ECDF; border-top: 2px solid #18162A;"><textarea value="{{ bc.fr.note }}" onChange="{{ bc.fr.setNote }}" placeholder="Comment (optional)…" style="width: 100%; min-height: 36px; border: 2px solid #18162A; border-radius: 7px; background: #F7F1E2; font-family: 'Space Mono', monospace; font-size: 11px; padding: 8px 10px; color: #18162A;"></textarea></div>
+        </div>
+      </sc-for>
+    </div>
+
+    <!-- ════ 7 · MIRROR DESK COLOUR ════ -->
+    <div style="display: flex; align-items: baseline; gap: 12px; border-bottom: 3px solid #18162A; padding-bottom: 9px; margin-bottom: 20px;">
+      <span style="font-weight: 900; font-size: 21px; text-transform: uppercase;">7 · The Mirror — desk colour</span>
+      <span style="font-family: 'Space Mono', monospace; font-size: 10px; letter-spacing: .12em; text-transform: uppercase; color: #6B6478;">CA-020 — 6th desk (identity & society) needs its ink · shown against all 5 existing</span>
+    </div>
+    <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(380px, 1fr)); gap: 20px;">
+      <sc-for list="{{ mirrorCards }}" as="mr" hint-placeholder-count="2">
+        <div style="border: 2px solid #18162A; border-radius: 12px; background: #FFFFFF; overflow: hidden; box-shadow: 5px 5px 0 rgba(24,22,42,.14); outline: {{ mr.fr.outline }}; outline-offset: 3px; display: flex; flex-direction: column;">
+          <div style="display: flex; align-items: center; gap: 8px; background: #18162A; color: #F2ECDF; padding: 9px 14px; flex-wrap: wrap;">
+            <span style="font-family: 'Space Mono', monospace; font-size: 11px; font-weight: 700;">{{ mr.title }}</span>
+            <span style="margin-left: auto; display: inline-flex; gap: 5px;"><button onClick="{{ mr.fr.like }}" style="font-family: 'Space Mono', monospace; font-size: 9.5px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; border: 1.5px solid #BFEE4F; border-radius: 100px; padding: 4px 10px; background: {{ mr.fr.likeBg }}; color: {{ mr.fr.likeFg }};">Like</button><button onClick="{{ mr.fr.change }}" style="font-family: 'Space Mono', monospace; font-size: 9.5px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; border: 1.5px solid #FFC53D; border-radius: 100px; padding: 4px 10px; background: {{ mr.fr.changeBg }}; color: {{ mr.fr.changeFg }};">Needs change</button><button onClick="{{ mr.fr.dislike }}" style="font-family: 'Space Mono', monospace; font-size: 9.5px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; border: 1.5px solid #FF5A47; border-radius: 100px; padding: 4px 10px; background: {{ mr.fr.dislikeBg }}; color: {{ mr.fr.dislikeFg }};">Dislike</button></span>
+          </div>
+          <div style="padding: 18px; background: #E7E0CD; flex: 1;">
+            <div style="display: flex; flex-wrap: wrap; gap: 7px; margin-bottom: 13px;">
+              <span style="display: inline-flex; align-items: center; gap: 6px; font-family: 'Space Mono', monospace; font-size: 9.5px; letter-spacing: .08em; text-transform: uppercase; font-weight: 700; border: 1.5px solid #18162A; border-radius: 100px; padding: 6px 11px; background: #F2ECDF;"><span style="width: 9px; height: 9px; border-radius: 50%; border: 1.5px solid #18162A; background: #FF5A47;"></span>City Desk</span>
+              <span style="display: inline-flex; align-items: center; gap: 6px; font-family: 'Space Mono', monospace; font-size: 9.5px; letter-spacing: .08em; text-transform: uppercase; font-weight: 700; border: 1.5px solid #18162A; border-radius: 100px; padding: 6px 11px; background: #F2ECDF;"><span style="width: 9px; height: 9px; border-radius: 50%; border: 1.5px solid #18162A; background: #7DA7FF;"></span>Daily Grind</span>
+              <span style="display: inline-flex; align-items: center; gap: 6px; font-family: 'Space Mono', monospace; font-size: 9.5px; letter-spacing: .08em; text-transform: uppercase; font-weight: 700; border: 1.5px solid #18162A; border-radius: 100px; padding: 6px 11px; background: #F2ECDF;"><span style="width: 9px; height: 9px; border-radius: 50%; border: 1.5px solid #18162A; background: #F2A0C4;"></span>Culture Desk</span>
+              <span style="display: inline-flex; align-items: center; gap: 6px; font-family: 'Space Mono', monospace; font-size: 9.5px; letter-spacing: .08em; text-transform: uppercase; font-weight: 700; border: 1.5px solid #18162A; border-radius: 100px; padding: 6px 11px; background: #F2ECDF;"><span style="width: 9px; height: 9px; border-radius: 50%; border: 1.5px solid #18162A; background: #FFC53D;"></span>The Bazaar</span>
+              <span style="display: inline-flex; align-items: center; gap: 6px; font-family: 'Space Mono', monospace; font-size: 9.5px; letter-spacing: .08em; text-transform: uppercase; font-weight: 700; border: 1.5px solid #18162A; border-radius: 100px; padding: 6px 11px; background: #F2ECDF;"><span style="width: 9px; height: 9px; border-radius: 50%; border: 1.5px solid #18162A; background: #BFEE4F;"></span>Chaos Bureau</span>
+              <span style="display: inline-flex; align-items: center; gap: 6px; font-family: 'Space Mono', monospace; font-size: 9.5px; letter-spacing: .08em; text-transform: uppercase; font-weight: 700; border: 2px solid #18162A; border-radius: 100px; padding: 6px 11px; background: #18162A; color: #F2ECDF;"><span style="width: 9px; height: 9px; border-radius: 50%; border: 1.5px solid #F2ECDF; background: {{ mr.color }};"></span>The Mirror</span>
+            </div>
+            <div style="border: 2px solid #18162A; border-radius: 10px; background: #F7F1E2; padding: 15px;">
+              <div style="display: flex; align-items: center; gap: 7px; margin-bottom: 9px;">
+                <span style="width: 10px; height: 10px; border-radius: 3px; border: 1.5px solid #18162A; background: {{ mr.color }};"></span>
+                <span style="font-family: 'Space Mono', monospace; font-size: 9px; letter-spacing: .12em; text-transform: uppercase; color: #6B6478;">The Mirror</span>
+                <span style="margin-left: auto; font-family: 'Space Mono', monospace; font-size: 9px; letter-spacing: .1em; text-transform: uppercase; border: 1px solid #18162A; border-radius: 3px; padding: 2px 6px;">Quick pick</span>
+              </div>
+              <div style="font-family: 'Spectral', serif; font-weight: 600; font-size: 15.5px; line-height: 1.2;">Does your family actually know what you do for a living?</div>
+              <div style="border-top: 1.5px dashed rgba(24,22,42,.3); margin-top: 11px; padding-top: 10px;">
+                <div style="display: flex; align-items: baseline; gap: 8px;">
+                  <span style="font-weight: 900; font-size: 30px;">61%</span>
+                  <span style="font-weight: 700; font-size: 12px;">say "roughly, not really"</span>
+                </div>
+                <div style="height: 8px; border: 1.5px solid #18162A; border-radius: 100px; background: #EFE8D6; overflow: hidden; margin-top: 6px;"><span style="display: block; height: 100%; width: 61%; background: {{ mr.color }}; transform-origin: left; animation: cwGrow .8s cubic-bezier(.2,.7,.2,1);"></span></div>
+              </div>
+            </div>
+            <div style="font-family: 'Space Mono', monospace; font-size: 8.5px; letter-spacing: .1em; text-transform: uppercase; color: #6B6478; margin-top: 10px;">{{ mr.caption }}</div>
+          </div>
+          <div style="padding: 10px 14px 12px; background: #F2ECDF; border-top: 2px solid #18162A;"><textarea value="{{ mr.fr.note }}" onChange="{{ mr.fr.setNote }}" placeholder="Comment (optional)…" style="width: 100%; min-height: 36px; border: 2px solid #18162A; border-radius: 7px; background: #F7F1E2; font-family: 'Space Mono', monospace; font-size: 11px; padding: 8px 10px; color: #18162A;"></textarea></div>
+        </div>
+      </sc-for>
+    </div>
+  </div>
+
+  <!-- tally bar -->
+  <div style="position: fixed; left: 0; right: 0; bottom: 0; z-index: 80; background: #18162A; color: #F2ECDF; padding: 12px 22px; display: flex; align-items: center; gap: 14px; flex-wrap: wrap;">
+    <span style="font-family: 'Space Mono', monospace; font-size: 10px; letter-spacing: .14em; text-transform: uppercase; color: #BFEE4F; font-weight: 700;">{{ tally }}</span>
+    <span style="font-family: 'Space Mono', monospace; font-size: 11px; flex: 1; min-width: 160px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{ tallyDetail }}</span>
+    <button onClick="{{ copyAll }}" style="font-family: 'Space Mono', monospace; font-size: 10px; letter-spacing: .1em; text-transform: uppercase; border: 1.5px solid #BFEE4F; border-radius: 100px; padding: 7px 14px; background: {{ copyBg }}; color: {{ copyFg }}; font-weight: 700;">{{ copyLabel }}</button>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = { v: {}, n: {}, copied: false, rg1Open: false, rg1State: 'Maharashtra', rg2Open: false, rg2State: 'Maharashtra' };
+
+  IDS = ['N1', 'N2', 'N3', 'D1', 'D2', 'D3', 'AR1', 'AR2', 'RG1', 'RG2', 'M1', 'M2', 'M3', 'BK1', 'BK2', 'MR1', 'MR2'];
+  STATES = ['Maharashtra', 'Delhi NCR', 'Karnataka', 'Tamil Nadu', 'West Bengal', 'Telangana', 'Gujarat', 'Kerala', 'Rajasthan', 'UP'];
+
+  setV(id, kind) {
+    const v = Object.assign({}, this.state.v);
+    v[id] = v[id] === kind ? null : kind;
+    this.setState({ v: v });
+  }
+  setN(id, val) {
+    const n = Object.assign({}, this.state.n);
+    n[id] = val;
+    this.setState({ n: n });
+  }
+  mkFr(id) {
+    const s = this.state, self = this, v = s.v[id];
+    return {
+      like: function () { self.setV(id, 'like'); },
+      change: function () { self.setV(id, 'change'); },
+      dislike: function () { self.setV(id, 'dislike'); },
+      likeBg: v === 'like' ? '#BFEE4F' : 'transparent', likeFg: v === 'like' ? '#18162A' : '#BFEE4F',
+      changeBg: v === 'change' ? '#FFC53D' : 'transparent', changeFg: v === 'change' ? '#18162A' : '#FFC53D',
+      dislikeBg: v === 'dislike' ? '#FF5A47' : 'transparent', dislikeFg: v === 'dislike' ? '#18162A' : '#FF5A47',
+      outline: v === 'like' ? '3px solid #BFEE4F' : (v === 'change' ? '3px solid #FFC53D' : (v === 'dislike' ? '3px solid #FF5A47' : 'none')),
+      note: s.n[id] || '',
+      setNote: function (e) { self.setN(id, e.target.value); }
+    };
+  }
+
+  renderVals() {
+    const s = this.state, self = this;
+    const fr = {};
+    this.IDS.forEach(function (id) { fr[id] = self.mkFr(id); });
+    const vals = { fr: fr };
+
+    // region chips
+    vals.rg1Open = s.rg1Open;
+    vals.rg1State = s.rg1State;
+    vals.rg1ChipBg = s.rg1Open ? '#FFE9C7' : '#F2ECDF';
+    vals.rg1Toggle = function () { self.setState({ rg1Open: !s.rg1Open }); };
+    vals.rg1Opts = this.STATES.map(function (st) {
+      const on = st === s.rg1State;
+      return { label: st, bg: on ? '#18162A' : '#F7F1E2', fg: on ? '#BFEE4F' : '#18162A', pick: function () { self.setState({ rg1State: st, rg1Open: false }); } };
+    });
+    vals.rg2Open = s.rg2Open;
+    vals.rg2State = s.rg2State;
+    vals.rg2BtnLabel = s.rg2Open ? 'Close' : 'Wrong state? Fix it';
+    vals.rg2BtnBg = s.rg2Open ? '#BFEE4F' : 'transparent';
+    vals.rg2BtnFg = s.rg2Open ? '#18162A' : '#BFEE4F';
+    vals.rg2Toggle = function () { self.setState({ rg2Open: !s.rg2Open }); };
+    vals.rg2Opts = this.STATES.map(function (st) {
+      const on = st === s.rg2State;
+      return { label: st, bg: on ? '#BFEE4F' : 'transparent', fg: on ? '#18162A' : '#F2ECDF', pick: function () { self.setState({ rg2State: st, rg2Open: false }); } };
+    });
+
+    // mode chips (M1 sticker / M2 folded tab / M3 stamp)
+    vals.modeCards = [
+      {
+        title: 'M1 · Tinted sticker', fr: fr.M1,
+        caption: 'Category colour at 20% fill + solid ink border · quiet but present',
+        chip: React.createElement('span', { style: { fontFamily: "'Space Mono', monospace", fontSize: '9px', letterSpacing: '.1em', textTransform: 'uppercase', fontWeight: 700, border: '1.5px solid #18162A', borderRadius: '4px', padding: '3px 8px', background: 'rgba(191,238,79,.35)' } }, 'Quick pick')
+      },
+      {
+        title: 'M2 · Lime index tab', fr: fr.M2,
+        caption: 'Solid lime tab with a clipped corner · reads as a filing-system index',
+        chip: React.createElement('span', { style: { fontFamily: "'Space Mono', monospace", fontSize: '9px', letterSpacing: '.1em', textTransform: 'uppercase', fontWeight: 700, border: '1.5px solid #18162A', padding: '3px 9px', background: '#BFEE4F', clipPath: 'polygon(0 0, calc(100% - 7px) 0, 100% 100%, 0 100%)', paddingRight: '20px' } }, 'Quick pick')
+      },
+      {
+        title: 'M3 · Ink stamp', fr: fr.M3,
+        caption: 'Rotated double-ring stamp in red ink · loudest of the three',
+        chip: React.createElement('span', { style: { fontFamily: "'Space Mono', monospace", fontSize: '8.5px', letterSpacing: '.12em', textTransform: 'uppercase', fontWeight: 700, border: '2px double #FF5A47', borderRadius: '4px', padding: '3px 7px', color: '#FF5A47', transform: 'rotate(-3deg)', display: 'inline-block' } }, 'Quick pick')
+      }
+    ];
+
+    // back buttons
+    vals.backCards = [
+      {
+        title: 'BK1 · Quiet text link', fr: fr.BK1,
+        caption: 'No pill at all · underline on hover + ESC keycap · cannot be mistaken for an option',
+        btn: React.createElement('span', { style: { display: 'inline-flex', alignItems: 'center', gap: '8px', fontFamily: "'Space Mono', monospace", fontSize: '11px', letterSpacing: '.12em', textTransform: 'uppercase', fontWeight: 700, color: '#18162A', cursor: 'pointer', borderBottom: '2px solid transparent' } },
+          React.createElement('span', { style: { fontSize: '15px' } }, '\u2190'), 'The feed',
+          React.createElement('span', { style: { fontSize: '8.5px', border: '1.5px solid #6B6478', borderRadius: '3px', padding: '2px 5px', color: '#6B6478' } }, 'ESC'))
+      },
+      {
+        title: 'BK2 · Ink block — "Back" inside, animated arrow (updated per comment)', fr: fr.BK2,
+        caption: 'Arrow big + nudging · "Back" lives inside the block · ESC keycap beside · on hover the arrow slides harder',
+        btn: React.createElement('span', { style: { display: 'inline-flex', alignItems: 'center', gap: '10px' } },
+          React.createElement('span', { style: { display: 'inline-flex', alignItems: 'center', gap: '9px', border: '2px solid #18162A', borderRadius: '9px', background: '#18162A', color: '#F2ECDF', padding: '10px 16px', cursor: 'pointer', boxShadow: '3px 3px 0 rgba(24,22,42,.25)' } },
+            React.createElement('span', { style: { fontWeight: 900, fontSize: '20px', lineHeight: 1, color: '#BFEE4F', display: 'inline-block', animation: 'cwNudge 1.6s ease-in-out infinite' } }, '\u2190'),
+            React.createElement('span', { style: { fontWeight: 800, fontSize: '13px', textTransform: 'uppercase', letterSpacing: '.05em' } }, 'Back')))
+      }
+    ];
+
+    // mirror colours
+    vals.mirrorCards = [
+      { title: 'MR1 · Lavender ink #B79CE4', fr: fr.MR1, color: '#B79CE4', caption: 'Cool + introspective · sits between daily-grind blue and culture pink' },
+      { title: 'MR2 · Teal ink #5FC9B8', fr: fr.MR2, color: '#5FC9B8', caption: 'Fresh + neutral · the only cool-green in the system, very separable' }
+    ];
+
+    // tally
+    const liked = this.IDS.filter(function (id) { return s.v[id] === 'like'; });
+    const changed = this.IDS.filter(function (id) { return s.v[id] === 'change'; });
+    const disliked = this.IDS.filter(function (id) { return s.v[id] === 'dislike'; });
+    vals.tally = liked.length + ' like \u00b7 ' + changed.length + ' change \u00b7 ' + disliked.length + ' dislike';
+    vals.tallyDetail = (liked.length || changed.length || disliked.length) ? ('\u2713 ' + liked.join(' ') + (changed.length ? ' \u00b7 \u26a0 ' + changed.join(' ') : '') + (disliked.length ? ' \u00b7 \u2715 ' + disliked.join(' ') : '')) : 'verdict each frame, then copy';
+    vals.copyLabel = s.copied ? 'Copied \u2713' : 'Copy Lab B verdicts';
+    vals.copyBg = s.copied ? '#BFEE4F' : 'transparent';
+    vals.copyFg = s.copied ? '#18162A' : '#BFEE4F';
+    vals.copyAll = function () {
+      const lines = ['Lab B (visuals) verdicts:'];
+      self.IDS.forEach(function (id) {
+        const note = (s.n[id] || '').trim();
+        if (s.v[id] || note) lines.push(id + ': ' + (s.v[id] ? s.v[id].toUpperCase() : '\u2014') + (note ? ' \u00b7 "' + note + '"' : ''));
+      });
+      if (navigator.clipboard) navigator.clipboard.writeText(lines.join('\n'));
+      self.setState({ copied: true });
+      setTimeout(function () { self.setState({ copied: false }); }, 2000);
+    };
+
+    return vals;
+  }
+}
+</script>
+</body>
+</html>
