@@ -56,3 +56,29 @@ must be saved BEFORE component picking. MVP DV-set trimming flagged for Stage 2 
   region-chip — documented in adr-005).
 - Design deltas accepted via adr-005: 8 interaction modes, 14 DVs, @svg-maps/india.
 - Coding Agent Review delivered to design agent via V5 Feedback.md.
+
+
+## 2026-06-12 — Feature audit + design review handoff (session 2)
+
+**Stage:** Pre-Stage-3 / analysis
+**Duration:** ~20 min
+**What changed:**
+- No DB or file changes — read-only analysis session.
+- Full feature audit: 17 tracker features mapped against v4 prototype coverage.
+  7 fully done (question-experience, interaction-modes, result-reveal, dv-engine,
+  personal-insight-layer, homepage-curation, anonymous-participation). 3 partial
+  (reactions-sharing, discovery, question-lifecycle). 7 correctly absent (backend/P1).
+- Cross-referenced partial + absent features against V5 Feedback.md:
+  - reactions-sharing (share half): FB-014 + CA-022/023 cover it.
+  - discovery: CA-025 + other-open-items cover it.
+  - question-lifecycle (archived state): CA-024 covers it.
+  - og-image-gen: CA-023 covers it.
+  - region-capture: CA-021 + CA-032 cover it.
+- GAP FOUND: feat-share-landing has no design anywhere. FB-014 adds the button,
+  CA-022 designs the share card, but the landing page someone arrives at after
+  clicking a shared link is undesigned and unflagged in V5 Feedback.md.
+  Add to v5 scope before scaffolding.
+
+**Decisions:** none (analysis only)
+**Next session context:** v5 code build. Design agent has V5 Feedback.md.
+  Trigger when v5 design lands. Flag feat-share-landing gap to design agent first.
