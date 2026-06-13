@@ -41,8 +41,13 @@ risks:
   - id: 75
     project_slug: stateofus
     risk_type_id: public-admin
-    status: open
-    hidden_by_default: false
+    status: resolved
+    resolved_at: 2026-06-13T01:50:34.000Z
+    resolution_summary: "Admin protected: app-level constant-time token gate
+      (middleware on /admin+/api/admin, verified 401 live) + httpOnly hashed
+      cookie. Authentik SSO wrap (adr-006 s3) pending - bootstrap API token
+      expired; tracked as Stage 4 item."
+    hidden_by_default: true
     notes: auth_intent=none for the public product, but the admin console mutates
       content. Admin MUST be protected (token/CF Access/separate surface) before
       deploy - 3->deploy gate requires auth strategy for non-anonymous pages.
@@ -50,8 +55,11 @@ risks:
   - id: 76
     project_slug: stateofus
     risk_type_id: no-tests
-    status: open
-    hidden_by_default: false
+    status: resolved
+    resolved_at: 2026-06-13T01:50:34.000Z
+    resolution_summary: "Test framework live: 92 vitest + 20 playwright e2e
+      (mobile+desktop) green at e6dd319; CI on every push."
+    hidden_by_default: true
     notes: "Baseline: no test framework yet. cv-tagged project: critical-flow E2Es
       BLOCK deploy on red at Stage 3."
     created_at: 2026-06-12T09:59:16.000Z

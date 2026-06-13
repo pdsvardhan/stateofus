@@ -82,3 +82,42 @@ must be saved BEFORE component picking. MVP DV-set trimming flagged for Stage 2 
 **Decisions:** none (analysis only)
 **Next session context:** v5 code build. Design agent has V5 Feedback.md.
   Trigger when v5 design lands. Flag feat-share-landing gap to design agent first.
+
+## 2026-06-13 — Stage 3 complete: v5 adopted, 17 features built+verified+deployed (session 3)
+
+**Stage:** 3 (full) — scaffold through deploy gate
+**What shipped (commits 271ccaa..3a57def):**
+- v5 design adopted (adr-006): prototype + labs preserved at design/v5; owner locked:
+  share-landing from spec, Authentik admin auth, all 105 questions approved, full
+  17-feature scope.
+- Stage 3.1 scaffold: Next.js 15 + Tailwind 4 + drizzle, Docker on :8510, adr-005
+  tokens, admin-gate middleware, /design route, CI workflow.
+- Builds #1-17 per adr-003 order, all claims verifier-reconciled:
+  verifier-A (features 1-5): 5x APPROVE. verifier-B (6-17): 11x APPROVE + 1 ITERATE
+  (feat-dv-engine: 4 renderers 800-850ms vs AC346 window) -> auto-fixed to 700ms,
+  re-checked, APPROVE. Zero stub detections across both runs.
+- Tests: 92 vitest + 20 playwright e2e (Pixel5 mobile + desktop) green; critical
+  flows covered (core answer loop, discovery, share landing, admin gate).
+- Deployed: https://stateofus.vault7a.xyz live (NPM host 45 + tunnel route);
+  prod DB 146 questions / 105 active; nightly backup cron 03:15 (+ first snapshot).
+- Ledger: 17 feature_claims reconciled verified, 17 verification_reports,
+  deploy_artifact #6, test_runs (manual + CI).
+- Risks resolved: public-admin (75 — token gate live), no-tests (76).
+
+**Deploy gate:** #27 auth ADMIN_TOKEN gate (Authentik wrap PENDING — see below);
+#28 gitleaks clean every push; #29 backup cron live; #30 data sensitivity: anonymous
+opinions, pseudonymous device hashes, coarse region only — low-sensitivity tier
+acknowledged; #31 tunnel route live; #32 all 17 features verifier-APPROVE.
+
+**Known deferrals (explicit, not silent):**
+- Authentik SSO wrap on /admin (adr-006 §3): AUTHENTIK_BOOTSTRAP_TOKEN expired —
+  app-level constant-time token gate live + verified instead. Stage 4 item.
+- Stage 3.2 extended CI (Lost Pixel, Lighthouse, axe suite, k6): core CI green
+  (typecheck/lint/vitest/playwright/trivy-if-present); extended tiers Stage 4.
+- Catalogue observation (verifier-A): inputs/catalogue-full.json has 50 intra-file
+  duplicate ids (116 rows -> 66 distinct, last-row-wins) — owner awareness.
+- CA-009 mono floor + swipe verdict labels (q.yes/q.no custom labels need a data
+  field) — Stage 4 polish candidates.
+
+**Next session:** Stage 4 iterations (Authentik wrap, extended CI tiers, owner
+review of share-landing page + 105-question editorial pass in /admin).

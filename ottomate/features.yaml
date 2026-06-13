@@ -3,7 +3,7 @@ features:
     title: OG / share image generation
     short_description: Server-rendered share cards for image export + link unfurls (DOC 5 s14).
     type: backend
-    status: planned
+    status: done
     priority: P1
     size: M
     test_status: not-tested
@@ -24,7 +24,7 @@ features:
     short_description: Question + interaction + result + exploration as ONE page;
       visibility states change, page stays unified (DOC 0 P4, DOC 5 R1).
     type: ui
-    status: planned
+    status: done
     priority: P0
     size: L
     test_status: not-tested
@@ -47,7 +47,7 @@ features:
     short_description: Quick Pick, Bucket Sort, Tier Placement, Trade-off Cards,
       Swipe Stack; one interaction per question; skip always allowed (DOC 2).
     type: ui
-    status: planned
+    status: done
     priority: P0
     size: L
     test_status: not-tested
@@ -78,7 +78,7 @@ features:
     short_description: "Per-question reveal patterns: immediate / threshold /
       progressive; failure states never show empty charts (DOC 5 s4+15)."
     type: hybrid
-    status: planned
+    status: done
     priority: P0
     size: M
     test_status: not-tested
@@ -102,7 +102,7 @@ features:
       ranking, insight cards. 1 primary + 0-2 secondary per question (DOC 4
       s9)."
     type: ui
-    status: planned
+    status: done
     priority: P0
     size: L
     test_status: not-tested
@@ -135,7 +135,7 @@ features:
     short_description: Mandatory on every result; template-driven, never generative
       (DOC 4 s8, DOC 5 s8-9).
     type: ui
-    status: planned
+    status: done
     priority: P0
     size: M
     test_status: not-tested
@@ -158,7 +158,7 @@ features:
       search (questions+categories only). Guided, not algorithmic (DOC 6 s6, DOC
       7 s6).
     type: ui
-    status: planned
+    status: done
     priority: P0
     size: M
     test_status: not-tested
@@ -180,7 +180,7 @@ features:
     short_description: "Feed sources: editorial, trending, recent, explore +
       diversity rules; no single feed (DOC 6 s5)."
     type: hybrid
-    status: planned
+    status: done
     priority: P0
     size: M
     test_status: not-tested
@@ -201,7 +201,7 @@ features:
     short_description: Like/dislike, share link, result image export; context
       preserved, no personalized exports (DOC 6 s9+11).
     type: ui
-    status: planned
+    status: done
     priority: P0
     size: M
     test_status: not-tested
@@ -223,7 +223,7 @@ features:
       draft->active->paused->frozen->archived->removed(rare); visible status;
       results outlive participation (DOC 6 s3-4+13).
     type: backend
-    status: planned
+    status: done
     priority: P0
     size: M
     test_status: not-tested
@@ -245,7 +245,7 @@ features:
     short_description: Create/edit/pause/freeze/archive/feature/export questions;
       protected surface (DOC 7 s10).
     type: ui
-    status: planned
+    status: done
     priority: P0
     size: M
     test_status: not-tested
@@ -266,7 +266,7 @@ features:
     title: Question catalogue data model
     short_description: Adopt the 34-column catalogue schema as the question data model (DATA-1).
     type: backend
-    status: planned
+    status: done
     priority: P0
     size: M
     test_status: not-tested
@@ -289,7 +289,7 @@ features:
     short_description: No accounts; device-scoped identity for comparisons + dedup;
       migration hooks for future auth (DOC 7 s7).
     type: backend
-    status: planned
+    status: done
     priority: P0
     size: M
     test_status: not-tested
@@ -311,7 +311,7 @@ features:
       ~75+ to reach >=100 across 6 categories x 5 modes; user reviews (user
       decision 2026-06-12).
     type: automated
-    status: planned
+    status: done
     priority: P0
     size: L
     test_status: not-tested
@@ -337,7 +337,7 @@ features:
     short_description: Coarse city/state from IP automatically + one-tap optional
       correction on geo questions (user decision 2026-06-12).
     type: backend
-    status: planned
+    status: done
     priority: P1
     size: M
     test_status: not-tested
@@ -359,7 +359,7 @@ features:
     short_description: Device + IP heuristics, rate limits; reduce impact not
       eliminate (DOC 3 S9, DOC 7 s12).
     type: backend
-    status: planned
+    status: done
     priority: P1
     size: M
     test_status: not-tested
@@ -380,7 +380,7 @@ features:
     short_description: Shared link opens question with shared-result context; answer
       -> compare -> continue (ai-proposed, approved).
     type: ui
-    status: planned
+    status: done
     priority: P1
     size: S
     test_status: not-tested

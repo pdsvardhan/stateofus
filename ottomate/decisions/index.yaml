@@ -55,3 +55,14 @@ decisions:
       - curated
       - cat:product
     body_path: decisions/2026-06-12-ui-master-plan.md
+  - id: adr-006-stateofus-v5-adoption
+    project_slug: stateofus
+    title: v5 design adopted as build source; share-landing from spec; Authentik
+      admin auth; all 105 questions approved
+    status: accepted
+    date: 2026-06-12T00:00:00.000Z
+    tags:
+      - stage-3
+      - design
+      - curated
+    body_path: decisions/2026-06-12-v5-adoption.md
