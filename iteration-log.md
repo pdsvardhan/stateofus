@@ -173,3 +173,20 @@ polish is documented in FRONTEND-FIDELITY-TODO.md.
 **Next session:** the frontend fidelity pass — see FRONTEND-FIDELITY-TODO.md.
 Mandate: frontend 100% replicated to design/v5; backend is solid + verified, do
 not rebuild it. Start by re-verifying the font fix across all pages.
+
+## Session 2026-06-13 — fidelity audit → iteration #18 → Stage-3 deploy-gate close-out
+
+**Stage:** Stage 4 (iterate) + Stage 3 deploy-gate close-out
+**Duration:** ~one long session
+
+**What changed:**
+- **v5 fidelity audit** (design vs build). Found real gaps (home feed taxonomy, tokens, /about 404, result chrome) and *corrected several audit claims with evidence* — the DV-typed teasers + reveal animations were already faithful (framer-motion), the India map was already bundled locally, and "🔒 your vote is the ticket" is the prototype's own text.
+- **Iteration #18 — 10 locked items, all built + INDEPENDENTLY VERIFIED (APPROVE), merged `iter-18`→master @`bcba2c9`:**
+  - home 5-rail feed taxonomy (Vote to unlock / Results are out / Quick picks / Sorting desk / Swipe court) + stat/tug result cards; FB-009 teasers; tokens (#e7e0cd paper, 7px dot-grid, h1 64px, +ink-warm/muted-violet theme tokens); 9 missing keyframes; `/about` ABT1 broadsheet page; result chrome (SHARE / DOWNLOAD PNG / LINK + truthful "Counted" stamp, NO sample-data stamp); committed sample-data seed `scripts/seed-sample-votes.mjs` (+ `npm run seed:demo`) with 6 stub questions (NEW-90..95) → all **8 modes + 14 DVs** now live with data. DV animations + map CDN verified **no-change**.
+- **Stage-3 deploy-gate CLOSED:** e2e **20/20** + unit **92/92** green @master; all **5 flows recorded passing** in `flow_test_runs`; backup verified (`stateofus-backup.sh`, 14d WAL-aware snapshots) → `no-backup` resolved; secret scan clean (gitleaks 28 commits 0 leaks + trivy 0 secrets) + production deploy-artifact recorded; **6 risks resolved** (rate-limit/caching/xss/data-drift/mobile + backup).
+- **`design-review/`** package added (UI-MAP + neutral review prompt + 27 rendered screenshots) for an independent design-AI review; internal audit/TODO docs removed.
+
+**Decisions:** no new ADRs (iteration #18 integrated under existing adr-005/006).
+**Open follow-ups:** `no-error-tracking` (GlitchTip/Sentry) still OPEN; result-screen multi-column layout + mobile/responsive fidelity deferred-with-reason.
+**Soft warning (pre-existing):** `stale-verification` on 5 features (edited ~16s after their 2026-06-12 verify, during original build).
+**Next session pick-up:** design-AI review report (prompt in `design-review/REVIEW-PROMPT.md`); optionally wire error-tracking + the deferred layout/mobile items.
