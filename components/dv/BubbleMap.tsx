@@ -64,18 +64,21 @@ function BubbleMap({ result }: DvProps) {
             fill="color-mix(in srgb, var(--lime) 78%, transparent)"
             stroke="var(--ink)"
             strokeWidth={1.2}
-          />
+          >
+            <title>{`${b.name} · ${formatCount(b.n)} counted`}</title>
+          </motion.circle>
         ))}
         {bubbles.slice(0, 3).map((b) => (
           <text
             key={`label-${b.name}`}
             x={b.x}
-            y={b.y + 3}
+            y={b.y}
             textAnchor="middle"
-            style={{ fontFamily: "var(--font-label)", fontSize: 10, fontWeight: 700 }}
+            style={{ fontFamily: "var(--font-label)", fontSize: 9, fontWeight: 700, pointerEvents: "none" }}
             fill="var(--ink)"
           >
-            {formatCount(b.n)}
+            <tspan x={b.x} dy="-1">{b.name.slice(0, 3).toUpperCase()}</tspan>
+            <tspan x={b.x} dy="10">{formatCount(b.n)}</tspan>
           </text>
         ))}
       </svg>

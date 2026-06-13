@@ -76,7 +76,12 @@ function payloadFor(mode, opts, targets) {
   if (mode === "swipe_stack") { const votes = {}; for (const k of keys) votes[k] = Math.random() < 0.6 ? "yes" : "no"; return { votes }; }
   if (["bucket_sort", "tier_placement"].includes(mode)) {
     const labels = (targets && targets.labels) || ["A", "B", "C"];
-    const placements = {}; for (const k of keys) placements[k] = labels[skew(labels.length)]; return { placements };
+    const placements = {};
+    // FIX 7 — round-robin with a per-voter random offset spreads items across
+    // ALL tiers/buckets (skew() piled everything in the first → 3-of-4 empty).
+    const off = r(labels.length);
+    keys.forEach((k, i) => { placements[k] = labels[(i + off) % labels.length]; });
+    return { placements };
   }
   if (mode === "rank_order") { const o = [...keys]; for (let i = o.length - 1; i > 0; i--) { const j = r(i + 1);[o[i], o[j]] = [o[j], o[i]]; } return { order: o }; }
   if (mode === "podium_slots") { const o = [...keys]; for (let i = o.length - 1; i > 0; i--) { const j = r(i + 1);[o[i], o[j]] = [o[j], o[i]]; } return { slots: { first: o[0], second: o[1], third: o[2] } }; }

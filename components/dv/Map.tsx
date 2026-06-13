@@ -7,14 +7,14 @@
  * floor stay cream and the legend carries the "no clear winner yet" chip
  * (CA-007) — trust visible, never fake certainty.
  */
-import { useMemo } from "react";
+import { useMemo, useRef } from "react";
 import { motion } from "framer-motion";
 import type { DvDefinition, DvProps } from "@/lib/dv/registry";
 import type { QuestionOption } from "@/lib/types";
 import { INDIA_VIEWBOX, matchStateKey } from "@/lib/dv/india";
 import { mapInk } from "@/lib/dv/palette";
 import { PICK_MODES, shareRowsFor, formatCount } from "@/lib/dv/transforms";
-import { IndiaPaths } from "./india-base";
+import { IndiaPaths, useCentroids } from "./india-base";
 import { Caption, EASE, Plate, SampleLine, mono, useMotionPrefs } from "./chrome";
 
 /** a state needs this many answers before we call a winner (CA-007) */
@@ -22,6 +22,8 @@ const STATE_FLOOR_N = 3;
 
 function MapDv({ question, result }: DvProps) {
   const prefs = useMotionPrefs();
+  const svgRef = useRef<SVGSVGElement | null>(null);
+  const centroids = useCentroids(svgRef);
   const states = result.state_aggregates ?? {};
   const stateKeys = Object.keys(states);
 
@@ -72,6 +74,7 @@ function MapDv({ question, result }: DvProps) {
         transition={{ duration: 0.55, ease: EASE }}
       >
         <svg
+          ref={svgRef}
           viewBox={INDIA_VIEWBOX}
           role="img"
           aria-label="Winning answer by state"
@@ -83,6 +86,25 @@ function MapDv({ question, result }: DvProps) {
               return idx === null ? "var(--paper-edge)" : mapInk(idx);
             }}
           />
+          {/* FIX 5 — abbreviated labels on states big enough to fit one + that
+              have a winner; every state still names-on-hover via IndiaPaths <title>. */}
+          {centroids &&
+            Object.entries(centroids).map(([name, c]) => {
+              const idx = winnerByLocation(name);
+              if (idx === null || c.w < 26) return null;
+              return (
+                <text
+                  key={`lbl-${name}`}
+                  x={c.x}
+                  y={c.y}
+                  textAnchor="middle"
+                  style={{ fontFamily: "var(--font-label)", fontSize: 8, fontWeight: 700, pointerEvents: "none" }}
+                  fill={idx === 1 ? "var(--paper)" : "var(--ink)"}
+                >
+                  {name.slice(0, 3).toUpperCase()}
+                </text>
+              );
+            })}
         </svg>
 
         {/* legend */}

@@ -188,7 +188,7 @@ export default async function QuestionPage(props: {
     <main className="mx-auto min-h-screen w-full max-w-2xl px-4 pb-16 lg:max-w-[1120px] lg:px-8">
       <header className="flex items-center justify-between py-4">
         <BackBlock href="/" />
-        <span className="bg-lime border-2 border-ink px-2 py-0.5 font-label text-xs font-bold tracking-[0.15em] text-ink uppercase">
+        <span className="bg-paper-bright border border-ink px-2 py-0.5 font-label text-xs font-bold tracking-[0.15em] text-ink uppercase">
           {chip}
         </span>
       </header>

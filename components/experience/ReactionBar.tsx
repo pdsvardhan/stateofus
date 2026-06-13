@@ -52,18 +52,18 @@ export function ReactionBar({ questionId }: { questionId: string }) {
     <motion.button
       onClick={() => react(kind)}
       animate={
-        popped === kind && !reduced ? { scale: [1, 1.25, 1] } : { scale: 1 }
+        popped === kind && !reduced ? { scale: [1, 1.18, 1] } : { scale: 1 }
       }
       transition={{ duration: 0.4 }}
       aria-pressed={yours === kind}
       aria-label={label}
-      className={`relative flex items-center gap-1.5 border-2 border-ink px-2.5 py-1 font-label text-sm font-bold ${
-        yours === kind ? "bg-lime text-ink" : "bg-paper-bright text-ink"
+      className={`relative flex min-h-[44px] items-center gap-2 border-2 border-ink px-4 py-2 font-label text-base font-bold ${
+        yours === kind ? "bg-lime text-ink ring-2 ring-ink" : "bg-paper-bright text-ink"
       }`}
     >
       <span aria-hidden>{glyph}</span>
       {yours && counts && (
-        <span className="text-xs">
+        <span className="text-sm">
           {(kind === "up" ? counts.up : counts.down).toLocaleString("en-IN")}
         </span>
       )}
@@ -80,9 +80,17 @@ export function ReactionBar({ questionId }: { questionId: string }) {
   );
 
   return (
-    <div className="flex items-center gap-2">
-      {thumb("up", "👍", "This question was worth answering")}
-      {thumb("down", "👎", "Not for me")}
+    <div className="flex flex-col gap-1.5">
+      <span className="font-label text-[10px] uppercase tracking-wider text-muted">
+        Was this worth answering?
+      </span>
+      <div className="flex items-center gap-2">
+        {thumb("up", "👍", "This question was worth answering")}
+        {thumb("down", "👎", "Not for me")}
+        {yours && (
+          <span className="font-label text-xs font-bold text-ink">Counted ✓</span>
+        )}
+      </div>
     </div>
   );
 }
