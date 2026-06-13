@@ -2,8 +2,12 @@ risks:
   - id: 71
     project_slug: stateofus
     risk_type_id: no-rate-limit
-    status: open
-    hidden_by_default: false
+    status: resolved
+    resolved_at: 2026-06-13T06:20:55.000Z
+    resolution_summary: "feat-vote-dedup live: lib/rate-limit.ts per-device + per-IP
+      sliding windows + burst gate enforced in POST /api/answers (429 on abuse);
+      UPSERT dedup per (question,device). Reduces stuffing per DOC3 S9."
+    hidden_by_default: true
     severity_override: high
     notes: "Anonymous vote stuffing / ballot abuse is the project's #1 integrity
       risk: no auth means dedup + rate limits are the only defense. Mitigation:
@@ -13,8 +17,13 @@ risks:
   - id: 72
     project_slug: stateofus
     risk_type_id: data-drift-undetected
-    status: open
-    hidden_by_default: false
+    status: resolved
+    resolved_at: 2026-06-13T06:20:55.000Z
+    resolution_summary: "Impact reduced (not eliminated, DOC3 S9):
+      feat-region-capture one-tap correction (POST /api/region/correct +
+      RegionChip) at city/state granularity; coarse IP-geo accepted +
+      user-correctable."
+    hidden_by_default: true
     notes: "Region accuracy: IP-geo is coarse/wrong on mobile carrier NAT -> wrong
       your-region insights + skewed G1/G2 maps. Mitigation: feat-region-capture
       one-tap correction; city/state granularity only."
@@ -22,8 +31,12 @@ risks:
   - id: 73
     project_slug: stateofus
     risk_type_id: no-caching
-    status: open
-    hidden_by_default: false
+    status: resolved
+    resolved_at: 2026-06-13T06:20:55.000Z
+    resolution_summary: "Aggregation precomputed: question_aggregates tables
+      maintained incrementally in the answer transaction (updateAggregate);
+      result/discovery reads hit aggregates, never scan answers."
+    hidden_by_default: true
     severity_override: medium
     notes: "Aggregation performance: per-answer live aggregation needs a
       caching/refresh strategy (refresh on answer / periodic / manual per DOC 4
@@ -32,8 +45,13 @@ risks:
   - id: 74
     project_slug: stateofus
     risk_type_id: mobile-broken
-    status: open
-    hidden_by_default: false
+    status: resolved
+    resolved_at: 2026-06-13T06:20:55.000Z
+    resolution_summary: "Functional: tap-only fallbacks on gesture interactions
+      (bucket-sort tap-a-chip-then-bucket etc.); e2e green on Pixel 5 mobile
+      project. Visual mobile polish is a separate tracked follow-up
+      (desktop-matched first)."
+    hidden_by_default: true
     notes: "Gesture-heavy interactions (bucket sort, tier placement, swipe stack)
       are notoriously fiddly on mobile web. Mitigation: tap-only fallbacks (AC
       on feat-interaction-modes), prototype early at 375px."
@@ -73,8 +91,12 @@ risks:
   - id: 78
     project_slug: stateofus
     risk_type_id: no-backup
-    status: open
-    hidden_by_default: false
+    status: resolved
+    resolved_at: 2026-06-13T06:20:55.000Z
+    resolution_summary: Nightly WAL-aware SQLite snapshot via stateofus-backup.sh
+      (15 3 * * *) -> /mnt/storage/backups/stateofus/, 14d retention; +appdata
+      tarballs +borg. Verified snapshot exists (stateofus-2026-06-13.db).
+    hidden_by_default: true
     notes: Answers DB is the product's accumulated value (results are historical
       artifacts). Backup plan is a 3->deploy gate condition.
     created_at: 2026-06-12T09:59:16.000Z
@@ -90,8 +112,12 @@ risks:
   - id: 80
     project_slug: stateofus
     risk_type_id: xss-html-injection
-    status: open
-    hidden_by_default: false
+    status: resolved
+    resolved_at: 2026-06-13T06:20:55.000Z
+    resolution_summary: Question content admin-authored (gated) + React
+      default-escaped on render; no user-generated text in MVP (no comments).
+      Exposure low.
+    hidden_by_default: true
     notes: Question content + options are admin-authored and rendered widely (incl.
       share cards). Sanitize rendering; no user-generated text in MVP (no
       comments) keeps exposure low.

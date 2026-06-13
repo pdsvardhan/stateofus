@@ -3,7 +3,7 @@ flows:
     title: Core answer loop
     type: ui
     priority: critical
-    test_status: not-tested
+    test_status: passing
     trigger: User opens an active question page
     expected_outcome: User answers with one interaction, sees a rewarding visual
       result + personal insight, explores, then shares or continues to the next
@@ -52,7 +52,7 @@ flows:
     title: Inbound share landing
     type: ui
     priority: important
-    test_status: not-tested
+    test_status: passing
     trigger: Visitor opens a shared question/result URL
     expected_outcome: Visitor lands on the question with shared context, answers,
       sees their comparison, and continues exploring
@@ -85,7 +85,7 @@ flows:
     title: Discovery / browse
     type: ui
     priority: critical
-    test_status: not-tested
+    test_status: passing
     trigger: User lands on the homepage or opens discovery surfaces
     expected_outcome: User finds an interesting question through curated modules,
       categories, trending, search or random
@@ -117,7 +117,7 @@ flows:
     title: Admin question management
     type: mixed
     priority: critical
-    test_status: not-tested
+    test_status: passing
     trigger: Admin opens the protected admin console
     expected_outcome: Admin creates, previews, activates and governs questions
       through their lifecycle
@@ -157,7 +157,7 @@ flows:
     title: Result lifecycle (automated)
     type: automated
     priority: important
-    test_status: not-tested
+    test_status: passing
     trigger: Answers accumulate on an active question
     expected_outcome: Results activate at threshold, exploration expands, and
       results remain visible after freeze/archive
