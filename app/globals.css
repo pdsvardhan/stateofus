@@ -168,3 +168,12 @@ body {
   94% { transform: rotate(8deg); }
   97% { transform: rotate(-4deg); }
 }
+
+/* Hide the on-screen scrollbar on horizontal feed rows (scroll still works). */
+.no-scrollbar {
+  -ms-overflow-style: none; /* IE/Edge */
+  scrollbar-width: none; /* Firefox */
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none; /* Chrome/Safari */
+}

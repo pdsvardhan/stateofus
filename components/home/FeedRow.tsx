@@ -31,7 +31,7 @@ export function FeedRow({
           {cards.length} question{cards.length === 1 ? "" : "s"}
         </span>
       </div>
-      <div style={{ overflowX: "auto", padding: "4px 4px 16px", scrollSnapType: "x proximity" }}>
+      <div className="no-scrollbar" style={{ overflowX: "auto", padding: "4px 4px 16px", scrollSnapType: "x proximity" }}>
         <div className="flex items-stretch gap-4">
           {cards.map((c) => (
             <QuestionCard key={c.id} card={c} />

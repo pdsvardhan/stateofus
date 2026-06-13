@@ -6,7 +6,7 @@ const RULES = [
   "Answer first — results unlock after your vote.",
   "Privacy first — your opinion counts, your identity never does.",
   "Skip anything, judgement-free.",
-  "Every count shows its sample — small counts say so.",
+  "Every result shows how many answered — and flags the thin ones.",
   "Questions retire; results stay public.",
 ];
 

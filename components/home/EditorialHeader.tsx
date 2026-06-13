@@ -16,30 +16,17 @@ export function EditorialHeader() {
         style={{
           fontFamily: "var(--font-ui)",
           fontWeight: 900,
-          /* prototype: h1Size = wide ? 64px : 40px (desktop-match first) */
-          fontSize: "clamp(40px, 6vw, 64px)",
-          lineHeight: 0.96,
+          /* one line on desktop; scales down on narrow screens without wrapping */
+          fontSize: "clamp(20px, 4.9vw, 60px)",
+          lineHeight: 1,
           letterSpacing: "-0.03em",
           textTransform: "uppercase",
-          margin: "0 0 14px",
-          maxWidth: 900,
+          whiteSpace: "nowrap",
+          margin: 0,
         }}
       >
         What does India <span style={{ color: "var(--fire)" }}>actually</span> think?
       </h1>
-      <div
-        style={{
-          fontFamily: "var(--font-editorial)",
-          fontStyle: "italic",
-          fontSize: 18,
-          color: "var(--ink-warm)",
-          maxWidth: 560,
-          lineHeight: 1.4,
-        }}
-      >
-        Answer one question. See the country split open. No accounts, no feeds of
-        strangers — just the public, counted.
-      </div>
     </div>
   );
 }

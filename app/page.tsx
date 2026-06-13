@@ -45,7 +45,7 @@ export default function Home() {
             </div>
           </div>
 
-          <div className="flex w-full shrink-0 flex-col gap-5 lg:w-[310px]">
+          <div className="flex w-full shrink-0 flex-col gap-5 lg:w-[310px] lg:sticky lg:top-[84px] lg:self-start">
             <TrendingRail cards={trending.slice(0, 5)} />
             <HouseRules />
           </div>
