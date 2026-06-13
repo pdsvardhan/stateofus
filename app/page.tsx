@@ -1,27 +1,42 @@
 /**
- * Homepage shell — scaffold only.
- *
- * @intentional-placeholder feat-homepage-curation (build #13) replaces this
- * with the curated multi-source front page from the v5 prototype. The scaffold
- * ships a masthead so /  renders something honest, not an empty chart.
+ * The front page — feat-homepage-curation (AC354/355).
+ * Editorial (hero carousel) + trending + recent + explore modules, composed
+ * with the category-diversity pass. Curated and bounded — no infinite feed,
+ * no single algorithmic stream (product avoid-list).
  */
+import { composeHomepage } from "@/lib/discovery/queries";
+import { Masthead } from "@/components/home/Masthead";
+import { HeroCarousel } from "@/components/home/HeroCarousel";
+import { CategoryChips } from "@/components/home/CategoryChips";
+import { FeedRow } from "@/components/home/FeedRow";
+import { TrendingRail } from "@/components/home/TrendingRail";
+import { HouseRules } from "@/components/home/HouseRules";
+import { SurpriseMe } from "@/components/home/SurpriseMe";
+
+export const dynamic = "force-dynamic";
+
 export default function Home() {
+  const modules = composeHomepage();
+  const byKind = Object.fromEntries(modules.map((m) => [m.kind, m.cards]));
+
   return (
-    <main className="mx-auto flex min-h-screen max-w-3xl flex-col items-center justify-center gap-6 px-4 text-center">
-      <p className="font-label text-xs tracking-[0.3em] uppercase text-muted">
-        The public, counted daily
-      </p>
-      <h1 className="font-editorial text-6xl font-extrabold tracking-tight text-ink">
-        State of Us
-      </h1>
-      <p className="font-editorial text-xl italic text-ink-soft">
-        You answer. India answers back.
-      </p>
-      <div className="mt-4 border-4 border-ink bg-paper-bright px-6 py-3">
-        <p className="font-label text-sm text-ink">
-          FIRST EDITION IN PRODUCTION — the presses are being built.
-        </p>
-      </div>
-    </main>
+    <div className="min-h-screen">
+      <Masthead />
+      <main className="mx-auto max-w-5xl px-4 pb-16">
+        <CategoryChips />
+
+        <div className="grid grid-cols-1 gap-4 lg:grid-cols-[1fr_280px]">
+          <HeroCarousel heroes={byKind.editorial ?? []} />
+          <div className="flex flex-col gap-4">
+            <TrendingRail cards={(byKind.trending ?? []).slice(0, 5)} />
+            <HouseRules />
+          </div>
+        </div>
+
+        <FeedRow title="Hot off the press" accent="var(--fire)" cards={byKind.recent ?? []} />
+        <FeedRow title="From the floor" accent="var(--lime)" cards={byKind.explore ?? []} moreHref="/explore" />
+      </main>
+      <SurpriseMe variant="fab" />
+    </div>
   );
 }
