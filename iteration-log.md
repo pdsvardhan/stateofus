@@ -190,3 +190,13 @@ not rebuild it. Start by re-verifying the font fix across all pages.
 **Open follow-ups:** `no-error-tracking` (GlitchTip/Sentry) still OPEN; result-screen multi-column layout + mobile/responsive fidelity deferred-with-reason.
 **Soft warning (pre-existing):** `stale-verification` on 5 features (edited ~16s after their 2026-06-12 verify, during original build).
 **Next session pick-up:** design-AI review report (prompt in `design-review/REVIEW-PROMPT.md`); optionally wire error-tracking + the deferred layout/mobile items.
+
+## Session 2026-06-13 (cont.) — design-AI review intake + solution plan; site published
+
+**Stage:** Stage 4 (iterate) — pre-build: review received, code-grounded analysis, plan
+**What changed:**
+- Received the **design AI's review** of the built UI → `design-review/DESIGN-REVIEW.md`. Verdict: "refinements on a strong base." Findings: A (fidelity), B (UX/craft), C (product reqs). **P0:** A1 two-column desktop layout, C1 About privacy copy. **P1:** A2/C2 editorial insight voice, B3 map legend+labels, B2 result-card variant on grids. **P2:** B1 Explore curation, A3 per-DV ghosts, B4 seed spread, B5 reaction bar, C3 frozen/archived.
+- Builder **code-grounded analysis** → `design-review/SOLUTION-PLAN.md` (per-issue where/why/difficulty/approach/needs-input). Refined 2 review findings against the code: **A3 already wired** (`ghostKind` on all grids) and **C3 already present** (`StatusBand` frozen/archived) → verify-not-build. One real blocker needing owner input: **A2 curated editorial note** (no source content for 105 Qs — author vs defer). B1 Explore curation + B5 reaction bar may want variants.
+- **Infra (see OPS_LOG):** published `stateofus` to the public internet — added the missing Cloudflare DNS CNAME → site now reachable externally over HTTPS, no auth/credentials.
+
+**Next session pick-up:** expand `SOLUTION-PLAN.md` into a precise file-and-line *solutions file* for the coding agent (the issues file `DESIGN-REVIEW.md` + the solutions file go to the coder together); decide the A2 editorial-note approach; show B1 / B5 variants where flagged.
