@@ -185,7 +185,7 @@ export type HomepageModule = {
  * swapped backward within their module where possible.
  */
 export function applyDiversity(modules: HomepageModule[]): HomepageModule[] {
-  let prev: string[] = [];
+  const prev: string[] = [];
   for (const m of modules) {
     for (let i = 0; i < m.cards.length; i++) {
       const cat = m.cards[i].category;

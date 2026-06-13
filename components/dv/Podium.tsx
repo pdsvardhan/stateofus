@@ -3,7 +3,7 @@
  * R3 Podium — feat-dv-engine.
  *
  * The v5 ceremony: silver–gold–bronze columns flooding up in sequence, the
- * gold pill stamping down “India's pick” (cwStamp), YOU tag over the
+ * gold pill stamping down “India&apos;s pick” (cwStamp), YOU tag over the
  * reader's column, the fourth place named in the footnote.
  */
 import { motion } from "framer-motion";
@@ -89,7 +89,7 @@ function Podium({ question, result }: DvProps) {
                     fontWeight: 700,
                   }}
                 >
-                  India's pick
+                  India&apos;s pick
                 </motion.span>
               )}
               <motion.span
