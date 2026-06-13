@@ -34,9 +34,13 @@ export default defineConfig({
     { name: "desktop", use: { ...devices["Desktop Chrome"] } },
   ],
   webServer: {
+    // env vars are inlined into the command string, not left to webServer.env —
+    // the Gitea runner does NOT propagate webServer.env into the spawned
+    // standalone node process, so the server fell back to the empty default
+    // db (health passed on SELECT 1, but every /q/* 404'd). Inlining guarantees
+    // the seeded e2e db reaches node. (Salt must match global-setup's seed.)
     command: process.env.CI
-      ? // standalone build: static + public must sit inside the standalone dir
-        "sh -c 'cp -r .next/static .next/standalone/.next/ && mkdir -p .next/standalone/public && cp -r public/. .next/standalone/public/ && cp -r drizzle .next/standalone/ 2>/dev/null; node .next/standalone/server.js'"
+      ? `sh -c 'cp -r .next/static .next/standalone/.next/ && mkdir -p .next/standalone/public && cp -r public/. .next/standalone/public/ && cp -r drizzle .next/standalone/ 2>/dev/null; DATABASE_FILE="${E2E_DB}" DEVICE_HASH_SALT="${process.env.DEVICE_HASH_SALT ?? "e2e-salt"}" PORT=${PORT} HOSTNAME=127.0.0.1 node .next/standalone/server.js'`
       : "npm run dev",
     url: `${BASE}/api/health`,
     reuseExistingServer: !process.env.CI,
