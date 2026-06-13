@@ -11,10 +11,11 @@ test("health endpoint reports db connected", async ({ request }) => {
 test("homepage renders the curated front page, not the scaffold", async ({ page }) => {
   await page.goto("/");
   await expect(page.getByRole("link", { name: "State of Us — front page" })).toBeVisible();
-  await expect(page.getByText("You answer. India answers back.")).toBeVisible();
+  // the editorial headline (always visible; tagline is hidden on mobile by design)
+  await expect(page.getByRole("heading", { name: /what does india actually think/i })).toBeVisible();
   // curated modules the scaffold placeholder does NOT have (this assertion is
   // what would have caught the scaffold shipping to prod):
-  await expect(page.getByText("Heating up")).toBeVisible();
+  await expect(page.getByText(/Heating up/)).toBeVisible();
   await expect(page.getByText("House rules")).toBeVisible();
   // at least one real question card links into the experience
   await expect(page.locator('a[href^="/q/"]').first()).toBeVisible();

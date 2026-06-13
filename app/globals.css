@@ -31,6 +31,8 @@
   --agree: #2b8a3e; /* the one blessed green (CA-003) */
   --silver: #c9c5d6; /* podium step 2 (v5 prototype) */
   --bronze: #d98e5f; /* podium step 3 (v5 prototype) */
+  --ink-warm: #4a4744; /* warm dark text (subheads) */
+  --muted-violet: #9d98b1; /* teaser ghost / 3rd-place fills */
 
   /* type */
   --font-ui: var(--font-archivo), "Archivo", sans-serif;
@@ -108,4 +110,28 @@ body {
 .font-label,
 [class*="font-label"] {
   font-size: max(10px, 1em);
+}
+
+/* ---- v5 prototype keyframes (ported verbatim) ---- */
+@keyframes cwPulse {
+  0% { box-shadow: 0 0 0 0 rgba(255, 90, 71, 0.55); }
+  70% { box-shadow: 0 0 0 9px rgba(255, 90, 71, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(255, 90, 71, 0); }
+}
+@keyframes cwGrow { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+@keyframes cwRise { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes cwPopIn { from { opacity: 0; transform: scale(0.6); } to { opacity: 1; transform: scale(1); } }
+@keyframes cwProgress { from { width: 0; } to { width: 100%; } }
+@keyframes cwFadeSwap { 0% { opacity: 0; transform: translateY(10px); } 100% { opacity: 1; transform: translateY(0); } }
+@keyframes cwFlame {
+  0%, 100% { transform: scale(1) rotate(-4deg); }
+  30% { transform: scale(1.18) rotate(3deg); }
+  60% { transform: scale(0.94) rotate(-2deg); }
+  80% { transform: scale(1.1) rotate(2deg); }
+}
+@keyframes cwDice {
+  0%, 100% { transform: rotate(0); }
+  20% { transform: rotate(-22deg) scale(1.1); }
+  45% { transform: rotate(18deg) scale(1.15); }
+  70% { transform: rotate(-10deg) scale(1.05); }
 }

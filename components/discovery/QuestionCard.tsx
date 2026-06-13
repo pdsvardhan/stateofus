@@ -1,114 +1,167 @@
 /**
- * Question feed card — FB-009 DV-typed teaser previews: each card carries a
- * small glyph hinting at the result type waiting behind it (donut, bars,
- * map, tiers...), so the feed promises the payoff. Server component.
+ * Feed card — faithful port of the v5 prototype card with the FB-009 DV-typed
+ * teaser ghost. Color dot + desk + clipped mode tag, Spectral question, then a
+ * blurred result-preview matching the question's primary DV family + the
+ * "🔒 Your vote is the ticket" lock badge. Results stay hidden until you vote.
  */
 import Link from "next/link";
-import { DESK_BY_CATEGORY, type Category } from "@/lib/catalogue/enums";
+import { DESK_BY_CATEGORY, type Category, type DvId } from "@/lib/catalogue/enums";
 import type { DiscoveryCard } from "@/lib/discovery/queries";
 
-function DvGlyph({ dv }: { dv: string }) {
-  const common = { stroke: "var(--ink)", strokeWidth: 1.6, fill: "none" } as const;
-  switch (dv) {
-    case "radial":
+const MODE_TAG: Record<string, string> = {
+  quick_pick: "Quick pick",
+  logo_quick_pick: "Logo pick",
+  tradeoff_cards: "Trade-off",
+  swipe_stack: "Swipe stack",
+  bucket_sort: "Bucket sort",
+  tier_placement: "Tier placement",
+  rank_order: "Rank order",
+  podium_slots: "Podium",
+};
+
+/** primary DV id → which ghost family to draw */
+function ghostKind(dv: DvId): "bars" | "donut" | "podium" | "map" | "flow" | "tier" | "heat" | "treemap" {
+  if (dv === "radial") return "donut";
+  if (dv === "map" || dv === "bubblemap") return "map";
+  if (dv === "sankey") return "flow";
+  if (dv === "tier") return "tier";
+  if (dv === "heatmatrix") return "heat";
+  if (dv === "treemap") return "treemap";
+  if (dv === "podium" || dv === "medal" || dv === "board") return "podium";
+  return "bars";
+}
+
+function Ghost({ kind }: { kind: ReturnType<typeof ghostKind> }) {
+  switch (kind) {
+    case "donut":
       return (
-        <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden>
-          <circle cx="12" cy="12" r="8" {...common} />
-          <path d="M12 4 A8 8 0 0 1 20 12 L12 12 Z" fill="var(--fire)" stroke="var(--ink)" strokeWidth="1.2" />
-        </svg>
-      );
-    case "map":
-    case "bubblemap":
-      return (
-        <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden>
-          <path d="M7 3 L17 5 L20 12 L14 21 L9 19 L4 12 Z" fill="var(--lime)" stroke="var(--ink)" strokeWidth="1.4" />
-          <circle cx="13" cy="11" r="2.4" fill="var(--fire)" stroke="var(--ink)" strokeWidth="1" />
-        </svg>
-      );
-    case "tier":
-    case "heatmatrix":
-      return (
-        <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden>
-          <rect x="3" y="4" width="18" height="4.5" fill="var(--fire)" stroke="var(--ink)" strokeWidth="1.2" />
-          <rect x="3" y="10" width="18" height="4.5" fill="var(--gold)" stroke="var(--ink)" strokeWidth="1.2" />
-          <rect x="3" y="16" width="18" height="4.5" fill="var(--lime)" stroke="var(--ink)" strokeWidth="1.2" />
-        </svg>
+        <div className="flex items-center gap-3">
+          <span style={{ width: 44, height: 44, borderRadius: "50%", background: "conic-gradient(var(--fire) 0 38%, var(--gold) 38% 62%, var(--blue) 62% 83%, var(--lime) 83% 100%)", border: "1.5px solid var(--ink)", flexShrink: 0 }} />
+          <span className="flex flex-1 flex-col gap-[5px]">
+            <span style={{ height: 8, borderRadius: 100, background: "var(--fire)", width: "70%" }} />
+            <span style={{ height: 8, borderRadius: 100, background: "var(--gold)", width: "45%" }} />
+          </span>
+        </div>
       );
     case "podium":
-    case "medal":
-    case "board":
       return (
-        <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden>
-          <rect x="9" y="6" width="6" height="14" fill="var(--gold)" stroke="var(--ink)" strokeWidth="1.2" />
-          <rect x="3" y="11" width="6" height="9" fill="var(--silver)" stroke="var(--ink)" strokeWidth="1.2" />
-          <rect x="15" y="14" width="6" height="6" fill="var(--bronze)" stroke="var(--ink)" strokeWidth="1.2" />
-        </svg>
+        <div className="flex items-end gap-[7px]" style={{ height: 46 }}>
+          <span style={{ flex: 1, height: "60%", background: "var(--ink-soft)", borderRadius: "4px 4px 0 0" }} />
+          <span style={{ flex: 1, height: "100%", background: "var(--fire)", borderRadius: "4px 4px 0 0" }} />
+          <span style={{ flex: 1, height: "38%", background: "var(--muted-violet)", borderRadius: "4px 4px 0 0" }} />
+        </div>
+      );
+    case "map":
+      return (
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(6,1fr)", gap: 3, maxWidth: 150 }}>
+          {[["2", "var(--fire)"], ["3", "var(--gold)"], ["4", "var(--fire)"], ["2", "var(--lime)"], ["3", "var(--fire)"], ["4", "var(--ink)"], ["3", "var(--gold)"]].map(([col, bg], i) => (
+            <span key={i} style={{ gridColumn: col, aspectRatio: "1", background: bg, borderRadius: 2 }} />
+          ))}
+        </div>
+      );
+    case "flow":
+      return (
+        <div className="flex flex-col gap-[5px]">
+          <span style={{ height: 11, background: "linear-gradient(90deg, var(--ink) 18%, var(--fire) 80%)", borderRadius: 100, width: "90%", transform: "skewY(-2deg)" }} />
+          <span style={{ height: 8, background: "linear-gradient(90deg, var(--ink) 18%, var(--gold) 80%)", borderRadius: 100, width: "74%", transform: "skewY(2deg)" }} />
+          <span style={{ height: 6, background: "linear-gradient(90deg, var(--ink) 18%, var(--blue) 80%)", borderRadius: 100, width: "58%", transform: "skewY(-1deg)" }} />
+        </div>
+      );
+    case "tier":
+      return (
+        <div className="flex flex-col gap-[5px]">
+          {[["var(--fire)", [38, 26]], ["var(--gold)", [48]], ["var(--lime)", [34]]].map(([bg, widths], r) => (
+            <span key={r} className="flex items-center gap-1">
+              <span style={{ width: 30, height: 13, background: bg as string, borderRadius: 3 }} />
+              {(widths as number[]).map((w, i) => (
+                <span key={i} style={{ width: w, height: 13, background: "var(--paper)", border: "1px solid var(--ink)", borderRadius: 100 }} />
+              ))}
+            </span>
+          ))}
+        </div>
+      );
+    case "heat":
+      return (
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(4,1fr)", gap: 3, maxWidth: 140 }}>
+          {["var(--gold)", "var(--fire)", "var(--paper-bright)", "var(--fire)", "var(--ink)", "var(--gold)", "var(--fire)", "var(--gold)"].map((bg, i) => (
+            <span key={i} style={{ aspectRatio: "1.6", background: bg, border: bg === "var(--paper-bright)" ? "1px solid var(--ink)" : undefined, borderRadius: 2 }} />
+          ))}
+        </div>
       );
     case "treemap":
       return (
-        <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden>
-          <rect x="3" y="3" width="11" height="18" fill="var(--fire)" stroke="var(--ink)" strokeWidth="1.2" />
-          <rect x="14" y="3" width="7" height="10" fill="var(--gold)" stroke="var(--ink)" strokeWidth="1.2" />
-          <rect x="14" y="13" width="7" height="8" fill="var(--blue)" stroke="var(--ink)" strokeWidth="1.2" />
-        </svg>
+        <div style={{ display: "grid", gridTemplateColumns: "3fr 2fr 1.4fr", gridTemplateRows: "24px 20px", gap: 3 }}>
+          <span style={{ gridRow: "1 / 3", background: "var(--fire)", borderRadius: 3 }} />
+          <span style={{ background: "var(--gold)", borderRadius: 3 }} />
+          <span style={{ background: "var(--blue)", borderRadius: 3 }} />
+          <span style={{ background: "var(--lime)", borderRadius: 3 }} />
+          <span style={{ background: "var(--pink)", borderRadius: 3 }} />
+        </div>
       );
-    case "sankey":
+    default:
       return (
-        <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden>
-          <path d="M3 6 C12 6 12 4 21 4" {...common} stroke="var(--fire)" strokeWidth="3" />
-          <path d="M3 12 C12 12 12 14 21 14" {...common} stroke="var(--gold)" strokeWidth="3" />
-          <path d="M3 18 C12 18 12 20 21 20" {...common} stroke="var(--blue)" strokeWidth="3" />
-        </svg>
-      );
-    default: // split / liquid / cups / coins → bars
-      return (
-        <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden>
-          <rect x="3" y="10" width="4.5" height="11" fill="var(--fire)" stroke="var(--ink)" strokeWidth="1.2" />
-          <rect x="10" y="5" width="4.5" height="16" fill="var(--lime)" stroke="var(--ink)" strokeWidth="1.2" />
-          <rect x="17" y="13" width="4.5" height="8" fill="var(--gold)" stroke="var(--ink)" strokeWidth="1.2" />
-        </svg>
+        <div className="flex flex-col gap-1.5">
+          <span style={{ height: 9, borderRadius: 100, background: "var(--fire)", width: "82%" }} />
+          <span style={{ height: 9, borderRadius: 100, background: "var(--gold)", width: "64%" }} />
+          <span style={{ height: 9, borderRadius: 100, background: "var(--blue)", width: "47%" }} />
+        </div>
       );
   }
 }
 
-export function QuestionCard({
-  card,
-  wide = false,
-}: {
-  card: DiscoveryCard;
-  wide?: boolean;
-}) {
+export function QuestionCard({ card, wide = true }: { card: DiscoveryCard; wide?: boolean }) {
   const desk = DESK_BY_CATEGORY[card.category as Category];
+  // wide = fixed 330px for horizontal feed rows; otherwise fill the grid cell.
   return (
     <Link
       href={`/q/${card.id}`}
-      className={`group flex shrink-0 flex-col justify-between border-2 border-ink bg-paper-bright p-3 transition-transform hover:-translate-y-1 hover:shadow-[4px_4px_0_var(--ink)] ${
-        wide ? "w-[250px]" : "w-[210px]"
-      }`}
+      className={`group flex flex-col gap-[13px] transition-transform hover:-translate-x-0.5 hover:-translate-y-0.5 ${wide ? "shrink-0" : "w-full min-w-0"}`}
+      style={{
+        width: wide ? 330 : undefined,
+        scrollSnapAlign: wide ? "start" : undefined,
+        border: "2px solid var(--ink)",
+        borderRadius: 10,
+        background: "var(--paper-bright)",
+        padding: 20,
+        boxShadow: "4px 4px 0 rgba(24,22,42,.16)",
+      }}
     >
-      <div className="mb-2 flex items-center justify-between gap-2">
-        {desk && (
-          <span
-            className="border border-ink px-1.5 py-0.5 font-label text-[10px] font-bold tracking-wider uppercase"
-            style={{ backgroundColor: desk.color }}
-          >
-            {desk.desk.replace("The ", "")}
-          </span>
-        )}
-        <DvGlyph dv={card.primary_dv} />
-      </div>
-      <p className="font-editorial text-base font-bold leading-snug text-ink">
-        {card.text}
-      </p>
-      <div className="mt-3 flex items-center justify-between">
-        <span className="font-label text-[10px] tracking-wider text-muted uppercase">
-          {card.mode.replace(/_/g, " ")}
+      <div className="flex flex-wrap items-center gap-[7px]">
+        <span style={{ width: 11, height: 11, borderRadius: 3, border: "1.5px solid var(--ink)", background: desk?.color ?? "var(--gold)", display: "inline-block" }} />
+        <span className="font-label uppercase" style={{ fontSize: 9.5, letterSpacing: "0.14em", color: "var(--muted)" }}>
+          {desk?.desk.replace("The ", "") ?? card.category}
         </span>
-        {card.sample_n > 0 && (
-          <span className="font-label text-[10px] text-ink-soft">
-            {card.sample_n.toLocaleString("en-IN")} counted
+        <span
+          className="font-label font-bold uppercase text-ink"
+          style={{ fontSize: 9.5, letterSpacing: "0.1em", border: "1.5px solid var(--ink)", background: desk?.color ?? "var(--lime)", padding: "3px 14px 3px 9px", marginLeft: "auto", clipPath: "polygon(0 0, calc(100% - 7px) 0, 100% 100%, 0 100%)" }}
+        >
+          {MODE_TAG[card.mode] ?? card.mode}
+        </span>
+      </div>
+
+      <div style={{ fontFamily: "var(--font-editorial)", fontWeight: 600, fontSize: card.text.length > 80 ? 15 : 16.5, lineHeight: 1.18 }}>
+        {card.text}
+      </div>
+
+      <div style={{ position: "relative", borderTop: "1.5px dashed rgba(24,22,42,.3)", paddingTop: 12 }}>
+        <div style={{ filter: "blur(5px)", opacity: 0.7, minHeight: 44 }}>
+          <Ghost kind={ghostKind(card.primary_dv as DvId)} />
+        </div>
+        <div style={{ position: "absolute", inset: "12px 0 0 0", display: "flex", alignItems: "center", justifyContent: "center" }}>
+          <span
+            className="font-label font-bold uppercase"
+            style={{ fontSize: 10, letterSpacing: "0.1em", background: "var(--ink)", color: "var(--lime)", borderRadius: 100, padding: "6px 13px", transform: "rotate(-2deg)" }}
+          >
+            🔒 Your vote is the ticket
           </span>
-        )}
+        </div>
+      </div>
+
+      <div className="mt-auto flex items-center justify-between gap-2.5">
+        <span className="font-label uppercase" style={{ fontSize: 10, letterSpacing: "0.08em", color: "var(--muted)" }}>
+          {card.sample_n > 0 ? `${card.sample_n.toLocaleString("en-IN")} voted` : "Be counted first"}
+        </span>
+        <span className="font-extrabold" style={{ fontSize: 16 }}>→</span>
       </div>
     </Link>
   );

@@ -6,6 +6,7 @@ import Link from "next/link";
 import { searchQuestions } from "@/lib/discovery/queries";
 import { DESK_BY_CATEGORY } from "@/lib/catalogue/enums";
 import { categoryToSlug } from "@/lib/discovery/categories";
+import { Masthead } from "@/components/home/Masthead";
 import { QuestionCard } from "@/components/discovery/QuestionCard";
 
 export const dynamic = "force-dynamic";
@@ -18,8 +19,10 @@ export default async function SearchPage(props: {
   const results = query.length >= 2 ? searchQuestions(query) : null;
 
   return (
-    <main className="mx-auto max-w-5xl px-4 pb-16">
-      <div className="py-3">
+   <div className="min-h-screen">
+    <Masthead />
+    <main className="mx-auto max-w-[1280px] px-[22px] pb-[90px] pt-8">
+      <div className="pb-3">
         <Link href="/" className="font-label text-xs font-bold text-ink underline decoration-2 underline-offset-2">
           ← Front page
         </Link>
@@ -66,13 +69,14 @@ export default async function SearchPage(props: {
           <p className="mb-3 font-label text-xs text-muted">
             {results.questions.length} matching questions
           </p>
-          <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {results.questions.map((c) => (
-              <QuestionCard key={c.id} card={c} wide />
+              <QuestionCard key={c.id} card={c} wide={false} />
             ))}
           </div>
         </>
       )}
     </main>
+   </div>
   );
 }

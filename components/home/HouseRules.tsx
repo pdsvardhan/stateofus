@@ -1,32 +1,31 @@
 /**
- * House Rules card — the 5-line numbered manifesto. Rule 02 carries the
- * owner's privacy-first reframe (round-1 answer: "No accounts ever" was
- * wrong — auth hooks exist; the promise is identity, not accounts).
+ * House rules — faithful port. Lime card, 5 numbered rules (verbatim v5 copy,
+ * incl. the privacy-first reframe of rule 02).
  */
 const RULES = [
-  "One question, one answer, one count — no forms, no surveys.",
-  "Privacy first — your opinion, never your identity.",
-  "Skip is always allowed. Nothing is recorded when you do.",
-  "Sample sizes stay visible. Small counts say so.",
-  "Every result is the real count — no weighting, no editorial thumb.",
+  "Answer first — results unlock after your vote.",
+  "Privacy first — your opinion counts, your identity never does.",
+  "Skip anything, judgement-free.",
+  "Every count shows its sample — small counts say so.",
+  "Questions retire; results stay public.",
 ];
 
 export function HouseRules() {
   return (
-    <aside aria-label="House rules" className="border-2 border-ink bg-paper-bright p-3">
-      <h3 className="mb-2 border-b-2 border-ink pb-1 font-label text-sm font-bold tracking-[0.2em] text-ink uppercase">
+    <aside aria-label="House rules" style={{ border: "2px solid var(--ink)", borderRadius: 10, background: "var(--lime)", padding: 20 }}>
+      <div className="font-label font-bold uppercase" style={{ fontSize: 10.5, letterSpacing: "0.18em", marginBottom: 12 }}>
         House rules
-      </h3>
-      <ol className="flex flex-col gap-1.5">
+      </div>
+      <div className="flex flex-col gap-[9px]">
         {RULES.map((rule, i) => (
-          <li key={i} className="flex gap-2">
-            <span className="font-label text-xs font-bold text-fire">
+          <div key={i} className="flex items-baseline gap-[9px]">
+            <span className="font-label font-bold" style={{ fontSize: 10 }}>
               {String(i + 1).padStart(2, "0")}
             </span>
-            <span className="font-editorial text-sm leading-snug text-ink">{rule}</span>
-          </li>
+            <span style={{ fontFamily: "var(--font-editorial)", fontSize: 14.5, lineHeight: 1.4 }}>{rule}</span>
+          </div>
         ))}
-      </ol>
+      </div>
     </aside>
   );
 }
