@@ -140,3 +140,36 @@ tell, so it cannot regress. Correction verification report posted (corrects #115
 
 Process lesson: feature verification must diff deployed CONTENT against the spec,
 not just assert route-exists + 200. Logged for Stage 4 verifier-prompt tightening.
+
+## 2026-06-13 — Frontend fidelity pass + critical font fix (session 3, continued)
+
+Owner reviewed the live site and (rightly) flagged that it looked nothing like
+the v5 design. Root-caused and fixed the biggest issue + re-ported the home view.
+
+**Root cause of "looks nothing like the design": brand fonts never loaded.**
+The whole app rendered in system sans-serif. app/globals.css defined the app
+font vars at :root, but next/font scopes --font-archivo/-spectral/-space-mono to
+<body>; combined with Tailwind @theme inline stripping the vars from runtime,
+var(--font-ui/-editorial/-label) resolved empty everywhere. Fixed by defining the
+font vars in the body rule. Verified: body + h1 now compute Archivo; Spectral +
+Space Mono apply. This single fix transforms every surface.
+
+**Also fixed:** faithful re-port of the home/discovery view from the prototype
+(the prior version was a from-memory reconstruction shipped after an agent hit
+its session limit); India winner map (was painting every state Option-A colour);
+5 tier_placement questions that rendered chart-less (retargeted podium->tier +
+empty-dvDefs fallback in ExperienceClient); DV pill label "The map"->"Winner map".
+
+**Question audit + cleanup:** audited all 105 vs DOC 3 standards. The 80 authored
+questions are launch-quality; the 25 imported Q-* rows were the filler. Salvaged
+Q-301 (broken placeholder options), Q-403/404/602 (US-centric -> India context);
+archived Q-101/102/302 (duplicates of authored). 102 active. NOTE: applied to the
+live DB only — see FRONTEND-FIDELITY-TODO.md section F (bake into seed source).
+
+**Visual audit:** screenshot-diffed every surface vs prototype (27 PNGs at
+design/v5/_audit/). Most surfaces MATCH after the font fix. Remaining fidelity
+polish is documented in FRONTEND-FIDELITY-TODO.md.
+
+**Next session:** the frontend fidelity pass — see FRONTEND-FIDELITY-TODO.md.
+Mandate: frontend 100% replicated to design/v5; backend is solid + verified, do
+not rebuild it. Start by re-verifying the font fix across all pages.
