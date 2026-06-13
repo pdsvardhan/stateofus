@@ -57,6 +57,8 @@
   --color-agree: var(--agree);
   --color-silver: var(--silver);
   --color-bronze: var(--bronze);
+  --color-ink-warm: var(--ink-warm);
+  --color-muted-violet: var(--muted-violet);
 
   /* Point @theme at the loaded next/font vars directly. These previously
      read `var(--font-ui)` etc. — a circular ref that Tailwind v4 emits into
@@ -68,7 +70,8 @@
 }
 
 html {
-  background: var(--paper);
+  /* page paper = prototype's #e7e0cd (paper-deep); cards/surfaces sit lighter */
+  background: var(--paper-deep);
   color: var(--ink);
 }
 
@@ -81,14 +84,14 @@ body {
   --font-editorial: var(--font-spectral), "Spectral", serif;
   --font-label: var(--font-space-mono), "Space Mono", monospace;
   font-family: var(--font-ui);
-  /* dot-grid cream paper — the house texture from the prototype */
-  background-color: var(--paper);
+  /* dot-grid cream paper — ported EXACTLY from the v5 prototype page bg:
+     #e7e0cd · radial-gradient(rgba(24,22,42,.055) 1px) · 7px grid */
+  background-color: var(--paper-deep);
   background-image: radial-gradient(
-    circle,
-    rgba(24, 22, 42, 0.07) 1px,
+    rgba(24, 22, 42, 0.055) 1px,
     transparent 1px
   );
-  background-size: 22px 22px;
+  background-size: 7px 7px;
   -webkit-font-smoothing: antialiased;
 }
 
@@ -141,4 +144,27 @@ body {
   20% { transform: rotate(-22deg) scale(1.1); }
   45% { transform: rotate(18deg) scale(1.15); }
   70% { transform: rotate(-10deg) scale(1.05); }
+}
+
+/* ---- iter-18: the 9 keyframes the prototype defines but the build was
+   missing/undefined (cwStamp + cwSpin were referenced but never defined).
+   Ported verbatim from the v5 prototype <style>. ---- */
+@keyframes cwStamp {
+  0% { opacity: 0; transform: scale(2.6) rotate(-18deg); }
+  55% { opacity: 1; transform: scale(0.92) rotate(-8deg); }
+  75% { transform: scale(1.05) rotate(-8deg); }
+  100% { opacity: 1; transform: scale(1) rotate(-8deg); }
+}
+@keyframes cwTick { 0%, 100% { opacity: 1; } 50% { opacity: 0.2; } }
+@keyframes cwHeat { 0%, 100% { transform: scaleY(1); } 50% { transform: scaleY(0.55); } }
+@keyframes cwFlood { from { height: 0; } }
+@keyframes cwNudge { 0%, 100% { transform: translateX(0); } 50% { transform: translateX(-5px); } }
+@keyframes cwFloat { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
+@keyframes cwFadeIn { from { opacity: 0; } }
+@keyframes cwSpin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+@keyframes cwWobble {
+  0%, 88%, 100% { transform: rotate(0); }
+  90% { transform: rotate(-9deg); }
+  94% { transform: rotate(8deg); }
+  97% { transform: rotate(-4deg); }
 }

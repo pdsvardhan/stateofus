@@ -16,7 +16,8 @@ export function EditorialHeader() {
         style={{
           fontFamily: "var(--font-ui)",
           fontWeight: 900,
-          fontSize: "clamp(40px, 7vw, 76px)",
+          /* prototype: h1Size = wide ? 64px : 40px (desktop-match first) */
+          fontSize: "clamp(40px, 6vw, 64px)",
           lineHeight: 0.96,
           letterSpacing: "-0.03em",
           textTransform: "uppercase",

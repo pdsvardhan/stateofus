@@ -1,10 +1,10 @@
 /**
  * The front page — faithful port of the v5 prototype home/discover view.
- * Editorial header → desk chips → two columns (hero carousel + Netflix-style
- * feed rows | "Heating up" rail + house rules). Curated + bounded; no infinite
- * feed. feat-homepage-curation (AC354/355).
+ * Editorial header → desk chips → two columns (hero carousel + the prototype's
+ * 5 editorial feed rails | "Heating up" rail + house rules). Curated + bounded;
+ * no infinite feed. feat-homepage-curation (AC354/355).
  */
-import { composeHomepage } from "@/lib/discovery/queries";
+import { composeHomepage, composeFeedRows } from "@/lib/discovery/queries";
 import { Masthead } from "@/components/home/Masthead";
 import { EditorialHeader } from "@/components/home/EditorialHeader";
 import { DeskChips } from "@/components/home/DeskChips";
@@ -21,8 +21,12 @@ export default function Home() {
   const byKind = Object.fromEntries(modules.map((m) => [m.kind, m.cards]));
   const editorial = byKind.editorial ?? [];
   const trending = byKind.trending ?? [];
-  const recent = byKind.recent ?? [];
-  const explore = byKind.explore ?? [];
+
+  // the prototype's 5 editorial rails (Vote to unlock / Results are out /
+  // Quick picks / The sorting desk / The swipe court) — hero questions excluded
+  // so the carousel and the feed never show the same card twice.
+  const heroIds = new Set(editorial.map((c) => c.id));
+  const feedRows = composeFeedRows(heroIds);
 
   return (
     <div className="min-h-screen">
@@ -35,8 +39,9 @@ export default function Home() {
           <div className="min-w-0 flex-1">
             <Hero heroes={editorial} />
             <div className="flex flex-col gap-8">
-              <FeedRow title="Hot off the press" sub="freshly counted" cards={recent} />
-              <FeedRow title="Off the floor" sub="what India is sorting out" cards={explore} />
+              {feedRows.map((row) => (
+                <FeedRow key={row.key} title={row.title} sub={row.sub} cards={row.cards} />
+              ))}
             </div>
           </div>
 

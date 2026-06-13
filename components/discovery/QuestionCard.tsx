@@ -1,8 +1,11 @@
 /**
- * Feed card — faithful port of the v5 prototype card with the FB-009 DV-typed
- * teaser ghost. Color dot + desk + clipped mode tag, Spectral question, then a
- * blurred result-preview matching the question's primary DV family + the
- * "🔒 Your vote is the ticket" lock badge. Results stay hidden until you vote.
+ * Feed card — faithful port of the v5 prototype card. Four variants match the
+ * prototype's card types (lines 150–245 of the v5 prototype):
+ *   - teaser : FB-009 DV-typed ghost (blur 5px) + "🔒 Your vote is the ticket"
+ *   - stat   : big % + statline + cwGrow bar (a single dominant result)
+ *   - tug    : "India has decided · score" + lime/fire-tint tug-of-war bar
+ *   - plain  : header + question + footer only (mode-grouped, tap to answer)
+ * Default = teaser (so category/search/explore keep their lock-to-vote cards).
  */
 import Link from "next/link";
 import { DESK_BY_CATEGORY, type Category, type DvId } from "@/lib/catalogue/enums";
@@ -109,9 +112,65 @@ function Ghost({ kind }: { kind: ReturnType<typeof ghostKind> }) {
   }
 }
 
+const dashTop: React.CSSProperties = { borderTop: "1.5px dashed rgba(24,22,42,.3)", paddingTop: 12 };
+
+/** TYPE 2a — big stat (a single dominant result) */
+function StatBlock({ p }: { p: Extract<NonNullable<DiscoveryCard["preview"]>, { kind: "stat" }> }) {
+  return (
+    <div style={dashTop}>
+      <div className="flex items-baseline gap-[9px]">
+        <span style={{ fontWeight: 900, fontSize: 42, letterSpacing: "-0.03em" }}>{p.pct}%</span>
+        <span style={{ fontWeight: 700, fontSize: 13.5, lineHeight: 1.25, flex: 1 }}>{p.line}</span>
+      </div>
+      <div style={{ height: 9, border: "1.5px solid var(--ink)", borderRadius: 100, background: "var(--paper-edge)", overflow: "hidden", marginTop: 8 }}>
+        <div style={{ height: "100%", width: `${p.pct}%`, background: p.color, transformOrigin: "left", animation: "cwGrow .8s cubic-bezier(.2,.7,.2,1) both" }} />
+      </div>
+    </div>
+  );
+}
+
+/** TYPE 2b — tug of war (two-sided result) */
+function TugBlock({ p }: { p: Extract<NonNullable<DiscoveryCard["preview"]>, { kind: "tug" }> }) {
+  return (
+    <div style={dashTop}>
+      <div className="font-label font-bold uppercase" style={{ fontSize: 9.5, letterSpacing: "0.14em", color: "var(--fire)", marginBottom: 7 }}>
+        India has decided · {p.score}
+      </div>
+      <div className="flex justify-between gap-2" style={{ fontSize: 11.5, fontWeight: 700, marginBottom: 5 }}>
+        <span>{p.lLabel}</span>
+        <span style={{ color: "var(--muted)" }}>{p.rLabel}</span>
+      </div>
+      <div style={{ position: "relative", height: 22, border: "2px solid var(--ink)", borderRadius: 100, overflow: "hidden", display: "flex" }}>
+        <div className="font-label" style={{ width: `${p.lPct}%`, background: "var(--lime)", display: "flex", alignItems: "center", paddingLeft: 9, fontSize: 10, fontWeight: 700 }}>{p.lPct}%</div>
+        <div className="font-label" style={{ flex: 1, background: "var(--fire-tint)", borderLeft: "2px solid var(--ink)", display: "flex", alignItems: "center", justifyContent: "flex-end", paddingRight: 9, fontSize: 10, fontWeight: 700 }}>{p.rPct}%</div>
+      </div>
+    </div>
+  );
+}
+
+/** TYPE 1 — teaser (DV-typed ghost behind the lock badge) */
+function TeaserBlock({ dv }: { dv: DvId }) {
+  return (
+    <div style={{ position: "relative", ...dashTop }}>
+      <div style={{ filter: "blur(5px)", opacity: 0.7, minHeight: 44 }}>
+        <Ghost kind={ghostKind(dv)} />
+      </div>
+      <div style={{ position: "absolute", inset: "12px 0 0 0", display: "flex", alignItems: "center", justifyContent: "center" }}>
+        <span
+          className="font-label font-bold uppercase"
+          style={{ fontSize: 10, letterSpacing: "0.1em", background: "var(--ink)", color: "var(--lime)", borderRadius: 100, padding: "6px 13px", transform: "rotate(-2deg)" }}
+        >
+          🔒 Your vote is the ticket
+        </span>
+      </div>
+    </div>
+  );
+}
+
 export function QuestionCard({ card, wide = true }: { card: DiscoveryCard; wide?: boolean }) {
   const desk = DESK_BY_CATEGORY[card.category as Category];
-  // wide = fixed 330px for horizontal feed rows; otherwise fill the grid cell.
+  const variant = card.variant ?? "teaser";
+  const meta = `${(card.sample_n ?? 0).toLocaleString("en-IN")} voted`;
   return (
     <Link
       href={`/q/${card.id}`}
@@ -133,9 +192,9 @@ export function QuestionCard({ card, wide = true }: { card: DiscoveryCard; wide?
         </span>
         <span
           className="font-label font-bold uppercase text-ink"
-          style={{ fontSize: 9.5, letterSpacing: "0.1em", border: "1.5px solid var(--ink)", background: desk?.color ?? "var(--lime)", padding: "3px 14px 3px 9px", marginLeft: "auto", clipPath: "polygon(0 0, calc(100% - 7px) 0, 100% 100%, 0 100%)" }}
+          style={{ fontSize: 9.5, letterSpacing: "0.1em", border: "1.5px solid var(--ink)", background: variant === "stat" || variant === "tug" ? "var(--lime)" : desk?.color ?? "var(--lime)", padding: "3px 14px 3px 9px", marginLeft: "auto", clipPath: "polygon(0 0, calc(100% - 7px) 0, 100% 100%, 0 100%)" }}
         >
-          {MODE_TAG[card.mode] ?? card.mode}
+          {variant === "stat" || variant === "tug" ? "Result" : MODE_TAG[card.mode] ?? card.mode}
         </span>
       </div>
 
@@ -143,23 +202,13 @@ export function QuestionCard({ card, wide = true }: { card: DiscoveryCard; wide?
         {card.text}
       </div>
 
-      <div style={{ position: "relative", borderTop: "1.5px dashed rgba(24,22,42,.3)", paddingTop: 12 }}>
-        <div style={{ filter: "blur(5px)", opacity: 0.7, minHeight: 44 }}>
-          <Ghost kind={ghostKind(card.primary_dv as DvId)} />
-        </div>
-        <div style={{ position: "absolute", inset: "12px 0 0 0", display: "flex", alignItems: "center", justifyContent: "center" }}>
-          <span
-            className="font-label font-bold uppercase"
-            style={{ fontSize: 10, letterSpacing: "0.1em", background: "var(--ink)", color: "var(--lime)", borderRadius: 100, padding: "6px 13px", transform: "rotate(-2deg)" }}
-          >
-            🔒 Your vote is the ticket
-          </span>
-        </div>
-      </div>
+      {variant === "stat" && card.preview?.kind === "stat" && <StatBlock p={card.preview} />}
+      {variant === "tug" && card.preview?.kind === "tug" && <TugBlock p={card.preview} />}
+      {variant === "teaser" && <TeaserBlock dv={card.primary_dv as DvId} />}
 
       <div className="mt-auto flex items-center justify-between gap-2.5">
         <span className="font-label uppercase" style={{ fontSize: 10, letterSpacing: "0.08em", color: "var(--muted)" }}>
-          {card.sample_n > 0 ? `${card.sample_n.toLocaleString("en-IN")} voted` : "Be counted first"}
+          {meta}
         </span>
         <span className="font-extrabold" style={{ fontSize: 16 }}>→</span>
       </div>

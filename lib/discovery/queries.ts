@@ -8,7 +8,12 @@
  * fallback so the homepage never renders an empty lead module.
  */
 import { rawDb } from "@/lib/db/client";
-import { CATEGORIES, type Category } from "@/lib/catalogue/enums";
+import { CATEGORIES, DESK_BY_CATEGORY, type Category } from "@/lib/catalogue/enums";
+
+/** Result preview shown on a feed card (stat = one dominant %, tug = two-sided). */
+export type CardPreview =
+  | { kind: "stat"; pct: number; line: string; color: string }
+  | { kind: "tug"; score: string; lLabel: string; rLabel: string; lPct: number; rPct: number };
 
 export type DiscoveryCard = {
   id: string;
@@ -19,6 +24,9 @@ export type DiscoveryCard = {
   geo: boolean;
   status: string;
   sample_n: number;
+  /** home feed only: which prototype card variant to render */
+  variant?: "plain" | "teaser" | "stat" | "tug";
+  preview?: CardPreview | null;
 };
 
 const CARD_SELECT = `
@@ -221,4 +229,157 @@ export function composeHomepage(): HomepageModule[] {
     { kind: "recent", cards: recent },
     { kind: "explore", cards: explore },
   ]);
+}
+
+/* ------------------------------------------------------------------ */
+/* Feed rows — the prototype's 5 editorial rails (rowDefs).            */
+/* Each active question lands in exactly one rail by result/mode:      */
+/*   results (has data) · vote-to-unlock (fresh teasers) · quick ·     */
+/*   the sorting desk · the swipe court.                               */
+/* ------------------------------------------------------------------ */
+
+export type FeedRowDef = { key: string; title: string; sub: string; cards: DiscoveryCard[] };
+
+/** votes needed before a card shows its result instead of a teaser */
+const RESULT_THRESHOLD = 5;
+/** how many fresh questions head the "Vote to unlock" rail */
+const LOCKED_QUOTA = 6;
+
+/** Build a stat/tug preview from a question's overall aggregate. */
+function buildPreview(
+  mode: string,
+  optionsJson: string,
+  aggJson: string | null,
+  category: string
+): CardPreview | null {
+  if (!aggJson) return null;
+  let opts: { key: string; label: string }[];
+  let agg: Record<string, unknown>;
+  try {
+    opts = JSON.parse(optionsJson);
+    agg = JSON.parse(aggJson);
+  } catch {
+    return null;
+  }
+  const labelOf = (k: string) => opts.find((o) => o.key === k)?.label ?? k;
+  const deskColor = DESK_BY_CATEGORY[category as Category]?.color ?? "var(--fire)";
+
+  if (mode === "quick_pick" || mode === "logo_quick_pick" || mode === "tradeoff_cards") {
+    const counts = (agg.counts ?? {}) as Record<string, number>;
+    const entries = Object.entries(counts)
+      .filter(([, n]) => n > 0)
+      .sort((a, b) => b[1] - a[1]);
+    const total = entries.reduce((s, [, n]) => s + n, 0);
+    if (total <= 0 || entries.length === 0) return null;
+    if (entries.length === 2 || mode === "tradeoff_cards") {
+      const [k1, n1] = entries[0];
+      const second = entries[1];
+      const lPct = Math.round((n1 / total) * 100);
+      return {
+        kind: "tug",
+        score: `${lPct}–${100 - lPct}`,
+        lLabel: labelOf(k1),
+        rLabel: second ? labelOf(second[0]) : "Everyone else",
+        lPct,
+        rPct: 100 - lPct,
+      };
+    }
+    const [k1, n1] = entries[0];
+    return { kind: "stat", pct: Math.round((n1 / total) * 100), line: labelOf(k1), color: deskColor };
+  }
+
+  if (mode === "swipe_stack") {
+    const cards = (agg.cards ?? {}) as Record<string, { yes: number; no: number }>;
+    const entries = Object.entries(cards)
+      .map(([k, v]) => ({ k, yes: v.yes || 0, tot: (v.yes || 0) + (v.no || 0) }))
+      .filter((e) => e.tot > 0);
+    if (!entries.length) return null;
+    entries.sort((a, b) => b.yes / b.tot - a.yes / a.tot);
+    const top = entries[0];
+    return {
+      kind: "stat",
+      pct: Math.round((top.yes / top.tot) * 100),
+      line: `said yes to “${labelOf(top.k)}”`,
+      color: deskColor,
+    };
+  }
+
+  // place / rank / podium previews aren't a single % — show those as plain.
+  return null;
+}
+
+export function composeFeedRows(excludeIds: Set<string> = new Set()): FeedRowDef[] {
+  const raw = rawDb
+    .prepare(
+      `SELECT q.id, q.category, q.text, q.mode, q.primary_dv, q.geo, q.status, q.options_json,
+              COALESCE(a.sample_n, 0) AS sample_n, a.agg_json
+       FROM questions q
+       LEFT JOIN question_aggregates a
+         ON a.question_id = q.id AND a.dim = 'overall' AND a.dim_key = ''
+       WHERE q.status = 'active'
+       ORDER BY COALESCE(a.sample_n, 0) DESC, q.id`
+    )
+    .all() as Record<string, unknown>[];
+
+  const groups: Record<string, DiscoveryCard[]> = {
+    locked: [],
+    results: [],
+    quick: [],
+    sort: [],
+    swipe: [],
+  };
+  let lockedQuota = LOCKED_QUOTA;
+
+  for (const r of raw) {
+    const id = r.id as string;
+    if (excludeIds.has(id)) continue;
+    const base: DiscoveryCard = {
+      id,
+      category: r.category as string,
+      text: r.text as string,
+      mode: r.mode as string,
+      primary_dv: r.primary_dv as string,
+      geo: r.geo === 1,
+      status: r.status as string,
+      sample_n: (r.sample_n as number) ?? 0,
+    };
+
+    if (base.sample_n >= RESULT_THRESHOLD) {
+      const preview = buildPreview(
+        base.mode,
+        r.options_json as string,
+        (r.agg_json as string) ?? null,
+        base.category
+      );
+      if (preview) {
+        groups.results.push({ ...base, variant: preview.kind, preview });
+        continue;
+      }
+    }
+
+    if (lockedQuota > 0) {
+      groups.locked.push({ ...base, variant: "teaser" });
+      lockedQuota--;
+      continue;
+    }
+
+    const g =
+      base.mode === "bucket_sort" ||
+      base.mode === "tier_placement" ||
+      base.mode === "rank_order" ||
+      base.mode === "podium_slots"
+        ? "sort"
+        : base.mode === "swipe_stack"
+          ? "swipe"
+          : "quick";
+    groups[g].push({ ...base, variant: "plain" });
+  }
+
+  return [
+    { key: "locked", title: "Vote to unlock", sub: "answers hidden until you vote", cards: groups.locked },
+    { key: "results", title: "Results are out", sub: "the country has spoken", cards: groups.results },
+    { key: "quick", title: "Quick picks", sub: "one tap, thirty seconds", cards: groups.quick },
+    { key: "sort", title: "The sorting desk", sub: "file things where they belong", cards: groups.sort },
+    { key: "swipe", title: "The swipe court", sub: "verdict per card", cards: groups.swipe },
+  ].filter((row) => row.cards.length > 0);
 }
