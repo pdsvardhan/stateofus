@@ -37,7 +37,7 @@ export function StatusBand({ status }: { status: LifecycleState }) {
 
   return (
     <div className="border-y-4 border-ink" style={{ background: c.bg }}>
-      <div className="mx-auto flex max-w-2xl items-baseline gap-3 px-4 py-2">
+      <div className="mx-auto flex max-w-2xl items-baseline gap-3 px-4 py-2 lg:max-w-[1120px] lg:px-8">
         <span className="bg-ink px-2 py-0.5 font-label text-xs font-bold tracking-[0.2em] text-paper-bright">
           {c.title}
         </span>

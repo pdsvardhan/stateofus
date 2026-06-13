@@ -185,7 +185,7 @@ export default async function QuestionPage(props: {
   const chip = INTERACTION_REGISTRY[question.mode]?.chipLabel ?? question.mode;
 
   return (
-    <main className="mx-auto min-h-screen w-full max-w-2xl px-4 pb-16">
+    <main className="mx-auto min-h-screen w-full max-w-2xl px-4 pb-16 lg:max-w-[1120px] lg:px-8">
       <header className="flex items-center justify-between py-4">
         <BackBlock href="/" />
         <span className="bg-lime border-2 border-ink px-2 py-0.5 font-label text-xs font-bold tracking-[0.15em] text-ink uppercase">
@@ -207,21 +207,25 @@ export default async function QuestionPage(props: {
         />
       )}
 
-      <section className="py-6">
-        <div className="mb-3 flex items-center gap-2">
-          <DeskStamp category={question.category} />
-          {question.subcategory && (
-            <span className="font-label text-xs tracking-wider text-muted uppercase">
-              {question.subcategory}
-            </span>
-          )}
-        </div>
-        <h1 className="font-editorial text-3xl font-extrabold leading-tight text-ink sm:text-4xl">
-          {question.text}
-        </h1>
-      </section>
-
-      <ExperienceClient question={question} initialResult={result} />
+      <ExperienceClient
+        question={question}
+        initialResult={result}
+        header={
+          <div className="py-6">
+            <div className="mb-3 flex items-center gap-2">
+              <DeskStamp category={question.category} />
+              {question.subcategory && (
+                <span className="font-label text-xs tracking-wider text-muted uppercase">
+                  {question.subcategory}
+                </span>
+              )}
+            </div>
+            <h1 className="font-editorial text-3xl font-extrabold leading-tight text-ink sm:text-4xl">
+              {question.text}
+            </h1>
+          </div>
+        }
+      />
 
       {/* AC353/AC384 — exploration affordance on every question page */}
       <RelatedRow questionId={question.id} />

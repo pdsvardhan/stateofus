@@ -118,9 +118,10 @@ export default function AboutPage() {
             The promise
           </div>
           <div className="font-editorial" style={{ fontSize: 17, lineHeight: 1.5 }}>
-            No accounts. No names. No tracking. Every vote is anonymous, every
-            result belongs to everyone. Your answer is the only ticket this press
-            will ever ask for.
+            Your opinion is counted; your identity isn&apos;t. No login, no
+            profile, no name on your vote — you&apos;re a device, not a dossier.
+            The map places you by rough region only, and you can correct or clear
+            it in one tap. Your answer is the only ticket this press will ever ask for.
           </div>
         </div>
 
