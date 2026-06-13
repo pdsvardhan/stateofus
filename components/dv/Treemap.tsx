@@ -96,7 +96,7 @@ function Treemap({ question, result }: DvProps) {
                 initial={prefs.reduced ? false : { height: 0 }}
                 animate={{ height: "100%" }}
                 transition={{
-                  duration: prefs.dur(0.85),
+                  duration: prefs.dur(0.7),
                   delay: prefs.delay(delay),
                   ease: FLOOD_EASE,
                 }}

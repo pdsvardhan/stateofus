@@ -69,7 +69,7 @@ function Coins({ question, result }: DvProps) {
                   initial={prefs.reduced ? false : { height: 0 }}
                   animate={{ height: `${Math.max(8, Math.min(100, r.pct))}%` }}
                   transition={{
-                    duration: prefs.dur(0.8),
+                    duration: prefs.dur(0.7),
                     delay: prefs.delay(i * 0.12),
                     ease: FLOOD_EASE,
                   }}
