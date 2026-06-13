@@ -34,10 +34,6 @@
   --ink-warm: #4a4744; /* warm dark text (subheads) */
   --muted-violet: #9d98b1; /* teaser ghost / 3rd-place fills */
 
-  /* type */
-  --font-ui: var(--font-archivo), "Archivo", sans-serif;
-  --font-editorial: var(--font-spectral), "Spectral", serif;
-  --font-label: var(--font-space-mono), "Space Mono", monospace;
 }
 
 @theme inline {
@@ -62,9 +58,13 @@
   --color-silver: var(--silver);
   --color-bronze: var(--bronze);
 
-  --font-ui: var(--font-ui);
-  --font-editorial: var(--font-editorial);
-  --font-label: var(--font-label);
+  /* Point @theme at the loaded next/font vars directly. These previously
+     read `var(--font-ui)` etc. — a circular ref that Tailwind v4 emits into
+     :root, overriding the real :root definitions and resolving to EMPTY, so
+     the whole app fell back to system sans-serif (no Archivo/Spectral/Mono). */
+  --font-ui: var(--font-archivo), "Archivo", sans-serif;
+  --font-editorial: var(--font-spectral), "Spectral", serif;
+  --font-label: var(--font-space-mono), "Space Mono", monospace;
 }
 
 html {
@@ -73,6 +73,13 @@ html {
 }
 
 body {
+  /* The app font vars are defined HERE, not :root — next/font sets
+     --font-archivo/-spectral/-space-mono on <body> only, so var() resolves
+     to the real (hashed) loaded face only in body scope. Defining these at
+     :root made var(--font-archivo) empty → system-font fallback everywhere. */
+  --font-ui: var(--font-archivo), "Archivo", sans-serif;
+  --font-editorial: var(--font-spectral), "Spectral", serif;
+  --font-label: var(--font-space-mono), "Space Mono", monospace;
   font-family: var(--font-ui);
   /* dot-grid cream paper — the house texture from the prototype */
   background-color: var(--paper);

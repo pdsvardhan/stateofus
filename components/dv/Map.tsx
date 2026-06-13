@@ -44,11 +44,17 @@ function MapDv({ question, result }: DvProps) {
           entry.agg as Record<string, unknown>,
           question.options
         );
-        if (rows.length === 0 || rows[0].count === 0) {
+        // shareRowsFor returns rows in OPTIONS order, not sorted — pick the
+        // actual winner by max count, else every state painted Option A.
+        const winner = rows.reduce(
+          (best, r) => (r.count > best.count ? r : best),
+          rows[0] ?? { key: "", count: 0, label: "", pct: 0 }
+        );
+        if (!winner || winner.count === 0) {
           cream = true;
           return null;
         }
-        const idx = question.options.findIndex((o: QuestionOption) => o.key === rows[0].key);
+        const idx = question.options.findIndex((o: QuestionOption) => o.key === winner.key);
         winners.set(locationName, idx);
         present.add(idx);
         return idx;
@@ -143,7 +149,7 @@ function MapDv({ question, result }: DvProps) {
 export const mapDefinition: DvDefinition = {
   id: "map",
   family: "geo",
-  label: "The map",
+  label: "Winner map",
   supportedModes: [...PICK_MODES, "swipe_stack"],
   Component: MapDv,
 };

@@ -72,7 +72,17 @@ export function ExperienceClient({
     [question.id]
   );
 
-  const dvDefs = useMemo(() => dvsForQuestion(DV_REGISTRY, question), [question]);
+  const dvDefs = useMemo(() => {
+    const defs = dvsForQuestion(DV_REGISTRY, question);
+    if (defs.length > 0) return defs;
+    // Safety net: a question whose primary DV doesn't support its mode would
+    // otherwise render a chart-less result. Fall back to ANY registered DV
+    // that supports the mode (tier/treemap/board for placements, etc.).
+    const fallback = Object.values(DV_REGISTRY).find(
+      (d) => d && d.supportedModes.includes(question.mode)
+    );
+    return fallback ? [fallback] : [];
+  }, [question]);
   const PrimaryDv = dvDefs[0]?.Component ?? null;
   const insights = useMemo(
     () => (result && result.your_payload ? buildInsights(question, result) : []),
