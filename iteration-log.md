@@ -200,3 +200,23 @@ not rebuild it. Start by re-verifying the font fix across all pages.
 - **Infra (see OPS_LOG):** published `stateofus` to the public internet — added the missing Cloudflare DNS CNAME → site now reachable externally over HTTPS, no auth/credentials.
 
 **Next session pick-up:** expand `SOLUTION-PLAN.md` into a precise file-and-line *solutions file* for the coding agent (the issues file `DESIGN-REVIEW.md` + the solutions file go to the coder together); decide the A2 editorial-note approach; show B1 / B5 variants where flagged.
+
+## Session 2026-06-13 (cont. 2) — design-review fixes BUILT + home mini-iteration
+
+**Stage:** Stage 4 (iterate) — build + deploy + independent verification
+
+**What changed:**
+- Expanded the plan into the file-and-line **Fix Spec** (owner's Downloads), then **built and shipped all 10 design-review fixes** across 4 commits (`bf11730`, `fc63ccd`, `664d803`, `e4b41b1`), each CI-green + smoke-verified:
+  - FIX 1 (A1) two-column experience layout w/ sticky "Your position" rail · FIX 2 (C1) truthful About copy · FIX 3a varied insight phrasings (no-LLM) · FIX 3b editorial-note schema (drizzle `0002`) + "From the desk" card + 6 seeded notes · FIX 4 (B2) result cards on explore/category/search · FIX 5 (B3) map state labels (`<title>` + inline + bubble) · FIX 6 (B1) Explore curated rails · FIX 7 (B4) seed round-robin spread (+ live re-spread of 4 tier Qs) · FIX 8 (B5) louder reaction bar · FIX 9 (A4) flat mode chip.
+  - Held the plan's honest corrections: **A3 + C3 already wired** (verify-not-build, confirmed live). The B5 review-vs-draft contradiction was surfaced and resolved by owner → "make it louder."
+- **Independent verifier sub-agent APPROVE** on everything — report #136 (FIX 1–9) + report #137 (FIX 3b), separate context, checked diff + live app not coder claims. Deploy-artifacts #9/#10.
+- **Home mini-iteration** (`61a2603`, deploy-artifact #11): hid the feed scrollbar (`.no-scrollbar`, horizontal scroll kept) · one-line headline · removed the subtitle · reworded House Rules 04 · sticky right rail on desktop. All verified in live HTML/CSS.
+- **Catalogue analysis** (owner request): 152 questions (108 active / 41 draft / 3 archived). Flagged that `logo_quick_pick` / `rank_order` / `podium_slots` and the `medal/coins/cups/sankey/heatmatrix` DVs are **demo-stub-only** (authored catalogue has 0) — content gap, not a bug.
+
+**Decisions:** no new ADRs (design-review polish + UI iteration under existing adr-005/006). A2 shipped as **Variant B** (field + card + featured-subset notes); B1 shipped the **curated-rails** layout.
+
+**Open follow-ups:** `no-error-tracking` (GlitchTip/Sentry) still OPEN; content gap on 3 interaction modes + 5 DVs (authored questions needed); ~99 active questions still have no `editorial_note` (room to author more).
+
+**Soft warning (pre-existing):** `stale-verification` on 5 features — from the original 2026-06-12 build, not this session.
+
+**Next session pick-up:** optionally wire error-tracking; author the missing-mode/DV questions + more editorial notes. The Fix Spec in Downloads is the reference — every item in it is now built and live.
