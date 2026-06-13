@@ -121,3 +121,22 @@ acknowledged; #31 tunnel route live; #32 all 17 features verifier-APPROVE.
 
 **Next session:** Stage 4 iterations (Authentik wrap, extended CI tiers, owner
 review of share-landing page + 105-question editorial pass in /admin).
+
+## 2026-06-13 — Correction: real homepage was not deployed (session 3, post-close)
+
+Owner caught via browser that stateofus.vault7a.xyz served the Stage 3.1 SCAFFOLD
+placeholder ("the presses are being built"), not the curated front page.
+
+Root cause: during the homepage build, an scp of app/page.tsx targeted the repo
+root, landing the real page at /page.tsx (the "stray page.tsx" later removed)
+instead of app/page.tsx, which stayed the scaffold. The gap passed e2e + verifier
+because both matched on masthead text + a 200 — content the scaffold also has.
+
+Fix (f3b63ec): the real composeHomepage front page now lives at app/page.tsx,
+rebuilt + redeployed. 16 question cards render across hero/trending/recent/explore;
+public URL confirmed serving it. The homepage e2e is hardened to assert curated
+content ("Heating up", "House rules", a /q/ card) and the ABSENCE of the scaffold
+tell, so it cannot regress. Correction verification report posted (corrects #115).
+
+Process lesson: feature verification must diff deployed CONTENT against the spec,
+not just assert route-exists + 200. Logged for Stage 4 verifier-prompt tightening.
