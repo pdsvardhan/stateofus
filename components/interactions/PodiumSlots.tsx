@@ -10,8 +10,8 @@
  * v5 600ms beat.
  *
  * Token note: the prototype's silver (#C9C5D6) and bronze (#D98E5F) step
- * fills have no globals.css token — paper-deep and muted-warm stand in until
- * --silver/--bronze tokens land (requested in the build manifest).
+ * fills now map to the --silver/--bronze tokens in globals.css (v5 podColors
+ * for the answer-mode podium steps — v5 lines 2170-2171).
  */
 import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
@@ -23,8 +23,8 @@ import { useDelayedSubmit } from "./useDelayedSubmit";
 const ARRANGE = [1, 0, 2] as const;
 const SLOT_META = [
   { rank: "1", place: "1st", h: 96, color: "var(--gold)" },
-  { rank: "2", place: "2nd", h: 70, color: "var(--paper-deep)" },
-  { rank: "3", place: "3rd", h: 52, color: "var(--muted-warm)" },
+  { rank: "2", place: "2nd", h: 70, color: "var(--silver)" },
+  { rank: "3", place: "3rd", h: 52, color: "var(--bronze)" },
 ] as const;
 
 export function PodiumSlots({ question, onSubmit, submitting }: InteractionProps) {

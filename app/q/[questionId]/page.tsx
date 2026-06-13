@@ -16,11 +16,10 @@ import { decideReveal, MIN_REVEAL_N, type RevealPattern } from "@/lib/results";
 import { DESK_BY_CATEGORY, type Category, type LifecycleState } from "@/lib/catalogue/enums";
 import type { QuestionPublic, QuestionResult } from "@/lib/types";
 import { ExperienceClient } from "@/components/experience/ExperienceClient";
-import { StatusBand } from "@/components/experience/StatusBand";
 import { DeskStamp } from "@/components/experience/DeskStamp";
 import { BackBlock } from "@/components/experience/BackBlock";
 import { SharedContextBand } from "@/components/experience/SharedContextBand";
-import { RelatedRow } from "@/components/discovery/RelatedRow";
+import { RailRelated } from "@/components/discovery/RailRelated";
 import { INTERACTION_REGISTRY } from "@/components/interactions";
 
 export const dynamic = "force-dynamic";
@@ -54,7 +53,7 @@ function loadQuestion(id: string): QuestionPublic | null {
   const q = rawDb
     .prepare(
       `SELECT id, category, subcategory, title, text, mode, options_json, targets_json,
-              skip_allowed, primary_dv, secondary_dvs_json, insight_type, editorial_note, geo, status, created_at
+              skip_allowed, primary_dv, secondary_dvs_json, insight_type, editorial_note, editorial_note_2, geo, status, created_at
        FROM questions WHERE id = ?`
     )
     .get(id) as Record<string, unknown> | undefined;
@@ -75,10 +74,29 @@ function loadQuestion(id: string): QuestionPublic | null {
     secondary_dvs: JSON.parse(q.secondary_dvs_json as string),
     insight_type: (q.insight_type as string) ?? null,
     editorial_note: (q.editorial_note as string) ?? null,
+    editorial_note_2: (q.editorial_note_2 as string) ?? null,
     geo: q.geo === 1,
     status: q.status as LifecycleState,
     created_at: q.created_at as string,
   };
+}
+
+/** Human "12 Jun 2026" date the count closed (frozen / archived / paused). */
+function loadClosedDate(id: string): string | null {
+  const ev = rawDb
+    .prepare(
+      "SELECT at FROM lifecycle_events WHERE question_id = ? AND to_status IN ('frozen','archived','paused') ORDER BY id DESC LIMIT 1"
+    )
+    .get(id) as { at: string } | undefined;
+  if (!ev?.at) return null;
+  const d = new Date(ev.at.replace(" ", "T") + "Z");
+  if (Number.isNaN(d.getTime())) return null;
+  return d.toLocaleDateString("en-IN", {
+    day: "numeric",
+    month: "short",
+    year: "numeric",
+    timeZone: "Asia/Kolkata",
+  });
 }
 
 async function loadResult(question: QuestionPublic): Promise<QuestionResult | null> {
@@ -184,6 +202,10 @@ export default async function QuestionPage(props: {
 
   const result = await loadResult(question);
   const chip = INTERACTION_REGISTRY[question.mode]?.chipLabel ?? question.mode;
+  const closedDate =
+    question.status === "active" || question.status === "draft"
+      ? null
+      : loadClosedDate(question.id);
 
   return (
     <main className="mx-auto min-h-screen w-full max-w-2xl px-4 pb-16 lg:max-w-[1120px] lg:px-8">
@@ -193,8 +215,6 @@ export default async function QuestionPage(props: {
           {chip}
         </span>
       </header>
-
-      <StatusBand status={question.status} />
 
       {inboundShare && !result?.your_payload && (
         <SharedContextBand
@@ -226,10 +246,9 @@ export default async function QuestionPage(props: {
             </h1>
           </div>
         }
+        railRelated={<RailRelated questionId={question.id} />}
+        closedDate={closedDate}
       />
-
-      {/* AC353/AC384 — exploration affordance on every question page */}
-      <RelatedRow questionId={question.id} />
     </main>
   );
 }

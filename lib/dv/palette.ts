@@ -53,18 +53,18 @@ export function tierInk(tierIdx: number): string {
   return TIER_PAL[((tierIdx % TIER_PAL.length) + TIER_PAL.length) % TIER_PAL.length];
 }
 
-/** Podium step colors — 1st / 2nd / 3rd (v5 podColors). */
+/** Podium step colors — 1st / 2nd / 3rd (v5 podColors #FF5A47/#34304E/#9D98B1). */
 export const PODIUM_STEPS: Swatch[] = [
   { bg: "var(--fire)", fg: "var(--ink)" },
   { bg: "var(--ink-soft)", fg: "var(--paper)" },
-  { bg: "color-mix(in srgb, var(--lavender) 48%, var(--paper-deep))", fg: "var(--ink)" },
+  { bg: "var(--muted-violet)", fg: "var(--ink)" },
 ];
 
-/** Medal circles — gold / silver / bronze (v5 medColors). */
+/** Medal circles — gold / silver / bronze (v5 medColors #FFC53D/#C9C5D6/#D98E5F). */
 export const MEDALS: { place: string; bg: string }[] = [
   { place: "1st", bg: "var(--gold)" },
-  { place: "2nd", bg: "color-mix(in srgb, var(--muted) 26%, var(--paper-white))" },
-  { place: "3rd", bg: "color-mix(in srgb, var(--fire) 52%, var(--muted-warm))" },
+  { place: "2nd", bg: "var(--silver)" },
+  { place: "3rd", bg: "var(--bronze)" },
 ];
 
 /** Cup pours — first two are the v5 cupColors, then house accents. */

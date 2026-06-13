@@ -1,9 +1,13 @@
 "use client";
-
 /**
- * REA1 quiet thumb pair — feat-reactions-sharing.
- * Counts hidden until YOU react (then revealed with a ring-pop confirm).
- * Same thumb again un-reacts. Lives on results + answered feed cards.
+ * ReactionBar — v5 "Rate the question" row (prototype lines 932–939) with the
+ * REA1 *quiet reveal* preserved (owner decision): counts stay hidden until YOU
+ * react, then surface with a pop confirm. One bordered paper row: label left,
+ * two PILL thumbs, selected up→lime / down→fire-tint. After voting, a green
+ * "Noted ✓ · your signal shapes tomorrow's edition" line appears.
+ *
+ * Same thumb again un-reacts (counts hide again). The reactions API only
+ * returns counts once you've reacted — matched here, no pre-vote count.
  */
 import { useEffect, useState } from "react";
 import { motion, useReducedMotion } from "framer-motion";
@@ -21,10 +25,9 @@ export function ReactionBar({ questionId }: { questionId: string }) {
     fetch(`/api/questions/${questionId}/reactions`)
       .then((r) => (r.ok ? r.json() : null))
       .then((d) => {
-        if (live && d) {
-          setYours(d.yours);
-          if (d.yours) setCounts(d.counts);
-        }
+        if (!live || !d) return;
+        setYours(d.yours ?? null);
+        if (d.yours && d.counts) setCounts(d.counts); // quiet: only after reacting
       })
       .catch(() => undefined);
     return () => {
@@ -48,49 +51,47 @@ export function ReactionBar({ questionId }: { questionId: string }) {
     }
   }
 
-  const thumb = (kind: "up" | "down", glyph: string, label: string) => (
-    <motion.button
-      onClick={() => react(kind)}
-      animate={
-        popped === kind && !reduced ? { scale: [1, 1.18, 1] } : { scale: 1 }
-      }
-      transition={{ duration: 0.4 }}
-      aria-pressed={yours === kind}
-      aria-label={label}
-      className={`relative flex min-h-[44px] items-center gap-2 border-2 border-ink px-4 py-2 font-label text-base font-bold ${
-        yours === kind ? "bg-lime text-ink ring-2 ring-ink" : "bg-paper-bright text-ink"
-      }`}
-    >
-      <span aria-hidden>{glyph}</span>
-      {yours && counts && (
-        <span className="text-sm">
-          {(kind === "up" ? counts.up : counts.down).toLocaleString("en-IN")}
-        </span>
-      )}
-      {popped === kind && !reduced && (
-        <motion.span
-          initial={{ opacity: 0.8, scale: 0.6 }}
-          animate={{ opacity: 0, scale: 1.8 }}
-          transition={{ duration: 0.45 }}
-          className="pointer-events-none absolute inset-0 border-2 border-lime"
-          aria-hidden
-        />
-      )}
-    </motion.button>
-  );
+  const thumb = (kind: "up" | "down", glyph: string, label: string) => {
+    const on = yours === kind;
+    return (
+      <motion.button
+        type="button"
+        onClick={() => react(kind)}
+        whileHover={reduced ? undefined : { y: -2, scale: 1.08 }}
+        animate={popped === kind && !reduced ? { scale: [1, 1.18, 1] } : { scale: 1 }}
+        transition={{ duration: 0.3, ease: [0.34, 1.56, 0.64, 1] }}
+        aria-pressed={on}
+        aria-label={label}
+        className={`flex min-h-[44px] items-center gap-2 rounded-full border-2 border-ink px-[14px] py-2 font-ui text-sm font-bold text-ink ${
+          on ? (kind === "up" ? "bg-lime" : "bg-fire-tint") : "bg-paper-bright"
+        }`}
+      >
+        <span aria-hidden>{glyph}</span>
+        {yours && counts && (
+          <span className="font-label text-[12px] font-bold">
+            {(kind === "up" ? counts.up : counts.down).toLocaleString("en-IN")}
+          </span>
+        )}
+      </motion.button>
+    );
+  };
 
   return (
     <div className="flex flex-col gap-1.5">
-      <span className="font-label text-[10px] uppercase tracking-wider text-muted">
-        Was this worth answering?
-      </span>
-      <div className="flex items-center gap-2">
+      <div className="flex flex-wrap items-center gap-2.5 rounded-[10px] border-2 border-ink bg-paper-bright px-[18px] py-[13px]">
+        <span className="flex-1 font-label text-[10px] uppercase tracking-[.12em] text-muted">
+          Rate the question
+        </span>
         {thumb("up", "👍", "This question was worth answering")}
         {thumb("down", "👎", "Not for me")}
-        {yours && (
-          <span className="font-label text-xs font-bold text-ink">Counted ✓</span>
-        )}
       </div>
+      {yours && (
+        <div className="font-label text-[9.5px] font-bold uppercase tracking-[.1em] text-agree">
+          Noted ✓ · your signal shapes tomorrow&rsquo;s edition
+        </div>
+      )}
     </div>
   );
 }
+
+export default ReactionBar;

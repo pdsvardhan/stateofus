@@ -8,7 +8,13 @@
  * insight and exploration are visibility states of THIS component — there is
  * no separate result route (AC334). After answering, the result + personal
  * layer appear in place via the reveal sequence (AC335): interaction settles
- * out, DV rises in, insights follow — 300-700ms steps, reduced-motion safe.
+ * out, DV rises in, the lime verdict + desk notes follow — 300-700ms steps,
+ * reduced-motion safe.
+ *
+ * Result rail rebuilt to v5 (Pure-V5, owner decision): "The count" header +
+ * pill DV tabs on the left; the lime "Where you landed" PersonalCard, authored
+ * DeskNotes (placement-aware), quiet ReactionBar, in-rail RailRelated (passed
+ * from the server page), press pass, and the big ShareActions on the right.
  */
 import { useCallback, useMemo, useState, type ReactNode } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
@@ -16,14 +22,15 @@ import type { QuestionPublic, QuestionResult } from "@/lib/types";
 import { dvsForQuestion } from "@/lib/dv/registry";
 import { DV_REGISTRY } from "@/components/dv";
 import StillCounting from "@/components/dv/StillCounting";
-import { DvSwitcher } from "@/components/dv/DvSwitcher";
+import { DvSwitcher, CountHeader } from "@/components/dv/DvSwitcher";
 import { INTERACTION_REGISTRY } from "@/components/interactions";
-import { buildInsights } from "@/lib/insights/templates";
-import InsightCards from "@/components/insight/InsightCards";
-import EditorialNote from "@/components/insight/EditorialNote";
+import { personalVerdict } from "@/lib/insights/personalVerdict";
+import { PersonalCard } from "./PersonalCard";
+import { DeskNotes } from "@/components/insight/DeskNotes";
+import { StatusBand } from "./StatusBand";
 import RegionChip from "@/components/region/RegionChip";
 import { ReactionBar } from "./ReactionBar";
-import { ShareSheet } from "./ShareSheet";
+import { ShareActions } from "./ShareActions";
 import { SkipChip } from "./SkipChip";
 
 type Phase = "answer" | "submitting" | "result";
@@ -32,10 +39,16 @@ export function ExperienceClient({
   question,
   initialResult,
   header,
+  railRelated,
+  closedDate,
 }: {
   question: QuestionPublic;
   initialResult: QuestionResult | null;
   header: ReactNode;
+  /** v5 in-rail "Up next" + related mini-cards — server-rendered, passed in. */
+  railRelated: ReactNode;
+  /** human date the count closed (frozen/archived) for the StatusBand. */
+  closedDate?: string | null;
 }) {
   const reduced = useReducedMotion();
   const answerable = question.status === "active";
@@ -87,9 +100,23 @@ export function ExperienceClient({
     return fallback ? [fallback] : [];
   }, [question]);
   const PrimaryDv = dvDefs[0]?.Component ?? null;
-  const insights = useMemo(
-    () => (result && result.your_payload ? buildInsights(question, result) : []),
-    [question, result]
+
+  // v5 "Where you landed" verdict — derived from the live result, so it always
+  // agrees with the chart. Null until the reader has actually answered.
+  const verdict = useMemo(
+    () =>
+      result && result.your_payload && !result.still_counting
+        ? personalVerdict(question, result, dvDefs[0]?.id)
+        : null,
+    [question, result, dvDefs]
+  );
+  // Authored desk notes (up to 2). editorial_note_2 is optional in the schema.
+  const notes = useMemo(
+    () =>
+      [question.editorial_note, question.editorial_note_2].filter(
+        (s): s is string => Boolean(s)
+      ),
+    [question]
   );
 
   const rise = reduced
@@ -144,29 +171,34 @@ export function ExperienceClient({
             transition={{ duration: 0.5, delay: reduced ? 0 : 0.1 }}
             aria-label="What everyone thinks"
           >
-            {/* FIX 1 — question full-width on top, then DV-left / rail-right ≥lg */}
-            <div className="mb-6">{header}</div>
+            {/* Lifecycle band — inline, inside the result container (v5 537-548) */}
+            <StatusBand
+              status={question.status}
+              date={closedDate}
+              votes={result.sample_n}
+            />
+
+            {/* Question header with the Counted ✓ stamp slammed top-right (v5 550-556) */}
+            <div className="relative mb-6 pr-24 sm:pr-28">
+              {header}
+              {result.your_payload && (
+                <motion.span
+                  initial={reduced ? false : { scale: 0.6, opacity: 0, rotate: 4 }}
+                  animate={{ scale: 1, opacity: 1, rotate: -6 }}
+                  transition={{ duration: 0.45, ease: [0.2, 0.7, 0.2, 1] }}
+                  className="absolute right-0 top-6 rounded-[7px] border-[3px] border-fire bg-paper/70 px-[11px] py-[7px] font-ui text-[15px] font-black tracking-wide text-fire uppercase"
+                >
+                  Counted ✓
+                </motion.span>
+              )}
+            </div>
+
             {result.still_counting ? (
               <StillCounting question={question} result={result} />
             ) : (
               <div className="lg:grid lg:grid-cols-[1.25fr_0.75fr] lg:items-start lg:gap-6">
                 {/* MAIN — the count, read left */}
                 <div className="mb-6 flex flex-col gap-5 lg:mb-0">
-                  {/* Truthful edition stamp (v5 proto line 554, gated on rVoted):
-                      confirms YOUR real answer was counted. NEVER a "sample data"
-                      stamp — the build counts real votes. */}
-                  {result.your_payload && (
-                    <div className="flex items-center justify-end">
-                      <motion.span
-                        initial={reduced ? false : { scale: 0.6, opacity: 0 }}
-                        animate={{ scale: 1, opacity: 1 }}
-                        transition={{ duration: 0.45, ease: [0.2, 0.7, 0.2, 1] }}
-                        className="rotate-[-3deg] border-[3px] border-fire bg-paper-bright/70 px-2.5 py-1 font-label text-sm font-extrabold tracking-wider text-fire uppercase"
-                      >
-                        Counted ✓
-                      </motion.span>
-                    </div>
-                  )}
                   {result.early_returns && (
                     <div className="border-2 border-ink bg-gold-tint px-3 py-1.5 font-label text-xs font-bold tracking-wider text-ink">
                       EARLY RETURNS — the count is young, numbers may move
@@ -175,39 +207,50 @@ export function ExperienceClient({
                   {dvDefs.length > 1 ? (
                     <DvSwitcher defs={dvDefs} question={question} result={result} />
                   ) : PrimaryDv ? (
-                    <PrimaryDv question={question} result={result} dvId={dvDefs[0].id} />
+                    <div>
+                      <CountHeader />
+                      <PrimaryDv question={question} result={result} dvId={dvDefs[0].id} />
+                    </div>
                   ) : null}
+
+                  {/* From the desk — wide only, under the DV */}
+                  {notes.length > 0 && (
+                    <div className="hidden lg:block">
+                      <DeskNotes notes={notes} />
+                    </div>
+                  )}
                 </div>
 
                 {/* RAIL — "Your position", sticky on desktop */}
-                <aside className="flex flex-col gap-5 lg:sticky lg:top-6">
-                  {question.editorial_note && (
-                    <EditorialNote note={question.editorial_note} />
+                <aside className="flex flex-col gap-4 lg:sticky lg:top-6">
+                  <div className="flex items-center gap-3">
+                    <span className="rounded border-[1.5px] border-ink bg-lime px-[11px] py-[5px] font-label text-[10px] font-bold uppercase tracking-[.22em] text-ink">
+                      Your position
+                    </span>
+                    <span aria-hidden className="h-0.5 flex-1 bg-ink" />
+                  </div>
+
+                  {verdict && <PersonalCard big={verdict.big} sub={verdict.sub} />}
+
+                  {/* desk notes inline on narrow only */}
+                  {notes.length > 0 && (
+                    <div className="lg:hidden">
+                      <DeskNotes notes={notes} inline />
+                    </div>
                   )}
-                  {insights.length > 0 && (
-                    <motion.div
-                      initial={reduced ? false : { opacity: 0, y: 16 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ duration: 0.4, delay: reduced ? 0 : 0.35 }}
-                    >
-                      <InsightCards insights={insights} />
-                    </motion.div>
-                  )}
+
+                  <ReactionBar questionId={question.id} />
+
+                  {railRelated}
 
                   {question.geo && <RegionChip />}
 
-                  <div className="flex items-center justify-between gap-3">
-                    <ReactionBar questionId={question.id} />
-                    <ShareSheet questionId={question.id} />
-                  </div>
+                  <ShareActions questionId={question.id} />
 
                   <div className="flex items-center justify-between border-t-2 border-ink pt-3">
                     <span className="font-label text-xs text-muted">
                       {result.sample_n.toLocaleString("en-IN")} counted
                     </span>
-                    {answerable && !alreadyAnswered ? null : (
-                      <SkipChip questionId={question.id} />
-                    )}
                     {answerable && result.your_payload && (
                       <button
                         onClick={() => setPhase("answer")}

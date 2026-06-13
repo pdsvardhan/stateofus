@@ -6,6 +6,10 @@
  * default; DECISIONS 2026-06-12). States below the per-state confidence
  * floor stay cream and the legend carries the "no clear winner yet" chip
  * (CA-007) — trust visible, never fake certainty.
+ *
+ * v5 fidelity (lines 776-788): plate max-width 520 centred; a top caption,
+ * pill legend chips carrying each option's national % + a YOU tag on the
+ * reader's pick, and a bottom footnote.
  */
 import { useMemo, useRef } from "react";
 import { motion } from "framer-motion";
@@ -13,7 +17,7 @@ import type { DvDefinition, DvProps } from "@/lib/dv/registry";
 import type { QuestionOption } from "@/lib/types";
 import { INDIA_VIEWBOX, matchStateKey } from "@/lib/dv/india";
 import { mapInk } from "@/lib/dv/palette";
-import { PICK_MODES, shareRowsFor, formatCount } from "@/lib/dv/transforms";
+import { PICK_MODES, shareRowsFor, formatCount, yourPick } from "@/lib/dv/transforms";
 import { IndiaPaths, useCentroids } from "./india-base";
 import { Caption, EASE, Plate, SampleLine, mono, useMotionPrefs } from "./chrome";
 
@@ -66,13 +70,26 @@ function MapDv({ question, result }: DvProps) {
     };
   }, [states, stateKeys, question.mode, question.options]);
 
+  // national vote share per option (legend %) + the reader's own pick (YOU tag)
+  const nationalPct = useMemo(() => {
+    const rows = shareRowsFor(
+      question.mode,
+      (result.aggregate ?? {}) as Record<string, unknown>,
+      question.options
+    );
+    return new Map(rows.map((r) => [r.key, r.pct]));
+  }, [question.mode, question.options, result.aggregate]);
+  const youKey = yourPick(result.your_payload ?? null);
+
   return (
     <Plate>
       <motion.div
         initial={prefs.reduced ? false : { opacity: 0, y: 18 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.55, ease: EASE }}
+        style={{ maxWidth: 520, margin: "0 auto" }}
       >
+        <Caption style={{ marginBottom: 10 }}>The winning answer, state by state</Caption>
         <svg
           ref={svgRef}
           viewBox={INDIA_VIEWBOX}
@@ -107,7 +124,7 @@ function MapDv({ question, result }: DvProps) {
             })}
         </svg>
 
-        {/* legend */}
+        {/* legend — pill chips: swatch + label + national % + YOU tag */}
         <div style={{ display: "flex", flexWrap: "wrap", gap: 8, marginTop: 12 }}>
           {question.options.map((o, i) =>
             presentOptions.has(i) ? (
@@ -119,16 +136,35 @@ function MapDv({ question, result }: DvProps) {
                   alignItems: "center",
                   gap: 6,
                   border: "2px solid var(--ink)",
-                  padding: "3px 8px",
-                  background: "var(--paper-bright)",
+                  borderRadius: 100,
+                  padding: "3px 11px",
+                  background: o.key === youKey ? "var(--lime)" : "var(--paper-bright)",
                   color: "var(--ink)",
                 }}
               >
                 <span
                   aria-hidden
-                  style={{ width: 12, height: 12, background: mapInk(i), border: "1px solid var(--ink)" }}
+                  style={{ width: 12, height: 12, borderRadius: 4, background: mapInk(i), border: "1px solid var(--ink)" }}
                 />
                 {o.label}
+                {nationalPct.has(o.key) && (
+                  <strong style={{ fontWeight: 700 }}>{nationalPct.get(o.key)}%</strong>
+                )}
+                {o.key === youKey && (
+                  <span
+                    style={{
+                      ...mono(8),
+                      fontWeight: 700,
+                      border: "1.5px solid var(--ink)",
+                      borderRadius: 100,
+                      padding: "1px 6px",
+                      background: "var(--ink)",
+                      color: "var(--lime)",
+                    }}
+                  >
+                    YOU
+                  </span>
+                )}
               </span>
             ) : null
           )}
@@ -140,22 +176,27 @@ function MapDv({ question, result }: DvProps) {
                 alignItems: "center",
                 gap: 6,
                 border: "2px dashed var(--muted)",
-                padding: "3px 8px",
+                borderRadius: 100,
+                padding: "3px 11px",
                 background: "var(--paper-edge)",
                 color: "var(--ink-soft)",
               }}
             >
               <span
                 aria-hidden
-                style={{ width: 12, height: 12, background: "var(--paper-edge)", border: "1px dashed var(--muted)" }}
+                style={{ width: 12, height: 12, borderRadius: 4, background: "var(--paper-edge)", border: "1px dashed var(--muted)" }}
               />
               no clear winner yet
             </span>
           )}
         </div>
 
+        <Caption style={{ marginTop: 8 }}>
+          State colour = its winning answer · real boundaries, house inks
+        </Caption>
+
         {result.your_region?.state && (
-          <Caption style={{ marginTop: 8 }}>
+          <Caption style={{ marginTop: 4 }}>
             counting you in {result.your_region.state}
             {states[result.your_region.state]
               ? ` · ${formatCount(states[result.your_region.state].sample_n)} counted there`
