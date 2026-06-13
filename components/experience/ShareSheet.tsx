@@ -1,11 +1,13 @@
 "use client";
 
 /**
- * Share + Download — feat-reactions-sharing (FB-014) + feat-og-image-gen.
+ * Share + Download + Link — feat-reactions-sharing (FB-014) + feat-og-image-gen.
  * Share: Web Share API with the canonical question URL (?s=1 marks inbound
  * shares for the landing context); fallback = copy link + LINK2 toast.
  * Download: the three locked card styles as a picker (D2 front-page default),
  * served by /api/og/:id — real rendered PNG, never a screenshot.
+ * Link: copies the plain canonical question URL (no ?s= marker) — the v5
+ * prototype's third result action (onCopyLink, "🔗 Link" → "✓ Copied").
  */
 import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
@@ -19,9 +21,13 @@ const CARD_STYLES = [
 export function ShareSheet({ questionId }: { questionId: string }) {
   const [open, setOpen] = useState(false);
   const [toast, setToast] = useState<string | null>(null);
+  const [copied, setCopied] = useState(false);
 
   const shareUrl = () =>
     `${window.location.origin}/q/${questionId}?s=1`;
+  // Plain canonical link for the LINK action — no ?s= inbound marker, since
+  // a copied link isn't an inbound-share landing (that's the Share path).
+  const linkUrl = () => `${window.location.origin}/q/${questionId}`;
 
   function showToast(msg: string) {
     setToast(msg);
@@ -43,6 +49,13 @@ export function ShareSheet({ questionId }: { questionId: string }) {
     showToast("Link copied — pass it along");
   }
 
+  async function copyLink() {
+    await navigator.clipboard.writeText(linkUrl());
+    setCopied(true);
+    setTimeout(() => setCopied(false), 1800);
+    showToast("Link copied — paste it anywhere");
+  }
+
   return (
     <div className="relative flex items-center gap-2">
       <button
@@ -57,6 +70,15 @@ export function ShareSheet({ questionId }: { questionId: string }) {
         className="border-2 border-ink bg-paper-bright px-3 py-1.5 font-label text-sm font-bold text-ink hover:-translate-y-0.5 transition-transform"
       >
         Download
+      </button>
+      <button
+        onClick={copyLink}
+        aria-label="Copy a link to this question"
+        className={`border-2 border-ink px-3 py-1.5 font-label text-sm font-bold text-ink hover:-translate-y-0.5 transition-transform ${
+          copied ? "bg-lime" : "bg-paper-bright"
+        }`}
+      >
+        {copied ? "Copied" : "Link"}
       </button>
 
       <AnimatePresence>

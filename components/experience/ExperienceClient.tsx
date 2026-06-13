@@ -141,6 +141,21 @@ export function ExperienceClient({
               <StillCounting question={question} result={result} />
             ) : (
               <div className="flex flex-col gap-5">
+                {/* Truthful edition stamp (v5 proto line 554, gated on rVoted):
+                    confirms YOUR real answer was counted. NEVER a "sample data"
+                    stamp — the build counts real votes. */}
+                {result.your_payload && (
+                  <div className="flex items-center justify-end">
+                    <motion.span
+                      initial={reduced ? false : { scale: 0.6, opacity: 0 }}
+                      animate={{ scale: 1, opacity: 1 }}
+                      transition={{ duration: 0.45, ease: [0.2, 0.7, 0.2, 1] }}
+                      className="rotate-[-3deg] border-[3px] border-fire bg-paper-bright/70 px-2.5 py-1 font-label text-sm font-extrabold tracking-wider text-fire uppercase"
+                    >
+                      Counted ✓
+                    </motion.span>
+                  </div>
+                )}
                 {result.early_returns && (
                   <div className="border-2 border-ink bg-gold-tint px-3 py-1.5 font-label text-xs font-bold tracking-wider text-ink">
                     EARLY RETURNS — the count is young, numbers may move
