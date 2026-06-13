@@ -1,27 +1,33 @@
 /**
  * GET /api/questions/:id/result — aggregate + your answer (you-vs-crowd).
  *
- * AC 370: return visits show you-vs-crowd comparisons (your_payload present
- * when this device answered). Sample size always included — trust visible.
- * Reveal threshold: below MIN_REVEAL_N the payload reports still_counting and
- * ships NO aggregate — never an empty chart, never fake precision.
+ * AC370: your_payload present when this device answered (you-vs-crowd).
+ * AC341-343 (feat-result-reveal): per-question reveal pattern decides whether
+ * the aggregate ships; below the gate → still_counting, no aggregate, never
+ * an empty chart. Sample size always included — trust visible.
  */
 import { NextRequest, NextResponse } from "next/server";
 import { rawDb } from "@/lib/db/client";
 import { getDevice } from "@/lib/identity";
 import { showsResults } from "@/lib/lifecycle";
-import { MIN_REVEAL_N } from "@/lib/results";
+import { decideReveal, MIN_REVEAL_N, type RevealPattern } from "@/lib/results";
 import type { LifecycleState } from "@/lib/catalogue/enums";
 
 export async function GET(
-  req: NextRequest,
+  _req: NextRequest,
   ctx: { params: Promise<{ id: string }> }
 ) {
   const { id } = await ctx.params;
   const q = rawDb
-    .prepare("SELECT id, mode, status, geo FROM questions WHERE id = ?")
+    .prepare("SELECT id, mode, status, geo, reveal_pattern FROM questions WHERE id = ?")
     .get(id) as
-    | { id: string; mode: string; status: LifecycleState; geo: number }
+    | {
+        id: string;
+        mode: string;
+        status: LifecycleState;
+        geo: number;
+        reveal_pattern: RevealPattern;
+      }
     | undefined;
   if (!q || q.status === "draft") {
     return NextResponse.json({ error: "question not found" }, { status: 404 });
@@ -51,18 +57,27 @@ export async function GET(
       | undefined;
     if (yours) {
       yourPayload = JSON.parse(yours.payload_json);
-      yourRegion = { state: yours.region_state, city: yours.region_city };
+      yourRegion = {
+        state: yours.region_state ?? device.region_state,
+        city: yours.region_city ?? device.region_city,
+      };
+    } else {
+      yourRegion = { state: device.region_state, city: device.region_city };
     }
   }
 
-  if (sampleN < MIN_REVEAL_N) {
+  const reveal = decideReveal(q.reveal_pattern ?? "threshold", sampleN);
+
+  if (!reveal.revealed) {
     return NextResponse.json({
       question_id: q.id,
       status: q.status,
       still_counting: true,
       sample_n: sampleN,
       min_reveal_n: MIN_REVEAL_N,
+      reveal_pattern: q.reveal_pattern,
       your_payload: yourPayload,
+      your_region: yourRegion,
     });
   }
 
@@ -84,7 +99,10 @@ export async function GET(
     question_id: q.id,
     status: q.status,
     still_counting: false,
+    early_returns: reveal.early_returns,
     sample_n: sampleN,
+    min_reveal_n: MIN_REVEAL_N,
+    reveal_pattern: q.reveal_pattern,
     aggregate: overall ? JSON.parse(overall.agg_json) : null,
     updated_at: overall?.updated_at ?? null,
     state_aggregates: stateAggregates,

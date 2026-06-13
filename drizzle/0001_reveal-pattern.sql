@@ -1,0 +1,1 @@
+ALTER TABLE `questions` ADD `reveal_pattern` text DEFAULT 'threshold' NOT NULL;

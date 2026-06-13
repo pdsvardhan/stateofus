@@ -16,7 +16,9 @@
     "seed": "tsx scripts/seed.ts"
   },
   "dependencies": {
+    "@svg-maps/india": "^2.0.0",
     "better-sqlite3": "^11.10.0",
+    "geoip-lite": "^2.0.2",
     "d3-geo": "^3.1.1",
     "d3-hierarchy": "^3.1.2",
     "d3-scale": "^4.0.2",

@@ -58,6 +58,8 @@ export const questions = sqliteTable(
     mvpPriority: text("mvp_priority"),
     notes: text("notes"),
     geo: integer("geo").notNull().default(0), // feeds map DVs + region insights
+    // AC341 — per-question reveal config: immediate | threshold | progressive
+    revealPattern: text("reveal_pattern").notNull().default("threshold"),
     source: text("source").notNull(), // catalogue | authored | manual
     status: text("status").notNull().default("draft"), // LifecycleState
     approvedBy: text("approved_by"), // AC 375: review recorded pre-activation

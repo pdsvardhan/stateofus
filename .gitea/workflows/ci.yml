@@ -5,7 +5,8 @@ on:
 
 jobs:
   test:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
+    timeout-minutes: 25
     steps:
       - uses: actions/checkout@v4
 
@@ -49,7 +50,8 @@ jobs:
       - name: Report test run to Ottomate
         if: always()
         run: |
-          curl -sf -X POST "http://192.168.1.10:8110/api/test-runs" \
+          # runner uses host networking; Ottomate binds 127.0.0.1 only
+          curl -sf -X POST "http://127.0.0.1:8110/api/test-runs" \
             -H "Authorization: Bearer ${{ secrets.TRACKER_API_TOKEN }}" \
             -H "Content-Type: application/json" \
             -d "{

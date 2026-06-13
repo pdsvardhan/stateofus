@@ -8,24 +8,11 @@
 import { rawDb } from "@/lib/db/client";
 import type { LifecycleState } from "@/lib/catalogue/enums";
 import { LIFECYCLE_STATES } from "@/lib/catalogue/enums";
+import { ALLOWED_TRANSITIONS } from "@/lib/lifecycle-map";
 
-export const ALLOWED_TRANSITIONS: Record<LifecycleState, LifecycleState[]> = {
-  draft: ["active", "archived"],
-  active: ["paused", "frozen", "archived"],
-  paused: ["active", "frozen", "archived"],
-  frozen: ["archived"],
-  archived: [], // terminal
-};
-
-/** Only active questions accept answers. Frozen/paused/archived show results. */
-export function isAnswerable(status: LifecycleState): boolean {
-  return status === "active";
-}
-
-/** Results render for everything that ever collected answers. */
-export function showsResults(status: LifecycleState): boolean {
-  return status !== "draft";
-}
+// Pure rules live in lib/lifecycle-map (client-safe); re-exported here so
+// server code keeps one import site.
+export { ALLOWED_TRANSITIONS, isAnswerable, showsResults } from "@/lib/lifecycle-map";
 
 export type TransitionResult =
   | { ok: true; from: LifecycleState; to: LifecycleState }

@@ -29,6 +29,8 @@
   --pink: #f2a0c4;
   --lavender: #b79ce4; /* The Mirror desk (MR1) */
   --agree: #2b8a3e; /* the one blessed green (CA-003) */
+  --silver: #c9c5d6; /* podium step 2 (v5 prototype) */
+  --bronze: #d98e5f; /* podium step 3 (v5 prototype) */
 
   /* type */
   --font-ui: var(--font-archivo), "Archivo", sans-serif;
@@ -55,6 +57,8 @@
   --color-pink: var(--pink);
   --color-lavender: var(--lavender);
   --color-agree: var(--agree);
+  --color-silver: var(--silver);
+  --color-bronze: var(--bronze);
 
   --font-ui: var(--font-ui);
   --font-editorial: var(--font-editorial);
