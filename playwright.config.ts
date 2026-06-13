@@ -34,21 +34,17 @@ export default defineConfig({
     { name: "desktop", use: { ...devices["Desktop Chrome"] } },
   ],
   webServer: {
-    // env vars are inlined into the command string, not left to webServer.env —
-    // the Gitea runner does NOT propagate webServer.env into the spawned
-    // standalone node process, so the server fell back to the empty default
-    // db (health passed on SELECT 1, but every /q/* 404'd). Inlining guarantees
-    // the seeded e2e db reaches node. (Salt must match global-setup's seed.)
-    command: process.env.CI
-      ? `sh -c 'cp -r .next/static .next/standalone/.next/ && mkdir -p .next/standalone/public && cp -r public/. .next/standalone/public/ && cp -r drizzle .next/standalone/ 2>/dev/null; DATABASE_FILE="${E2E_DB}" DEVICE_HASH_SALT="${process.env.DEVICE_HASH_SALT ?? "e2e-salt"}" PORT=${PORT} HOSTNAME=127.0.0.1 node .next/standalone/server.js'`
-      : "npm run dev",
+    // scripts/e2e-server.cjs sets DATABASE_FILE in-process before starting the
+    // standalone server. Playwright's nested-shell spawn on the Gitea runner
+    // does NOT reliably propagate webServer.env or an inlined `VAR=x node` into
+    // the server process (it fell back to the empty default db — /q/* 404'd
+    // while /api/health passed on SELECT 1). The wrapper removes the shell.
+    command: process.env.CI ? `node scripts/e2e-server.cjs` : "npm run dev",
     url: `${BASE}/api/health`,
     reuseExistingServer: !process.env.CI,
     timeout: 120_000,
     env: {
       PORT: String(PORT),
-      HOSTNAME: "127.0.0.1",
-      DATABASE_FILE: E2E_DB,
       DEVICE_HASH_SALT: process.env.DEVICE_HASH_SALT ?? "e2e-salt",
     },
   },
