@@ -22,9 +22,19 @@ rawDb.pragma("busy_timeout = 5000");
 
 export const db = drizzle(rawDb, { schema });
 
-// Migrate on first open. drizzle/ ships in the runner image (Dockerfile COPY);
-// migrations are generated SQL (drizzle-kit generate), applied idempotently.
+// Migrate on first open at RUNTIME only. `next build` collects page data by
+// importing every route module — which imports this file — but the build must
+// never touch a database (the Gitea runner reuses its workspace, so a leftover
+// data/stateofus.db would make CREATE TABLE re-run and fail the build). The
+// container + seed + tests all run at runtime, where migration is wanted.
+// The try/catch tolerates a db already at head from a prior boot or push.
+const isBuildPhase = process.env.NEXT_PHASE === "phase-production-build";
 const migrationsFolder = join(process.cwd(), "drizzle");
-if (existsSync(migrationsFolder)) {
-  migrate(db, { migrationsFolder });
+if (!isBuildPhase && existsSync(migrationsFolder)) {
+  try {
+    migrate(db, { migrationsFolder });
+  } catch (err) {
+    const msg = err instanceof Error ? err.message : String(err);
+    if (!/already exists/.test(msg)) throw err;
+  }
 }
