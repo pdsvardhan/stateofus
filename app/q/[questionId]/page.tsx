@@ -54,7 +54,7 @@ function loadQuestion(id: string): QuestionPublic | null {
   const q = rawDb
     .prepare(
       `SELECT id, category, subcategory, title, text, mode, options_json, targets_json,
-              skip_allowed, primary_dv, secondary_dvs_json, insight_type, geo, status, created_at
+              skip_allowed, primary_dv, secondary_dvs_json, insight_type, editorial_note, geo, status, created_at
        FROM questions WHERE id = ?`
     )
     .get(id) as Record<string, unknown> | undefined;
@@ -74,6 +74,7 @@ function loadQuestion(id: string): QuestionPublic | null {
     primary_dv: q.primary_dv as QuestionPublic["primary_dv"],
     secondary_dvs: JSON.parse(q.secondary_dvs_json as string),
     insight_type: (q.insight_type as string) ?? null,
+    editorial_note: (q.editorial_note as string) ?? null,
     geo: q.geo === 1,
     status: q.status as LifecycleState,
     created_at: q.created_at as string,

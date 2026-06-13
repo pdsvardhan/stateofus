@@ -42,6 +42,7 @@ export const questions = sqliteTable(
     secondaryDvsJson: text("secondary_dvs_json").notNull().default("[]"),
     dvRaw: text("dv_raw"), // original catalogue label, fidelity trail
     insightType: text("insight_type"),
+    editorialNote: text("editorial_note"), // FIX 3b — curated "From the desk" note (nullable)
     expectedResultShape: text("expected_result_shape"),
     expectedEmotion: text("expected_emotion"),
     scoreParticipation: integer("score_participation"),

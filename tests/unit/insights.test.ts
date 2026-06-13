@@ -36,6 +36,7 @@ function makeQuestion(mode: Mode, overrides: Partial<QuestionPublic> = {}): Ques
     primary_dv: "split",
     secondary_dvs: [],
     insight_type: null,
+    editorial_note: null,
     geo: false,
     status: "active",
     created_at: "2026-06-13T00:00:00Z",

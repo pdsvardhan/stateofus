@@ -27,6 +27,7 @@ export type QuestionPublic = {
   primary_dv: DvId;
   secondary_dvs: DvId[];
   insight_type: string | null;
+  editorial_note: string | null;
   geo: boolean;
   status: LifecycleState;
   created_at: string;

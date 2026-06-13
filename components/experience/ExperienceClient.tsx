@@ -20,6 +20,7 @@ import { DvSwitcher } from "@/components/dv/DvSwitcher";
 import { INTERACTION_REGISTRY } from "@/components/interactions";
 import { buildInsights } from "@/lib/insights/templates";
 import InsightCards from "@/components/insight/InsightCards";
+import EditorialNote from "@/components/insight/EditorialNote";
 import RegionChip from "@/components/region/RegionChip";
 import { ReactionBar } from "./ReactionBar";
 import { ShareSheet } from "./ShareSheet";
@@ -180,6 +181,9 @@ export function ExperienceClient({
 
                 {/* RAIL — "Your position", sticky on desktop */}
                 <aside className="flex flex-col gap-5 lg:sticky lg:top-6">
+                  {question.editorial_note && (
+                    <EditorialNote note={question.editorial_note} />
+                  )}
                   {insights.length > 0 && (
                     <motion.div
                       initial={reduced ? false : { opacity: 0, y: 16 }}
