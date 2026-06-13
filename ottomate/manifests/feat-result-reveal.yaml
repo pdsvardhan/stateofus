@@ -1,0 +1,15 @@
+feature_id: feat-result-reveal
+commit: e6dd319
+claimed_files: [lib/results.ts,app/api/questions/[id]/result/route.ts,components/dv/StillCounting.tsx]
+claimed_behaviors:
+  - ac_id: 341
+    behavior: "per-question reveal_pattern column immediate/threshold/progressive"
+    verify_hint: "decideReveal + admin form field"
+  - ac_id: 342
+    behavior: "below threshold placeholder w/ context+encouragement never empty chart"
+    verify_hint: "StillCounting + result API withholds aggregate"
+  - ac_id: 343
+    behavior: "threshold crossing auto-activates"
+    verify_hint: "result API simply starts returning aggregate"
+intentional_placeholders:
+  []

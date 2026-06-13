@@ -1,0 +1,15 @@
+feature_id: feat-og-image-gen
+commit: e6dd319
+claimed_files: [app/api/og/[id]/route.tsx,lib/share/topline.ts,assets/fonts/*(3)]
+claimed_behaviors:
+  - ac_id: 331
+    behavior: "server-rendered card question+result+sample"
+    verify_hint: "ImageResponse satori + computeTopline 5 unit tests"
+  - ac_id: 332
+    behavior: "OG/Twitter meta per question"
+    verify_hint: "generateMetadata e2e asserts og:image"
+  - ac_id: 333
+    behavior: "<2s or cached"
+    verify_hint: "fs cache keyed id+style+sample-bucket e2e asserts X-OG-Cache hit"
+intentional_placeholders:
+  []

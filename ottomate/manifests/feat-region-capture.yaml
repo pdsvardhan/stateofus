@@ -1,0 +1,15 @@
+feature_id: feat-region-capture
+commit: e6dd319
+claimed_files: [lib/region/*(5),app/api/region/route.ts,app/api/region/correct/route.ts,components/region/RegionChip.tsx]
+claimed_behaviors:
+  - ac_id: 376
+    behavior: "coarse region from IP on first visit no prompt"
+    verify_hint: "ensureRegion in page RSC + GET /api/region"
+  - ac_id: 377
+    behavior: "one-tap correction on geo DVs"
+    verify_hint: "RegionChip press-pass + correction sheet"
+  - ac_id: 378
+    behavior: "city/state only never precise"
+    verify_hint: "schema has only region_city/region_state raw IP never stored"
+intentional_placeholders:
+  []

@@ -1,0 +1,21 @@
+feature_id: feat-interaction-modes
+commit: e6dd319
+claimed_files: [components/interactions/*(10 files)]
+claimed_behaviors:
+  - ac_id: 337
+    behavior: "five core modes render+submit"
+    verify_hint: "e2e answers quick_pick + 27 unit tests on payload builders"
+  - ac_id: 338
+    behavior: "Skip control advances recording nothing"
+    verify_hint: "SkipChip + e2e skip test"
+  - ac_id: 339
+    behavior: "single interaction paradigm"
+    verify_hint: "one screen per mode"
+  - ac_id: 340
+    behavior: "tap-only fallbacks at 375px"
+    verify_hint: "swipe verdict buttons sorter tap-tap rank arrows podium tap"
+  - ac_id: 385
+    behavior: "rank/podium/logo ship per design"
+    verify_hint: "RankOrder drag+FLIP+arrows PodiumSlots tap-place LogoQuickPick typographic tiles"
+intentional_placeholders:
+  - "LogoQuickPick typographic brand tiles = design-approved v5 MVP treatment (DECISIONS: placeholders fine), not a stub"

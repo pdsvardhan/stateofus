@@ -1,0 +1,15 @@
+feature_id: feat-question-experience-page
+commit: e6dd319
+claimed_files: [app/q/[questionId]/page.tsx,components/experience/ExperienceClient.tsx,components/experience/StatusBand.tsx,components/experience/DeskStamp.tsx,components/experience/BackBlock.tsx,components/experience/SkipChip.tsx]
+claimed_behaviors:
+  - ac_id: 334
+    behavior: "one unified page w/ state-dependent visibility — no result route"
+    verify_hint: "open /q/Q-101 answer and watch result replace interaction in place"
+  - ac_id: 335
+    behavior: "result+insight same page no navigation"
+    verify_hint: "e2e core-loop.spec.ts asserts url unchanged"
+  - ac_id: 336
+    behavior: "usable at 375px thumb actions"
+    verify_hint: "e2e mobile project (Pixel5) runs every spec"
+intentional_placeholders:
+  []

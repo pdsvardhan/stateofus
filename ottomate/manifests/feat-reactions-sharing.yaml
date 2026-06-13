@@ -1,0 +1,15 @@
+feature_id: feat-reactions-sharing
+commit: e6dd319
+claimed_files: [app/api/reactions/route.ts,app/api/questions/[id]/reactions/route.ts,components/experience/ReactionBar.tsx,components/experience/ShareSheet.tsx]
+claimed_behaviors:
+  - ac_id: 357
+    behavior: "like/dislike one per device toggleable"
+    verify_hint: "reactions PK + toggle logic REA1"
+  - ac_id: 358
+    behavior: "share link canonical URL + OG unfurl"
+    verify_hint: "ShareSheet ?s=1 + generateMetadata e2e meta test"
+  - ac_id: 359
+    behavior: "result image export preserves question+result+sample"
+    verify_hint: "/api/og download card D1-3 styles"
+intentional_placeholders:
+  []

@@ -1,0 +1,15 @@
+feature_id: feat-homepage-curation
+commit: e6dd319
+claimed_files: [app/page.tsx,components/home/*(8)]
+claimed_behaviors:
+  - ac_id: 354
+    behavior: "editorial+trending+recent+explore composed"
+    verify_hint: "composeHomepage four modules"
+  - ac_id: 355
+    behavior: "diversity rule no category dominates"
+    verify_hint: "applyDiversity + unit test"
+  - ac_id: 356
+    behavior: "editorial picks manageable from admin"
+    verify_hint: "app_meta editorial_picks contract + admin star toggle"
+intentional_placeholders:
+  []

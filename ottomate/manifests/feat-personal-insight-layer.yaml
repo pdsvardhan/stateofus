@@ -1,0 +1,15 @@
+feature_id: feat-personal-insight-layer
+commit: e6dd319
+claimed_files: [lib/insights/templates.ts,components/insight/InsightCards.tsx]
+claimed_behaviors:
+  - ac_id: 348
+    behavior: ">=1 template insight on every answered result"
+    verify_hint: "buildInsights priority selection 17 unit tests"
+  - ac_id: 349
+    behavior: "templates only no LLM"
+    verify_hint: "typed registry string literals"
+  - ac_id: 350
+    behavior: "skipped shows aggregate w/o personal layer"
+    verify_hint: "no your_payload -> empty list e2e shared-landing asserts no result-area pre-answer"
+intentional_placeholders:
+  []

@@ -1,0 +1,21 @@
+feature_id: feat-dv-engine
+commit: e6dd319
+claimed_files: [components/dv/*(18 files),lib/dv/*(4)]
+claimed_behaviors:
+  - ac_id: 344
+    behavior: "MVP DV set renders from aggregates"
+    verify_hint: "14 renderers consume real agg shapes"
+  - ac_id: 345
+    behavior: "1 primary + 0-2 secondary from schema"
+    verify_hint: "dvsForQuestion + catalogue columns"
+  - ac_id: 346
+    behavior: "300-700ms + reduced-motion"
+    verify_hint: "useMotionPrefs in every renderer"
+  - ac_id: 347
+    behavior: "secondaries differ in info shape"
+    verify_hint: "family field + labels"
+  - ac_id: 386
+    behavior: "all 14 v4 renderers + still-counting"
+    verify_hint: "DV_REGISTRY complete"
+intentional_placeholders:
+  []

@@ -1,0 +1,15 @@
+feature_id: feat-admin-console
+commit: e6dd319
+claimed_files: [app/admin/*(4 pages),app/api/admin/*(5 routes),lib/admin/helpers.ts,components/admin/*(2)]
+claimed_behaviors:
+  - ac_id: 363
+    behavior: "create/edit/pause/freeze/archive/feature/export"
+    verify_hint: "dashboard+form+lifecycle buttons+star+JSON/CSV"
+  - ac_id: 364
+    behavior: "inaccessible without credential"
+    verify_hint: "middleware + constant-time login e2e gate test"
+  - ac_id: 365
+    behavior: "form covers schema incl mode/options/DV/insight"
+    verify_hint: "QuestionForm all fields incl targets+reveal_pattern"
+intentional_placeholders:
+  []

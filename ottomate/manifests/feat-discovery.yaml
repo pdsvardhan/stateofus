@@ -1,0 +1,15 @@
+feature_id: feat-discovery
+commit: e6dd319
+claimed_files: [lib/discovery/*(2),app/c,app/explore,app/search,app/api/search? (page-based),components/discovery/*(2)]
+claimed_behaviors:
+  - ac_id: 351
+    behavior: "categories/trending/explore/related/random all reachable"
+    verify_hint: "pages + RelatedRow + next endpoint"
+  - ac_id: 352
+    behavior: "search questions+categories only"
+    verify_hint: "searchQuestions LIKE on text/title/subcategory"
+  - ac_id: 353
+    behavior: "every result page >=1 related"
+    verify_hint: "RelatedRow mounted on /q + unit test all-questions"
+intentional_placeholders:
+  []

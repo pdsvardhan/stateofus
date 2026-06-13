@@ -1,0 +1,15 @@
+feature_id: feat-share-landing
+commit: e6dd319
+claimed_files: [components/experience/SharedContextBand.tsx,app/q/[questionId]/page.tsx]
+claimed_behaviors:
+  - ac_id: 382
+    behavior: "shared link opens question w/ shared context"
+    verify_hint: "?s=1 PASSED ALONG band e2e"
+  - ac_id: 383
+    behavior: "answer then comparison"
+    verify_hint: "answer-first gate result+insights unlock e2e"
+  - ac_id: 384
+    behavior: "continue affordance"
+    verify_hint: "RelatedRow on every question page"
+intentional_placeholders:
+  []
