@@ -49,10 +49,50 @@ function rows(sql: string, ...params: unknown[]): DiscoveryCard[] {
   }));
 }
 
+/* FIX 4 (B2) — CARD_SELECT plus the columns needed to compute a result preview,
+   so browse surfaces (explore/category/search) can show result cards too, not
+   only Home. */
+const CARD_SELECT_FULL = `
+  SELECT q.id, q.category, q.text, q.mode, q.primary_dv, q.geo, q.status,
+         q.options_json, a.agg_json,
+         COALESCE(a.sample_n, 0) AS sample_n
+  FROM questions q
+  LEFT JOIN question_aggregates a
+    ON a.question_id = q.id AND a.dim = 'overall' AND a.dim_key = ''`;
+
+/** Decorate a raw row with the stat/tug result variant once it clears
+ *  RESULT_THRESHOLD and a preview is computable; otherwise a lock-to-vote teaser. */
+function decorate(r: Record<string, unknown>): DiscoveryCard {
+  const base: DiscoveryCard = {
+    id: r.id as string,
+    category: r.category as string,
+    text: r.text as string,
+    mode: r.mode as string,
+    primary_dv: r.primary_dv as string,
+    geo: r.geo === 1,
+    status: r.status as string,
+    sample_n: (r.sample_n as number) ?? 0,
+  };
+  if (base.sample_n >= RESULT_THRESHOLD) {
+    const preview = buildPreview(
+      base.mode,
+      r.options_json as string,
+      (r.agg_json as string) ?? null,
+      base.category
+    );
+    if (preview) return { ...base, variant: preview.kind, preview };
+  }
+  return { ...base, variant: "teaser" };
+}
+
+function rowsFull(sql: string, ...params: unknown[]): DiscoveryCard[] {
+  return (rawDb.prepare(sql).all(...params) as Record<string, unknown>[]).map(decorate);
+}
+
 /** Numeric sort on real counts — the NEW-01 regression lives here. */
 export function getTrending(limit = 6): DiscoveryCard[] {
-  return rows(
-    `${CARD_SELECT}
+  return rowsFull(
+    `${CARD_SELECT_FULL}
      WHERE q.status = 'active'
      ORDER BY COALESCE(a.sample_n, 0) DESC, q.score_shareability DESC NULLS LAST, q.id
      LIMIT ?`,
@@ -85,8 +125,8 @@ export function getEditorialPicks(limit = 5): DiscoveryCard[] {
   }
   if (ids.length > 0) {
     const placeholders = ids.map(() => "?").join(",");
-    const picked = rows(
-      `${CARD_SELECT} WHERE q.status = 'active' AND q.id IN (${placeholders})`,
+    const picked = rowsFull(
+      `${CARD_SELECT_FULL} WHERE q.status = 'active' AND q.id IN (${placeholders})`,
       ...ids
     );
     // preserve curator order
@@ -95,8 +135,8 @@ export function getEditorialPicks(limit = 5): DiscoveryCard[] {
     if (ordered.length > 0) return ordered.slice(0, limit);
   }
   // fallback: most shareable active questions
-  return rows(
-    `${CARD_SELECT}
+  return rowsFull(
+    `${CARD_SELECT_FULL}
      WHERE q.status = 'active'
      ORDER BY q.score_shareability DESC NULLS LAST, COALESCE(a.sample_n,0) DESC, q.id
      LIMIT ?`,
@@ -132,8 +172,8 @@ export function getRelated(questionId: string, limit = 3): DiscoveryCard[] {
 }
 
 export function getByCategory(category: Category, limit = 30): DiscoveryCard[] {
-  return rows(
-    `${CARD_SELECT}
+  return rowsFull(
+    `${CARD_SELECT_FULL}
      WHERE q.status = 'active' AND q.category = ?
      ORDER BY COALESCE(a.sample_n,0) DESC, q.id LIMIT ?`,
     category,
@@ -152,8 +192,8 @@ export function getExplore(filters: { mode?: string; category?: string }): Disco
     conds.push("q.category = ?");
     params.push(filters.category);
   }
-  return rows(
-    `${CARD_SELECT} WHERE ${conds.join(" AND ")} ORDER BY q.category, q.id LIMIT 60`,
+  return rowsFull(
+    `${CARD_SELECT_FULL} WHERE ${conds.join(" AND ")} ORDER BY q.category, q.id LIMIT 60`,
     ...params
   );
 }
@@ -164,8 +204,8 @@ export function searchQuestions(query: string, limit = 20): {
   categories: Category[];
 } {
   const like = `%${query.replace(/[%_]/g, "")}%`;
-  const questions = rows(
-    `${CARD_SELECT}
+  const questions = rowsFull(
+    `${CARD_SELECT_FULL}
      WHERE q.status = 'active' AND (q.text LIKE ? OR q.title LIKE ? OR q.subcategory LIKE ?)
      ORDER BY COALESCE(a.sample_n,0) DESC LIMIT ?`,
     like,
@@ -246,7 +286,7 @@ const RESULT_THRESHOLD = 5;
 const LOCKED_QUOTA = 6;
 
 /** Build a stat/tug preview from a question's overall aggregate. */
-function buildPreview(
+export function buildPreview(
   mode: string,
   optionsJson: string,
   aggJson: string | null,

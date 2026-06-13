@@ -25,6 +25,18 @@
 import type { Mode } from "@/lib/catalogue/enums";
 import type { QuestionPublic, QuestionResult } from "@/lib/types";
 
+/* FIX 3a (A2/C2) — vary the fixed-string insight bodies so two questions never
+   read identically, while staying deterministic per question (no flicker) and
+   fully no-LLM (only the prose rotates; every number stays sourced). */
+function phrasingIndex(seed: string, poolSize: number): number {
+  let h = 5381;
+  for (let i = 0; i < seed.length; i++) h = ((h << 5) + h + seed.charCodeAt(i)) | 0;
+  return Math.abs(h) % poolSize;
+}
+function pickPhrasing(questionId: string, templateId: string, pool: string[]): string {
+  return pool[phrasingIndex(`${questionId}:${templateId}`, pool.length)];
+}
+
 export type InsightTone =
   | "match"
   | "differ"
@@ -260,7 +272,12 @@ function pickInsights(
       id: `${result.question_id}:pick-majority`,
       template_id: "pick-majority",
       headline: `Majority position: ${yourPct}%`,
-      body: `More than half the country stands where you do on this one.`,
+      body: pickPhrasing(result.question_id, "pick-majority", [
+        `More than half the country lands where you do — ${yourPct}% strong.`,
+        `You're with the ${yourPct}% mainstream on this one.`,
+        `India leans your way: ${yourPct}% picked the same.`,
+        `Comfortable majority — ${yourPct}% stand where you do.`,
+      ]),
       tone: "majority",
       priority: PRIORITY.majorityMinority,
     });
@@ -530,7 +547,11 @@ function rankInsights(
         id: `${result.question_id}:rank-minority`,
         template_id: "rank-minority",
         headline: `Only ${yourFirstsPct}% put “${label(yourTop)}” first`,
-        body: `Your gold pick is a rare one.`,
+        body: pickPhrasing(result.question_id, "rank-minority", [
+          `Your gold pick is a rare one.`,
+          `Few hands crown “${label(yourTop)}” the way you did.`,
+          `That top spot is yours and a small minority's.`,
+        ]),
         tone: "minority",
         priority: PRIORITY.majorityMinority,
       });
@@ -569,7 +590,11 @@ function podiumInsights(
       id: `${result.question_id}:podium-matched`,
       template_id: "podium-matched",
       headline: `${yourGoldPct}% of India also gave “${label(yourGold)}” gold`,
-      body: `Your podium top matches the country's.`,
+      body: pickPhrasing(result.question_id, "podium-matched", [
+        `Your podium top matches the country's.`,
+        `You and India crowned the same champion.`,
+        `Gold agreed — your top pick is the nation's too.`,
+      ]),
       tone: "match",
       priority: PRIORITY.matchDiffer,
     });
@@ -654,7 +679,11 @@ export function buildInsights(
       headline: `You're counted`,
       body: result.still_counting
         ? `You're one of ${result.sample_n} counted so far — the picture sharpens as India weighs in.`
-        : `Your answer is in a count of ${result.sample_n}.`,
+        : pickPhrasing(result.question_id, "counted", [
+            `Your answer is in a count of ${result.sample_n}.`,
+            `Counted — you're one of ${result.sample_n} on the record.`,
+            `Logged with ${result.sample_n} others. The tally stands.`,
+          ]),
       tone: "info",
       priority: PRIORITY.info,
     });

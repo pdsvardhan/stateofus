@@ -4,9 +4,10 @@
  */
 import Link from "next/link";
 import { CATEGORIES, MODES } from "@/lib/catalogue/enums";
-import { getExplore } from "@/lib/discovery/queries";
+import { getExplore, getTrending, getEditorialPicks } from "@/lib/discovery/queries";
 import { Masthead } from "@/components/home/Masthead";
 import { DeskChips } from "@/components/home/DeskChips";
+import { FeedRow } from "@/components/home/FeedRow";
 import { QuestionCard } from "@/components/discovery/QuestionCard";
 
 export const dynamic = "force-dynamic";
@@ -20,6 +21,11 @@ export default async function ExplorePage(props: {
     ? category
     : undefined;
   const cards = getExplore({ mode: safeMode, category: safeCategory });
+  // FIX 6 (B1) — curated rails when not filtering, so Explore reads as "what's
+  // hot", distinct from a Category page's exhaustive single-desk list.
+  const curated = !safeMode && !safeCategory;
+  const trending = curated ? getTrending(8) : [];
+  const picks = curated ? getEditorialPicks(6) : [];
 
   return (
     <div className="min-h-screen">
@@ -52,6 +58,17 @@ export default async function ExplorePage(props: {
             </Link>
           ))}
         </div>
+        {curated && (
+          <div className="mb-8 flex flex-col gap-8">
+            <FeedRow title="Heating up" sub="most-answered right now" cards={trending} />
+            <FeedRow title="Editor's picks" sub="hand-chosen from the desks" cards={picks} />
+          </div>
+        )}
+        {curated && (
+          <h2 className="mb-1 font-ui font-black uppercase text-ink" style={{ fontSize: 20, letterSpacing: "-0.01em" }}>
+            The full catalogue
+          </h2>
+        )}
         <p className="mb-3 font-label uppercase text-muted" style={{ fontSize: 10, letterSpacing: "0.1em" }}>{cards.length} questions</p>
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {cards.map((c) => (
