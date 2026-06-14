@@ -66,3 +66,27 @@ decisions:
       - design
       - curated
     body_path: decisions/2026-06-12-v5-adoption.md
+  - id: adr-007-stateofus-design-deviations
+    project_slug: stateofus
+    title: "Accepted deviations from the v5 prototype: category pages, no prod
+      dev-reset, one-line headline"
+    status: accepted
+    date: 2026-06-14T00:00:00.000Z
+    tags:
+      - stage-4
+      - design
+      - curated
+      - cat:product
+    body_path: decisions/2026-06-14-iter-19-design-deviations.md
+  - id: adr-008-stateofus-deferred-design-features
+    project_slug: stateofus
+    title: "Deferred v5 features: off-the-deck, share overlay/PNG, feed-card
+      reactions; per-question brand data blocked on frozen backend"
+    status: accepted
+    date: 2026-06-14T00:00:00.000Z
+    tags:
+      - stage-4
+      - design
+      - curated
+      - cat:product
+    body_path: decisions/2026-06-14-iter-19-deferred-features.md
