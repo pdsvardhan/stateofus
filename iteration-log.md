@@ -260,3 +260,21 @@ not rebuild it. Start by re-verifying the font fix across all pages.
 **Open follow-ups:** kicker hints are per-mode defaults (per-question witty hints can be authored into the `hint` column later); editorial notes still 12/168 (owner deferred); optional `SAMPLE DATA` pill / DvSwitcher 2nd-DV choice / podium subtitle noted-not-changed; report #22 (prior design-review) still pending.
 
 **Next session pick-up:** project healthy + deployed at https://stateofus.vault7a.xyz (:8510); owner testing complete, no regressions. If continuing: author per-question hints/editorial notes, or pick up deferred adr-008 features (off-the-deck, share overlay/PNG, feed-card reactions) when the question schema unfreezes.
+
+## 2026-06-15 — Question authoring standard + coverage seeding + swipe-label fix
+
+**Stage:** Open-in-chat (no formal stage gate) — content seeding + small API fix, all deployed live.
+
+**What changed:**
+- **Authoring standard (SOU-QAS v1) + fit evaluator (SOU-QFE v1):** consolidated DOC 2 / DOC 3 + the zod gate + enums + product rails into `docs/question-authoring-standard.md` and a reusable independent-evaluator protocol `docs/question-fit-evaluator.md`. Commits `358e862`, `7ea4aca` (geo rule corrected: `sankey` needs `geo=1` to render its state-flow).
+- **Coverage seeding:** authored 24 questions (4 batches — podium / rank / logo / thin-DVs), QC'd through an independent evaluator sub-agent → **22 activated, 2 held as redundant drafts**. Filled every empty category×mode cell (logo 3→9, rank 4→8, podium 3→9) and brought all 14 DVs to ≥4 active. New IDs `NEW-217..240`.
+- **Draft cleanup (owner-approved):** archived all 43 drafts — 41 empty-option catalogue stubs + 2 redundant rank drafts. State is now **146 active / 0 draft / 46 archived**.
+- **Swipe-label fix (closes prior follow-up "10 of ~18 swipe Qs"):** cleaned the 12 rows whose labels leaked `Cards:`/`Directions:` text (clean card labels + extracted verdict labels) and set verdicts on the last 2 (`Q-301`, `Q-403`). Added swipe-label persistence to the admin PATCH API + exposed `swipe_yes_label`/`swipe_no_label` on the public question API (commit `c56a5a6`; container rebuilt + redeployed). **All 18 swipe Qs now clean with verdicts; 0 leaks.**
+
+**Decisions:** no new ADRs (pack-up is mechanical). Owner calls this session: archive all 43 drafts; fix swipe properly (API + data); coverage over raw count. Premise correction recorded — the active set is good quality, NOT stub; the stub data was the drafts.
+
+**India-fit:** confirmed well-localized (UPI apps, autos/Ola/Rapido/inDrive, Blinkit/Zepto/Swiggy Instamart, Bollywood/cricket/regional cinema, JioHotstar/SonyLIV/Zee5, "Maggi + curd", rasgulla, IPL-break ads).
+
+**Open follow-ups:** `scripts/import-authored.ts` should parse the `Cards:`/`Directions:` swipe syntax (as `normalize.ts` already does for the catalogue) so future authored imports don't re-leak; per-question witty hints + editorial notes still sparse (prior deferral); `no-error-tracking` still OPEN.
+
+**Next session pick-up:** project healthy + deployed at https://stateofus.vault7a.xyz (:8510). Standard lives at `docs/question-authoring-standard.md`; seed via `POST /api/admin/questions` (draft) + activate via `.../transition` (needs `approved_by`); run the SOU-QFE evaluator on every new batch. 146 active, full category×mode×DV coverage.
