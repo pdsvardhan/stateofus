@@ -241,3 +241,22 @@ not rebuild it. Start by re-verifying the font fix across all pages.
 **Soft warning:** `stale-verification` on 5 features (pre-existing 2026-06-12) — now also genuinely stale vs this session's UI changes since the formal verifier was skipped.
 
 **Next session pick-up:** if returning to formal tracking, run the Stage-4 verifier over the UI changes to clear stale-verification; seed remaining swipe labels + more editorial notes; consider the Sorter brand-mark schema. Local editing mirror was `.sou-work` (SCP staging); v5 reference is `State of Us Design/State of Us v5.dc.html`.
+
+## 2026-06-14/15 — Stage 4 parity landing + result-page fixes
+
+**Stage:** Stage 4 (iteration #19) + follow-up hotfixes — all deployed live.
+
+**What changed:**
+- **iter-19 (report #23):** retro-fit the out-of-band `parity-fixes` wave (`de54428`) through the rails — classified 9 cluster items (189-197), locked, **independent verifier APPROVE**, recorded `adr-007` (accepted deviations) + `adr-008` (deferred features). RC12 correction: the real gap was the masthead Surprise-me lift (`4cd0fae`); the flagged About/prev-next color-swap hovers were faithful by design. Merged → master, deployed.
+- **Font floor bug (`9fdacea`):** removed the broken `.font-label{ font-size: max(10px,1em) }` rule that inflated every class-sized mono label to 16px app-wide; bumped two `text-[9.5px]`→`10px`; scoped crisp hover curves on QuickPick/TradeoffCards/LogoQuickPick. Verified live via computed styles. Memory: `stateofus-mono-floor-gotcha`.
+- **Kicker hint + rail tag (`32039eb`):** added `questions.hint` column (migration `0005`, backfilled 168/168 per-mode via new `MODE_HINT` map); answer-screen chip now renders `question.hint ?? MODE_HINT[mode]` (v5 `q.hint`) instead of `subcategory`. `RailRelated` hardcoded `Vote` → `MODE_LABEL[c.mode]`. Both verified live.
+
+**Decisions:** adr-007, adr-008 (iter-19). Owner calls this session: **desk notes = leave as-is** (only 12/168 Qs have `editorial_note`; A2 content gap accepted); RC2 floor *implementation* was a bug (fixed) though the floor concept stays; home subhead stays dropped.
+
+**Tracker:** reports #23/#24/#25 · test-runs #47/#48/#51/#52 · deploy-artifacts #12/#13/#14 · per-item verification-reports (138+).
+
+**Cleanup:** deleted stale workspace artifacts (root screenshots, `.audit_local/` ~16 MB, non-git `repo/` copy). `design-parity/` analysis + source docs kept.
+
+**Open follow-ups:** kicker hints are per-mode defaults (per-question witty hints can be authored into the `hint` column later); editorial notes still 12/168 (owner deferred); optional `SAMPLE DATA` pill / DvSwitcher 2nd-DV choice / podium subtitle noted-not-changed; report #22 (prior design-review) still pending.
+
+**Next session pick-up:** project healthy + deployed at https://stateofus.vault7a.xyz (:8510); owner testing complete, no regressions. If continuing: author per-question hints/editorial notes, or pick up deferred adr-008 features (off-the-deck, share overlay/PNG, feed-card reactions) when the question schema unfreezes.
