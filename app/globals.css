@@ -125,11 +125,13 @@ body {
   }
 }
 
-/* mono labels never below 10px — CA-009 type floor */
-.font-label,
-[class*="font-label"] {
-  font-size: max(10px, 1em);
-}
+/* CA-009 mono type floor (>=10px) is enforced by AUTHORING — every .font-label
+   sets an explicit size >=10px in its component. The old runtime rule
+   `.font-label{ font-size: max(10px,1em) }` was REMOVED: `1em` resolves to the
+   inherited PARENT size (body = 16px), and as an unlayered rule it beat the
+   Tailwind `text-[..]` utilities, inflating every CLASS-sized mono label to 16px
+   (SKIP / desk pill / QUICK PICK chip, app-wide) while inline-sized labels
+   slipped under it entirely. Authoring-time sizing is the correct enforcement. */
 
 /* ---- v5 prototype keyframes (ported verbatim) ---- */
 @keyframes cwPulse {

@@ -36,7 +36,7 @@ export function QuickPick({ question, onSubmit, submitting }: InteractionProps) 
             transition={{ duration: 0.4, delay: reduceMotion ? 0 : i * 0.06 }}
             whileHover={
               picked === null && !reduceMotion
-                ? { x: -3, y: -4, scale: 1.018 }
+                ? { x: -3, y: -4, scale: 1.018, transition: { duration: 0.18, ease: [0.2, 0.7, 0.2, 1] } }
                 : undefined
             }
             className={`flex min-h-[54px] items-center gap-3 rounded-lg border-2 border-ink px-4 py-[15px] text-left font-ui transition-shadow duration-200 hover:shadow-[7px_9px_0_var(--ink)] disabled:hover:shadow-none ${

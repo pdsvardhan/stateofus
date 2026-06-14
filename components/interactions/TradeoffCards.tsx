@@ -38,7 +38,7 @@ export function TradeoffCards({ question, onSubmit, submitting }: InteractionPro
             transition={{ duration: 0.4, delay: reduceMotion ? 0 : i * 0.1 }}
             whileHover={
               picked === null && !reduceMotion
-                ? { x: -2, y: -2, rotate: i === 0 ? -1 : 1 }
+                ? { x: -2, y: -2, rotate: i === 0 ? -1 : 1, transition: { duration: 0.15, ease: [0.2, 0.7, 0.2, 1] } }
                 : undefined
             }
             className={`flex min-h-[170px] flex-col gap-3.5 rounded-[10px] border-2 border-ink px-5 pb-[22px] pt-[26px] text-left font-ui transition-shadow duration-200 hover:shadow-[6px_6px_0_var(--ink)] disabled:hover:shadow-none ${

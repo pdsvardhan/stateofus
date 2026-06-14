@@ -39,7 +39,7 @@ export function LogoQuickPick({ question, onSubmit, submitting }: InteractionPro
             transition={{ duration: 0.4, delay: reduceMotion ? 0 : i * 0.05 }}
             whileHover={
               picked === null && !reduceMotion
-                ? { x: -3, y: -4, scale: 1.02 }
+                ? { x: -3, y: -4, scale: 1.02, transition: { duration: 0.18, ease: [0.2, 0.7, 0.2, 1] } }
                 : undefined
             }
             className={`flex min-h-[122px] flex-col items-center gap-2.5 rounded-[10px] border-2 border-ink px-3 py-[18px] font-ui transition-shadow duration-200 hover:shadow-[7px_9px_0_var(--ink)] disabled:hover:shadow-none ${

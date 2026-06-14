@@ -30,7 +30,7 @@ export function RailRelated({ questionId }: { questionId: string }) {
         href={`/q/${next.id}`}
         className="block rounded-[10px] border-2 border-ink bg-ink px-5 py-[18px] text-paper transition-all duration-150 hover:-translate-x-0.5 hover:-translate-y-0.5 hover:shadow-[6px_6px_0_color-mix(in_srgb,var(--ink)_35%,transparent)]"
       >
-        <span className="font-label text-[9.5px] font-bold uppercase tracking-[.14em] text-lime">
+        <span className="font-label text-[10px] font-bold uppercase tracking-[.14em] text-lime">
           Up next · picked blind 🎲 · {nextDesk.name}
         </span>
         <span className="mt-2 mb-1.5 block font-editorial text-[17px] font-semibold leading-[1.2]">

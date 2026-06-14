@@ -86,7 +86,7 @@ export function ReactionBar({ questionId }: { questionId: string }) {
         {thumb("down", "👎", "Not for me")}
       </div>
       {yours && (
-        <div className="font-label text-[9.5px] font-bold uppercase tracking-[.1em] text-agree">
+        <div className="font-label text-[10px] font-bold uppercase tracking-[.1em] text-agree">
           Noted ✓ · your signal shapes tomorrow&rsquo;s edition
         </div>
       )}
