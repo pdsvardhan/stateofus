@@ -8,6 +8,8 @@ import { DESK_BY_CATEGORY } from "@/lib/catalogue/enums";
 import { slugToCategory } from "@/lib/discovery/categories";
 import { getByCategory } from "@/lib/discovery/queries";
 import { Masthead } from "@/components/home/Masthead";
+import { SiteFooter } from "@/components/home/SiteFooter";
+import { SurpriseMe } from "@/components/home/SurpriseMe";
 import { DeskChips } from "@/components/home/DeskChips";
 import { QuestionCard } from "@/components/discovery/QuestionCard";
 
@@ -49,6 +51,8 @@ export default async function CategoryPage(props: {
           ))}
         </div>
       </main>
+      <SiteFooter />
+      <SurpriseMe variant="fab" />
     </div>
   );
 }

@@ -3,6 +3,9 @@
 /**
  * Surprise me — SUR1: masthead lime pill (dice animation) AND floating die FAB.
  * Routes to a random unanswered question via /api/questions/next.
+ *
+ * FAB follows the v5 prototype (line 1046): a DARK ink circle, dice wobbles
+ * continuously, hover scales + rotates and flips to fire. (Not the lime square.)
  */
 import { useState } from "react";
 import { useRouter } from "next/navigation";
@@ -34,13 +37,19 @@ export function SurpriseMe({ variant }: { variant: "masthead" | "fab" }) {
       <motion.button
         onClick={go}
         disabled={busy}
-        whileHover={reduced ? undefined : { rotate: 18, scale: 1.06 }}
+        whileHover={reduced ? undefined : { scale: 1.14, rotate: -12 }}
         whileTap={reduced ? undefined : { rotate: 180 }}
-        className="fixed bottom-5 right-5 z-20 flex h-14 w-14 items-center justify-center border-2 border-ink bg-lime text-2xl"
-        style={{ boxShadow: "4px 4px 0 var(--ink)" }}
+        className="fixed bottom-6 right-[22px] z-40 flex h-14 w-14 items-center justify-center rounded-full border-2 border-ink bg-ink text-[22px] transition-colors duration-200 hover:bg-fire"
+        style={{ boxShadow: "5px 5px 0 color-mix(in srgb, var(--ink) 30%, transparent)" }}
         aria-label="Surprise me with a random question"
       >
-        🎲
+        <motion.span
+          aria-hidden
+          animate={reduced ? undefined : { rotate: [0, 9, -9, 0] }}
+          transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
+        >
+          🎲
+        </motion.span>
       </motion.button>
     );
   }

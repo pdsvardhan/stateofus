@@ -19,6 +19,10 @@ const EXIT_EASE: [number, number, number, number] = [0.2, 0.7, 0.2, 1];
 
 export function SwipeStack({ question, onSubmit, submitting }: InteractionProps) {
   const cards = question.options;
+  // v5 per-question verdict labels (q.yes / q.no) — e.g. "Acceptable" / "Crime",
+  // "Keep" / "Skip". Fall back to Yes / No when the question doesn't carry them.
+  const yesLabel = question.swipe_yes_label || "Yes";
+  const noLabel = question.swipe_no_label || "No";
   const [idx, setIdx] = useState(0);
   const [votes, setVotes] = useState<Record<string, "yes" | "no">>({});
   const [earlyOut, setEarlyOut] = useState(false);
@@ -95,15 +99,15 @@ export function SwipeStack({ question, onSubmit, submitting }: InteractionProps)
           </span>
           <motion.span
             style={{ opacity: yesOp }}
-            className="absolute left-[18px] top-[18px] -rotate-[10deg] rounded-md border-[2.5px] border-agree px-2.5 py-[5px] font-ui text-[17px] font-black uppercase text-agree"
+            className="absolute left-[18px] top-[18px] -rotate-[10deg] whitespace-nowrap rounded-md border-[2.5px] border-agree px-2.5 py-[5px] font-ui text-[17px] font-black uppercase text-agree"
           >
-            Yes
+            {yesLabel}
           </motion.span>
           <motion.span
             style={{ opacity: noOp }}
-            className="absolute right-[18px] top-[18px] rotate-[10deg] rounded-md border-[2.5px] border-fire px-2.5 py-[5px] font-ui text-[17px] font-black uppercase text-fire"
+            className="absolute right-[18px] top-[18px] rotate-[10deg] whitespace-nowrap rounded-md border-[2.5px] border-fire px-2.5 py-[5px] font-ui text-[17px] font-black uppercase text-fire"
           >
-            No
+            {noLabel}
           </motion.span>
         </motion.div>
       </div>
@@ -115,7 +119,7 @@ export function SwipeStack({ question, onSubmit, submitting }: InteractionProps)
           disabled={done || submitting || earlyOut}
           className="min-h-[54px] rounded-lg border-2 border-ink bg-fire p-[15px] font-ui text-sm font-extrabold uppercase tracking-[0.04em] text-ink transition-all duration-200 hover:-translate-x-0.5 hover:-translate-y-0.5 hover:shadow-[4px_4px_0_var(--ink)] disabled:translate-x-0 disabled:translate-y-0 disabled:opacity-60 disabled:shadow-none"
         >
-          ✕ No
+          ✕ {noLabel}
         </button>
         <button
           type="button"
@@ -123,7 +127,7 @@ export function SwipeStack({ question, onSubmit, submitting }: InteractionProps)
           disabled={done || submitting || earlyOut}
           className="min-h-[54px] rounded-lg border-2 border-ink bg-lime p-[15px] font-ui text-sm font-extrabold uppercase tracking-[0.04em] text-ink transition-all duration-200 hover:-translate-x-0.5 hover:-translate-y-0.5 hover:shadow-[4px_4px_0_var(--ink)] disabled:translate-x-0 disabled:translate-y-0 disabled:opacity-60 disabled:shadow-none"
         >
-          ✓ Yes
+          ✓ {yesLabel}
         </button>
       </div>
 

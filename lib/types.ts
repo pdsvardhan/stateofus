@@ -29,6 +29,9 @@ export type QuestionPublic = {
   insight_type: string | null;
   editorial_note: string | null;
   editorial_note_2?: string | null;
+  /** SwipeStack per-card verdict labels (v5 q.yes / q.no). */
+  swipe_yes_label?: string | null;
+  swipe_no_label?: string | null;
   geo: boolean;
   status: LifecycleState;
   created_at: string;

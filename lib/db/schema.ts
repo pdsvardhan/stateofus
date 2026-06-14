@@ -44,6 +44,8 @@ export const questions = sqliteTable(
     insightType: text("insight_type"),
     editorialNote: text("editorial_note"), // FIX 3b — curated "From the desk" note (nullable)
     editorialNote2: text("editorial_note_2"), // 2nd authored desk note (v5 "Desk note 02", nullable)
+    swipeYesLabel: text("swipe_yes_label"), // SwipeStack verdict labels (v5 q.yes/q.no, nullable)
+    swipeNoLabel: text("swipe_no_label"),
     expectedResultShape: text("expected_result_shape"),
     expectedEmotion: text("expected_emotion"),
     scoreParticipation: integer("score_participation"),

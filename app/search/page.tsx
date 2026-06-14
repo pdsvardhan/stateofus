@@ -7,6 +7,8 @@ import { searchQuestions } from "@/lib/discovery/queries";
 import { DESK_BY_CATEGORY } from "@/lib/catalogue/enums";
 import { categoryToSlug } from "@/lib/discovery/categories";
 import { Masthead } from "@/components/home/Masthead";
+import { SiteFooter } from "@/components/home/SiteFooter";
+import { SurpriseMe } from "@/components/home/SurpriseMe";
 import { QuestionCard } from "@/components/discovery/QuestionCard";
 
 export const dynamic = "force-dynamic";
@@ -77,6 +79,8 @@ export default async function SearchPage(props: {
         </>
       )}
     </main>
+    <SiteFooter />
+    <SurpriseMe variant="fab" />
    </div>
   );
 }

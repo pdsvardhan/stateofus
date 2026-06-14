@@ -13,6 +13,7 @@ import { FeedRow } from "@/components/home/FeedRow";
 import { TrendingRail } from "@/components/home/TrendingRail";
 import { HouseRules } from "@/components/home/HouseRules";
 import { SurpriseMe } from "@/components/home/SurpriseMe";
+import { SiteFooter } from "@/components/home/SiteFooter";
 
 export const dynamic = "force-dynamic";
 
@@ -51,6 +52,7 @@ export default function Home() {
           </div>
         </div>
       </main>
+      <SiteFooter />
       <SurpriseMe variant="fab" />
     </div>
   );

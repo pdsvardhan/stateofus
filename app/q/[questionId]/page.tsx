@@ -18,6 +18,7 @@ import type { QuestionPublic, QuestionResult } from "@/lib/types";
 import { ExperienceClient } from "@/components/experience/ExperienceClient";
 import { Masthead } from "@/components/home/Masthead";
 import { SurpriseMe } from "@/components/home/SurpriseMe";
+import { SiteFooter } from "@/components/home/SiteFooter";
 import { SharedContextBand } from "@/components/experience/SharedContextBand";
 import { RailRelated } from "@/components/discovery/RailRelated";
 
@@ -52,7 +53,8 @@ function loadQuestion(id: string): QuestionPublic | null {
   const q = rawDb
     .prepare(
       `SELECT id, category, subcategory, title, text, mode, options_json, targets_json,
-              skip_allowed, primary_dv, secondary_dvs_json, insight_type, editorial_note, editorial_note_2, geo, status, created_at
+              skip_allowed, primary_dv, secondary_dvs_json, insight_type, editorial_note, editorial_note_2,
+              swipe_yes_label, swipe_no_label, geo, status, created_at
        FROM questions WHERE id = ?`
     )
     .get(id) as Record<string, unknown> | undefined;
@@ -74,6 +76,8 @@ function loadQuestion(id: string): QuestionPublic | null {
     insight_type: (q.insight_type as string) ?? null,
     editorial_note: (q.editorial_note as string) ?? null,
     editorial_note_2: (q.editorial_note_2 as string) ?? null,
+    swipe_yes_label: (q.swipe_yes_label as string) ?? null,
+    swipe_no_label: (q.swipe_no_label as string) ?? null,
     geo: q.geo === 1,
     status: q.status as LifecycleState,
     created_at: q.created_at as string,
@@ -230,13 +234,7 @@ export default async function QuestionPage(props: {
         />
       </main>
 
-      <footer className="border-t-2 border-ink bg-paper">
-        <div className="mx-auto flex max-w-[1280px] flex-wrap items-center justify-between gap-3.5 px-[22px] py-[18px]">
-          <span className="font-label text-[10px] uppercase tracking-[.14em] text-muted">
-            State of Us · the public, counted · you answer, India answers back
-          </span>
-        </div>
-      </footer>
+      <SiteFooter />
 
       <SurpriseMe variant="fab" />
     </div>

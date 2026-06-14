@@ -6,6 +6,8 @@ import Link from "next/link";
 import { CATEGORIES, MODES } from "@/lib/catalogue/enums";
 import { getExplore, getTrending, getEditorialPicks } from "@/lib/discovery/queries";
 import { Masthead } from "@/components/home/Masthead";
+import { SiteFooter } from "@/components/home/SiteFooter";
+import { SurpriseMe } from "@/components/home/SurpriseMe";
 import { DeskChips } from "@/components/home/DeskChips";
 import { FeedRow } from "@/components/home/FeedRow";
 import { QuestionCard } from "@/components/discovery/QuestionCard";
@@ -76,6 +78,8 @@ export default async function ExplorePage(props: {
           ))}
         </div>
       </main>
+      <SiteFooter />
+      <SurpriseMe variant="fab" />
     </div>
   );
 }

@@ -11,6 +11,8 @@
  */
 import Link from "next/link";
 import { Masthead } from "@/components/home/Masthead";
+import { SiteFooter } from "@/components/home/SiteFooter";
+import { SurpriseMe } from "@/components/home/SurpriseMe";
 
 export const metadata = {
   title: "About — State of Us",
@@ -171,6 +173,8 @@ export default function AboutPage() {
           </div>
         </div>
       </main>
+      <SiteFooter />
+      <SurpriseMe variant="fab" />
     </div>
   );
 }

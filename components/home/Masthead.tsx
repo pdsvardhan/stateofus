@@ -1,12 +1,20 @@
 /**
- * Masthead — faithful port of the v5 prototype sticky header.
+ * Masthead — faithful port of the v5 prototype sticky header (lines 43-62).
  * Pulsing fire dot + logo (mix-blend multiply), centred tagline, Surprise-me
- * (lime pill w/ dice animation) + About. Server component; SurpriseMe is the
- * client island.
+ * (lime pill w/ dice animation) + About + the date pill (wide). Server
+ * component; SurpriseMe is the client island.
  */
 import Image from "next/image";
 import Link from "next/link";
 import { SurpriseMe } from "./SurpriseMe";
+
+/** v5 dateLine: "SUN, 14 JUN" — server time, IST. */
+function dateLine(): string {
+  const now = new Date();
+  const wd = now.toLocaleDateString("en-US", { weekday: "short", timeZone: "Asia/Kolkata" });
+  const dm = now.toLocaleDateString("en-GB", { day: "numeric", month: "short", timeZone: "Asia/Kolkata" });
+  return `${wd}, ${dm}`.toUpperCase();
+}
 
 export function Masthead() {
   return (
@@ -62,6 +70,19 @@ export function Masthead() {
           >
             About
           </Link>
+          <span
+            className="hidden font-label font-bold uppercase text-ink lg:inline-block"
+            style={{
+              fontSize: 10.5,
+              letterSpacing: "0.12em",
+              border: "1.5px solid var(--ink)",
+              borderRadius: 100,
+              padding: "5px 12px",
+              background: "var(--paper)",
+            }}
+          >
+            {dateLine()}
+          </span>
         </div>
       </div>
     </header>
