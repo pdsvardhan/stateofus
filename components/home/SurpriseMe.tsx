@@ -57,7 +57,7 @@ export function SurpriseMe({ variant }: { variant: "masthead" | "fab" }) {
     <button
       onClick={go}
       disabled={busy}
-      className="inline-flex items-center gap-[7px] font-ui font-extrabold uppercase text-ink transition-transform disabled:opacity-60"
+      className="inline-flex items-center gap-[7px] font-ui font-extrabold uppercase text-ink transition-[transform,box-shadow] duration-150 hover:[transform:translate(-1px,-2px)] hover:shadow-[3px_3px_0_var(--ink)] disabled:opacity-60"
       style={{
         fontSize: 12,
         letterSpacing: "0.04em",
