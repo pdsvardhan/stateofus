@@ -10,7 +10,7 @@
  */
 import Link from "next/link";
 import { getRelated } from "@/lib/discovery/queries";
-import { DESK_BY_CATEGORY, type Category } from "@/lib/catalogue/enums";
+import { DESK_BY_CATEGORY, MODE_LABEL, type Category, type Mode } from "@/lib/catalogue/enums";
 
 function desk(category: string): { name: string; color: string } {
   const d = DESK_BY_CATEGORY[category as Category];
@@ -61,7 +61,7 @@ export function RailRelated({ questionId }: { questionId: string }) {
                 className="ml-auto border-[1.5px] border-ink bg-lime py-0.5 pl-[7px] pr-3 font-label text-[10px] font-bold uppercase tracking-[.08em] text-ink"
                 style={{ clipPath: "polygon(0 0, calc(100% - 6px) 0, 100% 100%, 0 100%)" }}
               >
-                Vote
+                {MODE_LABEL[c.mode as Mode] ?? "Vote"}
               </span>
             </div>
             <div className="font-editorial text-[14.5px] font-semibold leading-[1.2] text-ink">

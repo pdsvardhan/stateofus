@@ -23,6 +23,7 @@ function makeQuestion(mode: Mode, overrides: Partial<QuestionPublic> = {}): Ques
     category: "Daily Life and Livability",
     desk: "The Daily Grind",
     subcategory: null,
+    hint: null,
     title: null,
     text: "chai or coffee?",
     mode,

@@ -18,6 +18,8 @@ export type QuestionPublic = {
   category: string;
   desk: string | null;
   subcategory: string | null;
+  /** v5 q.hint — editorial micro-line under the mode chip (defaults seeded per-mode). */
+  hint: string | null;
   title: string | null;
   text: string;
   mode: Mode;

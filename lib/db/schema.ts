@@ -28,6 +28,7 @@ export const questions = sqliteTable(
     id: text("id").primaryKey(), // e.g. C1-21
     category: text("category").notNull(),
     subcategory: text("subcategory"),
+    hint: text("hint"), // v5 q.hint — editorial micro-line under the mode chip (nullable; defaults seeded per-mode)
     title: text("title"),
     text: text("text").notNull(),
     objective: text("objective"),

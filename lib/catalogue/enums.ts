@@ -22,6 +22,33 @@ export const MODES = [
 ] as const;
 export type Mode = (typeof MODES)[number];
 
+/** Human label per interaction mode (v5 `q.modeLabel`). Used by the rail mini-cards
+ *  and any server surface that can't import the (client) interaction registry. */
+export const MODE_LABEL: Record<Mode, string> = {
+  quick_pick: "Quick Pick",
+  tradeoff_cards: "Trade-off",
+  swipe_stack: "Swipe Stack",
+  bucket_sort: "Bucket Sort",
+  tier_placement: "Tier Placement",
+  rank_order: "Rank Order",
+  podium_slots: "Podium Slots",
+  logo_quick_pick: "Quick Pick",
+};
+
+/** Per-mode default hint line (v5 `q.hint`) — the editorial micro-line under the
+ *  mode chip on the answer screen. Stored per-question in `questions.hint`; this is
+ *  the fallback/seed default when a question has no hand-authored hint. */
+export const MODE_HINT: Record<Mode, string> = {
+  quick_pick: "one tap, no overthinking",
+  tradeoff_cards: "you must pick one",
+  swipe_stack: "verdict per card",
+  bucket_sort: "sort every one, one screen",
+  tier_placement: "every item, one screen",
+  rank_order: "put them in your strict order",
+  podium_slots: "tap into your top three",
+  logo_quick_pick: "tap the badge you trust",
+};
+
 export const DV_IDS = [
   "split", // S1 split cards
   "radial", // S2 radial split (donut)

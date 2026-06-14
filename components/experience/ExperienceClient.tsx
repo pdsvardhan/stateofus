@@ -23,7 +23,7 @@ import { DV_REGISTRY } from "@/components/dv";
 import StillCounting from "@/components/dv/StillCounting";
 import { DvSwitcher, CountHeader } from "@/components/dv/DvSwitcher";
 import { INTERACTION_REGISTRY } from "@/components/interactions";
-import { DESK_BY_CATEGORY, type Category } from "@/lib/catalogue/enums";
+import { DESK_BY_CATEGORY, MODE_HINT, type Category } from "@/lib/catalogue/enums";
 import { personalVerdict } from "@/lib/insights/personalVerdict";
 import { PersonalCard } from "./PersonalCard";
 import { DeskNotes } from "@/components/insight/DeskNotes";
@@ -175,11 +175,9 @@ export function ExperienceClient({
                   <span className="rounded bg-ink px-[9px] py-1 font-label text-[10px] font-bold uppercase tracking-[.14em] text-lime">
                     {chipLabel}
                   </span>
-                  {question.subcategory && (
-                    <span className="font-label text-[10px] uppercase tracking-[.1em] text-muted">
-                      {question.subcategory}
-                    </span>
-                  )}
+                  <span className="font-label text-[10px] uppercase tracking-[.1em] text-muted">
+                    {question.hint ?? MODE_HINT[question.mode]}
+                  </span>
                 </div>
                 {answerHeading}
               </div>

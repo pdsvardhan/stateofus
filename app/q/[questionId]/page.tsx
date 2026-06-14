@@ -52,7 +52,7 @@ export async function generateMetadata(props: {
 function loadQuestion(id: string): QuestionPublic | null {
   const q = rawDb
     .prepare(
-      `SELECT id, category, subcategory, title, text, mode, options_json, targets_json,
+      `SELECT id, category, subcategory, hint, title, text, mode, options_json, targets_json,
               skip_allowed, primary_dv, secondary_dvs_json, insight_type, editorial_note, editorial_note_2,
               swipe_yes_label, swipe_no_label, geo, status, created_at
        FROM questions WHERE id = ?`
@@ -65,6 +65,7 @@ function loadQuestion(id: string): QuestionPublic | null {
     category: q.category as string,
     desk: desk?.desk ?? null,
     subcategory: (q.subcategory as string) ?? null,
+    hint: (q.hint as string) ?? null,
     title: (q.title as string) ?? null,
     text: q.text as string,
     mode: q.mode as QuestionPublic["mode"],
