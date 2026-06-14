@@ -11,6 +11,7 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import type { InteractionProps } from "@/lib/interactions/registry";
 import { useDelayedSubmit } from "./useDelayedSubmit";
+import { tileSwatch } from "@/lib/dv/palette";
 
 export function LogoQuickPick({ question, onSubmit, submitting }: InteractionProps) {
   const [picked, setPicked] = useState<string | null>(null);
@@ -23,9 +24,10 @@ export function LogoQuickPick({ question, onSubmit, submitting }: InteractionPro
   }
 
   return (
-    <div className="grid grid-cols-2 gap-3 lg:grid-cols-3">
+    <div className="grid grid-cols-2 gap-3 exp:grid-cols-3">
       {question.options.map((o, i) => {
         const isPicked = picked === o.key;
+        const tile = tileSwatch(o.key);
         return (
           <motion.button
             key={o.key}
@@ -44,7 +46,10 @@ export function LogoQuickPick({ question, onSubmit, submitting }: InteractionPro
               isPicked ? "bg-lime" : "bg-paper-bright"
             }`}
           >
-            <span className="inline-flex h-[52px] w-[52px] items-center justify-center rounded-xl border-2 border-ink bg-paper-white text-[19px] font-black text-ink">
+            <span
+              className="inline-flex h-[52px] w-[52px] items-center justify-center rounded-xl border-2 border-ink text-[19px] font-black"
+              style={{ background: tile.bg, color: tile.fg }}
+            >
               {(o.label.trim()[0] ?? "?").toUpperCase()}
             </span>
             <span className="text-center text-sm font-bold">{o.label}</span>

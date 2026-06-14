@@ -5,6 +5,7 @@
  */
 import Link from "next/link";
 import type { DiscoveryCard } from "@/lib/discovery/queries";
+import { DESK_BY_CATEGORY, type Category } from "@/lib/catalogue/enums";
 
 export function TrendingRail({ cards }: { cards: DiscoveryCard[] }) {
   if (cards.length === 0) return null;
@@ -41,10 +42,10 @@ export function TrendingRail({ cards }: { cards: DiscoveryCard[] }) {
               </div>
               <div className="mt-[5px] flex items-center gap-[7px]">
                 <span className="font-label font-bold uppercase" style={{ fontSize: 9.5, letterSpacing: "0.06em", color: "var(--lime)" }}>
-                  ▲ {c.sample_n > 0 ? c.sample_n.toLocaleString("en-IN") : "new"}
+                  {c.sample_n > 0 ? `${c.sample_n.toLocaleString("en-IN")} votes` : "fresh"}
                 </span>
                 <span className="font-label uppercase" style={{ fontSize: 9.5, letterSpacing: "0.06em", color: "var(--muted-warm)" }}>
-                  {c.mode.replace(/_/g, " ")}
+                  {DESK_BY_CATEGORY[c.category as Category]?.desk ?? c.mode.replace(/_/g, " ")}
                 </span>
               </div>
             </div>

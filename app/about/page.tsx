@@ -9,10 +9,9 @@
  *   #4A4744 → --ink-warm
  * h1Size 64px(wide>980)/40px(narrow) → clamp; aboutCols repeat(3,1fr)/1fr → grid.
  */
-import Link from "next/link";
 import { Masthead } from "@/components/home/Masthead";
 import { SiteFooter } from "@/components/home/SiteFooter";
-import { SurpriseMe } from "@/components/home/SurpriseMe";
+import { BackBlock } from "@/components/experience/BackBlock";
 
 export const metadata = {
   title: "About — State of Us",
@@ -26,9 +25,7 @@ export default function AboutPage() {
       <Masthead />
       <main className="mx-auto max-w-[900px] px-[22px] pb-[90px] pt-10">
         <div className="pb-7">
-          <Link href="/" className="font-label text-xs font-bold text-ink underline decoration-2 underline-offset-2">
-            ← Front page
-          </Link>
+          <BackBlock href="/" />
         </div>
 
         <h1
@@ -55,7 +52,7 @@ export default function AboutPage() {
         </p>
 
         {/* Three-step ledger — aboutCols: repeat(3,1fr) wide / 1fr narrow */}
-        <div className="mb-[26px] grid grid-cols-1 gap-[14px] md:grid-cols-3">
+        <div className="mb-[26px] grid grid-cols-1 gap-[14px] exp:grid-cols-3">
           <div
             className="font-editorial"
             style={{ border: "2px solid var(--ink)", borderRadius: 10, background: "var(--paper-bright)", padding: 20 }}
@@ -174,7 +171,6 @@ export default function AboutPage() {
         </div>
       </main>
       <SiteFooter />
-      <SurpriseMe variant="fab" />
     </div>
   );
 }

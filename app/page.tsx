@@ -36,7 +36,7 @@ export default function Home() {
         <EditorialHeader />
         <DeskChips />
 
-        <div className="flex flex-col items-start gap-7 lg:flex-row">
+        <div className="flex flex-col items-start gap-7 exp:flex-row">
           <div className="min-w-0 flex-1">
             <Hero heroes={editorial} />
             <div className="flex flex-col gap-8">
@@ -46,7 +46,7 @@ export default function Home() {
             </div>
           </div>
 
-          <div className="flex w-full shrink-0 flex-col gap-5 lg:w-[310px] lg:sticky lg:top-[84px] lg:self-start">
+          <div className="flex w-full shrink-0 flex-col gap-5 exp:w-[310px] exp:sticky exp:top-[90px] exp:self-start">
             <TrendingRail cards={trending.slice(0, 5)} />
             <HouseRules />
           </div>

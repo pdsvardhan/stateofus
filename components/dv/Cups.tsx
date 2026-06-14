@@ -60,7 +60,7 @@ function Cups({ question, result }: DvProps) {
                   initial={prefs.reduced ? false : { height: 0 }}
                   animate={{ height: `${Math.max(0, Math.min(100, r.pct))}%` }}
                   transition={{
-                    duration: prefs.dur(0.7),
+                    duration: prefs.dur(1.7),
                     delay: prefs.delay(i * 0.2),
                     ease: FLOOD_EASE,
                   }}

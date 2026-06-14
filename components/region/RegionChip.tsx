@@ -142,7 +142,7 @@ export default function RegionChip({
       </div>
 
       {open && (
-        <div className="mt-3 border-t-[1.5px] border-ink pt-3">
+        <div className="mt-3 border-t-[1.5px] border-ink pt-3" style={{ animation: "cwRise .25s cubic-bezier(.2,.7,.2,1)" }}>
           <div className="mb-2 font-label text-[10px] font-bold uppercase tracking-[.14em] text-lime">
             Pick your state
           </div>

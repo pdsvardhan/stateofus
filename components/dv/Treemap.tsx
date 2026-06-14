@@ -76,7 +76,7 @@ function Treemap({ question, result }: DvProps) {
         {rects.map((r) => {
           const rank = sortedPcts.indexOf(r.pct);
           const swatch = rankSwatch(rank);
-          const delay = 0.1 + (n - 1 - rank) * 0.22;
+          const delay = 0.1 + (n - 1 - rank) * 0.3;
           const big = r.w * r.h > 800;
           return (
             <div
@@ -96,7 +96,7 @@ function Treemap({ question, result }: DvProps) {
                 initial={prefs.reduced ? false : { height: 0 }}
                 animate={{ height: "100%" }}
                 transition={{
-                  duration: prefs.dur(0.7),
+                  duration: prefs.dur(1.5),
                   delay: prefs.delay(delay),
                   ease: FLOOD_EASE,
                 }}
@@ -111,7 +111,7 @@ function Treemap({ question, result }: DvProps) {
               <motion.div
                 initial={prefs.reduced ? false : { opacity: 0 }}
                 animate={{ opacity: 1 }}
-                transition={{ duration: prefs.dur(0.5), delay: prefs.delay(delay + 0.7) }}
+                transition={{ duration: prefs.dur(0.5), delay: prefs.delay(delay + 1.3) }}
                 style={{
                   position: "relative",
                   height: "100%",

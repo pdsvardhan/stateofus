@@ -89,6 +89,7 @@ function Board({ question, result }: DvProps) {
                     fill={i === 0 ? "var(--fire)" : "var(--lime)"}
                     track={paperVeil(16)}
                     bordered={false}
+                    duration={0.8}
                     delay={0.08 + i * 0.11}
                   />
                   {said !== null && (

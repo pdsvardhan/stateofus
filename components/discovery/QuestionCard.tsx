@@ -174,7 +174,7 @@ export function QuestionCard({ card, wide = true }: { card: DiscoveryCard; wide?
   return (
     <Link
       href={`/q/${card.id}`}
-      className={`group flex flex-col gap-[13px] transition-transform hover:-translate-x-0.5 hover:-translate-y-0.5 ${wide ? "shrink-0" : "w-full min-w-0"}`}
+      className={`group flex flex-col gap-[13px] shadow-[4px_4px_0_color-mix(in_srgb,var(--ink)_16%,transparent)] transition-[transform,box-shadow] hover:-translate-x-0.5 hover:-translate-y-0.5 hover:shadow-[6px_6px_0_var(--ink)] ${wide ? "shrink-0" : "w-full min-w-0"}`}
       style={{
         width: wide ? 330 : undefined,
         scrollSnapAlign: wide ? "start" : undefined,
@@ -182,7 +182,7 @@ export function QuestionCard({ card, wide = true }: { card: DiscoveryCard; wide?
         borderRadius: 10,
         background: "var(--paper-bright)",
         padding: 20,
-        boxShadow: "4px 4px 0 rgba(24,22,42,.16)",
+        overflow: "hidden",
       }}
     >
       <div className="flex flex-wrap items-center gap-[7px]">
@@ -198,7 +198,7 @@ export function QuestionCard({ card, wide = true }: { card: DiscoveryCard; wide?
         </span>
       </div>
 
-      <div style={{ fontFamily: "var(--font-editorial)", fontWeight: 600, fontSize: card.text.length > 80 ? 15 : 16.5, lineHeight: 1.18 }}>
+      <div style={{ fontFamily: "var(--font-editorial)", fontWeight: 600, fontSize: card.text.length > 80 ? 14.5 : 16, lineHeight: 1.18 }}>
         {card.text}
       </div>
 

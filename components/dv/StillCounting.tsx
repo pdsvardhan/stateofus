@@ -74,7 +74,7 @@ export default function StillCounting({
         <motion.div
           initial={prefs.reduced ? false : { scaleX: 0 }}
           animate={{ scaleX: 1 }}
-          transition={{ duration: prefs.dur(0.7), ease: EASE }}
+          transition={{ duration: prefs.dur(1), ease: EASE }}
           style={{
             height: "100%",
             width: `${progress}%`,

@@ -17,8 +17,8 @@ export function EditorialHeader() {
           fontFamily: "var(--font-ui)",
           fontWeight: 900,
           /* one line on desktop; scales down on narrow screens without wrapping */
-          fontSize: "clamp(20px, 4.9vw, 60px)",
-          lineHeight: 1,
+          fontSize: "clamp(40px, 5.2vw, 64px)",
+          lineHeight: 0.96,
           letterSpacing: "-0.03em",
           textTransform: "uppercase",
           whiteSpace: "nowrap",

@@ -51,27 +51,26 @@ export function Masthead() {
             style={{ height: 38, width: "auto", mixBlendMode: "multiply" }}
           />
         </Link>
-        <div className="hidden font-label font-bold uppercase text-ink sm:block" style={{ letterSpacing: "0.22em", fontSize: 11 }}>
+        <div className="hidden font-label font-bold uppercase text-ink exp:block" style={{ letterSpacing: "0.22em", fontSize: 11 }}>
           You answer. <span style={{ color: "var(--fire)" }}>India answers back.</span>
         </div>
         <div className="flex items-center gap-2.5">
           <SurpriseMe variant="masthead" />
           <Link
             href="/about"
-            className="font-label font-bold uppercase text-ink"
+            className="bg-paper font-label font-bold uppercase text-ink transition-colors hover:bg-ink hover:text-paper"
             style={{
               fontSize: 10,
               letterSpacing: "0.12em",
               border: "1.5px solid var(--ink)",
               borderRadius: 100,
               padding: "8px 13px",
-              background: "var(--paper)",
             }}
           >
             About
           </Link>
           <span
-            className="hidden font-label font-bold uppercase text-ink lg:inline-block"
+            className="hidden font-label font-bold uppercase text-ink exp:inline-block"
             style={{
               fontSize: 10.5,
               letterSpacing: "0.12em",

@@ -67,7 +67,7 @@ function HeatMatrix({ question, result }: DvProps) {
                   animate={{ opacity: 1, scale: 1 }}
                   transition={{
                     duration: prefs.dur(0.35),
-                    delay: prefs.delay(0.06 * (i * targets.length + j)),
+                    delay: prefs.delay(0.04 * (i * targets.length + j)),
                     ease: EASE,
                   }}
                   style={{

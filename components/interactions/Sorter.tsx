@@ -207,7 +207,7 @@ export function Sorter({ question, onSubmit, submitting }: InteractionProps) {
 
       {/* S3 solid-colour bucket cards (LAB-001) */}
       <div
-        className="grid grid-cols-1 gap-3 lg:[grid-template-columns:repeat(var(--bucket-n),1fr)]"
+        className="grid grid-cols-1 gap-3 exp:[grid-template-columns:repeat(var(--bucket-n),1fr)]"
         style={{ "--bucket-n": labels.length } as React.CSSProperties}
       >
         {labels.map((label, ti) => {

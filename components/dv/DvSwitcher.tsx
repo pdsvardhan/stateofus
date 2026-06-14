@@ -49,7 +49,7 @@ export function DvSwitcher({
         <div
           role="tablist"
           aria-label="Ways to read this result"
-          className="inline-flex rounded-full border-2 border-ink bg-paper-bright p-[3px] align-middle"
+          className="inline-flex rounded-full border-2 border-ink bg-paper p-[3px] align-middle"
         >
           {defs.map((d) => {
             const on = d.id === active.id;
@@ -60,7 +60,7 @@ export function DvSwitcher({
                 aria-selected={on}
                 onClick={() => setActiveId(d.id)}
                 className={`rounded-full px-[14px] py-[7px] font-label text-[10px] font-bold uppercase tracking-[.08em] transition-colors duration-200 ${
-                  on ? "bg-ink text-paper-bright" : "bg-transparent text-ink"
+                  on ? "bg-ink text-lime" : "bg-transparent text-ink"
                 }`}
               >
                 {d.label}

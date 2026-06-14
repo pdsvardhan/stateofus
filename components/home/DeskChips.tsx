@@ -7,7 +7,7 @@ import { CATEGORIES, DESK_BY_CATEGORY } from "@/lib/catalogue/enums";
 import { categoryToSlug } from "@/lib/discovery/categories";
 
 const chip =
-  "shrink-0 font-label font-bold uppercase text-ink transition-transform hover:-translate-x-0.5 hover:-translate-y-0.5";
+  "shrink-0 font-label font-bold uppercase text-ink transition-[transform,box-shadow] hover:-translate-x-0.5 hover:-translate-y-0.5 hover:shadow-[3px_3px_0_var(--ink)]";
 const chipStyle: React.CSSProperties = {
   fontSize: 11,
   letterSpacing: "0.1em",

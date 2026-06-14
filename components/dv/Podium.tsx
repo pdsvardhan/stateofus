@@ -76,7 +76,7 @@ function Podium({ question, result }: DvProps) {
                   }
                   transition={{
                     duration: prefs.dur(0.5),
-                    delay: prefs.delay(1.1),
+                    delay: prefs.delay(1.7),
                     times: [0, 0.55, 0.75, 1],
                     ease: EASE,
                   }}
@@ -110,7 +110,7 @@ function Podium({ question, result }: DvProps) {
                 initial={prefs.reduced ? false : { height: 0 }}
                 animate={{ height: `${Math.min(100, 26 + row.pct * 1.7)}%` }}
                 transition={{
-                  duration: prefs.dur(0.7),
+                  duration: prefs.dur(1.4),
                   delay: prefs.delay(floodDelay),
                   ease: FLOOD_EASE,
                 }}

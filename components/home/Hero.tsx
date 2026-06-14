@@ -42,19 +42,17 @@ export function Hero({ heroes }: { heroes: DiscoveryCard[] }) {
         role="link"
         tabIndex={0}
         onKeyDown={(e) => e.key === "Enter" && open()}
-        className="group"
+        className="group min-h-[340px] shadow-[7px_7px_0_var(--ink)] transition-[transform,box-shadow] hover:-translate-x-0.5 hover:-translate-y-0.5 hover:shadow-[9px_9px_0_var(--ink)] exp:min-h-[280px]"
         style={{
           border: "2px solid var(--ink)",
           borderRadius: 12,
           background: "var(--paper-bright)",
           backgroundImage: "radial-gradient(rgba(24,22,42,.08) 1.5px, transparent 1.5px)",
           backgroundSize: "11px 11px",
-          boxShadow: "7px 7px 0 var(--ink)",
           padding: "26px 28px 32px",
           cursor: "pointer",
           position: "relative",
           overflow: "hidden",
-          minHeight: 230,
         }}
       >
         <div
@@ -103,7 +101,7 @@ export function Hero({ heroes }: { heroes: DiscoveryCard[] }) {
             style={{
               fontFamily: "var(--font-editorial)",
               fontWeight: 600,
-              fontSize: "clamp(24px, 3.4vw, 34px)",
+              fontSize: "clamp(23px, 3vw, 30px)",
               lineHeight: 1.1,
               maxWidth: 600,
               flex: 1,
@@ -160,7 +158,7 @@ function CarBtn({ children, onClick, label }: { children: React.ReactNode; onCli
     <button
       onClick={onClick}
       aria-label={label}
-      className="inline-flex items-center justify-center font-extrabold hover:bg-lime"
+      className="inline-flex items-center justify-center font-extrabold transition-[transform,box-shadow,background] hover:-translate-x-px hover:-translate-y-px hover:bg-lime hover:shadow-[2px_2px_0_var(--ink)]"
       style={{ border: "2px solid var(--ink)", borderRadius: "50%", width: 36, height: 36, background: "var(--paper)", fontSize: 14, padding: 0 }}
     >
       {children}

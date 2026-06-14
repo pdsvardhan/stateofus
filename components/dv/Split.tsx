@@ -27,13 +27,7 @@ function Split({ question, result }: DvProps) {
 
   return (
     <div>
-      <div
-        style={{
-          display: "grid",
-          gridTemplateColumns: "repeat(auto-fit, minmax(230px, 1fr))",
-          gap: 14,
-        }}
-      >
+      <div className="grid grid-cols-1 gap-3.5 exp:grid-cols-2">
         {rows.map((r, i) => {
           const win = i === winIdx && r.pct > 0;
           const yourSide = isSwipe ? votes?.[r.key] === "yes" : youKey === r.key;

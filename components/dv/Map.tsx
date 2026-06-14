@@ -87,7 +87,7 @@ function MapDv({ question, result }: DvProps) {
         initial={prefs.reduced ? false : { opacity: 0, y: 18 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.55, ease: EASE }}
-        style={{ maxWidth: 520, margin: "0 auto" }}
+        style={{ maxWidth: 520, margin: "0 auto", display: "flex", flexDirection: "column" }}
       >
         <Caption style={{ marginBottom: 10 }}>The winning answer, state by state</Caption>
         <svg
@@ -95,7 +95,7 @@ function MapDv({ question, result }: DvProps) {
           viewBox={INDIA_VIEWBOX}
           role="img"
           aria-label="Winning answer by state"
-          style={{ width: "100%", height: "auto", maxHeight: 420 }}
+          style={{ width: "100%", height: "auto", maxHeight: 480, order: 2 }}
         >
           <IndiaPaths
             fillFor={(name) => {
@@ -125,19 +125,21 @@ function MapDv({ question, result }: DvProps) {
         </svg>
 
         {/* legend — pill chips: swatch + label + national % + YOU tag */}
-        <div style={{ display: "flex", flexWrap: "wrap", gap: 8, marginTop: 12 }}>
+        <div style={{ display: "flex", flexWrap: "wrap", gap: 8, marginBottom: 12, order: 1 }}>
           {question.options.map((o, i) =>
             presentOptions.has(i) ? (
               <span
                 key={o.key}
                 style={{
-                  ...mono(10),
+                  fontFamily: "var(--font-ui)",
+                  fontSize: 12.5,
+                  fontWeight: 700,
                   display: "inline-flex",
                   alignItems: "center",
                   gap: 6,
                   border: "2px solid var(--ink)",
                   borderRadius: 100,
-                  padding: "3px 11px",
+                  padding: "6px 12px",
                   background: o.key === youKey ? "var(--lime)" : "var(--paper-bright)",
                   color: "var(--ink)",
                 }}
@@ -191,19 +193,19 @@ function MapDv({ question, result }: DvProps) {
           )}
         </div>
 
-        <Caption style={{ marginTop: 8 }}>
+        <Caption style={{ marginTop: 8, order: 3 }}>
           State colour = its winning answer · real boundaries, house inks
         </Caption>
 
         {result.your_region?.state && (
-          <Caption style={{ marginTop: 4 }}>
+          <Caption style={{ marginTop: 4, order: 4 }}>
             counting you in {result.your_region.state}
             {states[result.your_region.state]
               ? ` · ${formatCount(states[result.your_region.state].sample_n)} counted there`
               : ""}
           </Caption>
         )}
-        <SampleLine n={result.sample_n} />
+        <SampleLine n={result.sample_n} style={{ order: 5 }} />
       </motion.div>
     </Plate>
   );

@@ -59,7 +59,7 @@ function Liquid({ question, result }: DvProps) {
                       whiteSpace: "nowrap",
                     }}
                   >
-                    you: {youSaid}
+                    you: {youSaid === "yes" ? (question.swipe_yes_label ?? "yes") : (question.swipe_no_label ?? "no")}
                   </span>
                 )}
                 {!isSwipe && youKey === r.key && <YouTag />}
@@ -78,7 +78,7 @@ function Liquid({ question, result }: DvProps) {
                   initial={prefs.reduced ? false : { scaleX: 0 }}
                   animate={{ scaleX: 1 }}
                   transition={{
-                    duration: prefs.dur(0.7),
+                    duration: prefs.dur(0.9),
                     delay: prefs.delay(0.08 + i * 0.1),
                     ease: EASE,
                   }}

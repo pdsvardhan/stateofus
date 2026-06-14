@@ -32,7 +32,9 @@
   --silver: #c9c5d6; /* podium step 2 (v5 prototype) */
   --bronze: #d98e5f; /* podium step 3 (v5 prototype) */
   --ink-warm: #4a4744; /* warm dark text (subheads) */
-  --muted-violet: #9d98b1; /* teaser ghost / 3rd-place fills */
+  --muted-violet: #9d98b1; /* teaser ghost / 3rd-place fills · v5 RANKPAL[3] */
+  --rank-slate: #6e6987; /* v5 RANKPAL[2] — 3rd-rank step (exact, no token before) */
+  --rank-mist: #e5e0d2; /* v5 RANKPAL[5] — 6th-rank step */
 
 }
 
@@ -67,6 +69,13 @@
   --font-ui: var(--font-archivo), "Archivo", sans-serif;
   --font-editorial: var(--font-spectral), "Spectral", serif;
   --font-label: var(--font-space-mono), "Space Mono", monospace;
+}
+
+/* The v5 prototype switches single↔two-column at innerWidth > 980 (JS `wide`),
+   not Tailwind's lg=1024. Custom `exp:` breakpoint restores the design's switch
+   point on the experience/home/about surfaces (parity RC3 / global Δ1). */
+@theme {
+  --breakpoint-exp: 980px;
 }
 
 html {

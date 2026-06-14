@@ -45,12 +45,20 @@ function BubbleMap({ result }: DvProps) {
 
   return (
     <Plate>
+      <div style={{ maxWidth: 520, margin: "0 auto" }}>
+      <Caption style={{ marginBottom: 10 }}>Vote volume · where the count comes from</Caption>
+      <div style={{ display: "flex", flexWrap: "wrap", gap: 8, marginBottom: 12 }}>
+        <span style={{ ...mono(10), display: "inline-flex", alignItems: "center", gap: 6, border: "2px solid var(--ink)", borderRadius: 100, padding: "3px 11px", background: "var(--paper-bright)", color: "var(--ink)" }}>
+          <span aria-hidden style={{ width: 12, height: 12, borderRadius: "50%", background: "color-mix(in srgb, var(--lime) 78%, transparent)", border: "1px solid var(--ink)" }} />
+          More votes, bigger bubble
+        </span>
+      </div>
       <svg
         ref={svgRef}
         viewBox={INDIA_VIEWBOX}
         role="img"
         aria-label="Answers counted by state"
-        style={{ width: "100%", height: "auto", maxHeight: 420 }}
+        style={{ width: "100%", height: "auto", maxHeight: 480 }}
       >
         <IndiaPaths fillFor={() => "var(--paper-edge)"} />
         {bubbles.map((b, i) => (
@@ -83,12 +91,13 @@ function BubbleMap({ result }: DvProps) {
         ))}
       </svg>
       <Caption style={{ marginTop: 10 }}>
-        bubble size = answers counted in that state
+        bubble size = answers counted in that state · real boundaries
       </Caption>
       {result.your_region?.state && (
         <Caption>counting you in {result.your_region.state}</Caption>
       )}
       <SampleLine n={result.sample_n} />
+      </div>
     </Plate>
   );
 }

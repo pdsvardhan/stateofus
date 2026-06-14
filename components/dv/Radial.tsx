@@ -120,7 +120,7 @@ function Radial({ question, result }: DvProps) {
               {you === s.key && <YouTag />}
               <span style={{ ...mono(12.5, ".04em"), fontWeight: 700 }}>{s.pct}%</span>
             </div>
-            <GrowBar pct={s.pct} fill={rankSwatch(rankOf[i]).bg} delay={0.1 + i * 0.09} />
+            <GrowBar pct={s.pct} fill={rankSwatch(rankOf[i]).bg} duration={0.8} delay={0.1 + i * 0.09} />
           </div>
         ))}
         <Caption style={{ marginTop: 2 }}>share of all votes</Caption>

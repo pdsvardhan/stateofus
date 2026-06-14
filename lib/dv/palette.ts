@@ -13,10 +13,10 @@ export type Swatch = { bg: string; fg: string };
 export const RANK_PAL: Swatch[] = [
   { bg: "var(--fire)", fg: "var(--ink)" },
   { bg: "var(--ink-soft)", fg: "var(--paper)" },
-  { bg: "var(--muted)", fg: "var(--paper)" },
-  { bg: "color-mix(in srgb, var(--lavender) 62%, var(--paper-bright))", fg: "var(--ink)" },
-  { bg: "color-mix(in srgb, var(--lavender) 32%, var(--paper-bright))", fg: "var(--ink)" },
-  { bg: "var(--paper-deep)", fg: "var(--ink)" },
+  { bg: "var(--rank-slate)", fg: "var(--paper)" }, // #6e6987 (was muted ~approx)
+  { bg: "var(--muted-violet)", fg: "var(--ink)" }, // #9d98b1 exact (was lavender mix)
+  { bg: "var(--silver)", fg: "var(--ink)" }, // #c9c5d6 exact (was lavender mix)
+  { bg: "var(--rank-mist)", fg: "var(--ink)" }, // #e5e0d2 (was paper-deep ~approx)
 ];
 
 export function rankSwatch(rank: number): Swatch {
@@ -109,6 +109,28 @@ export function heatSwatch(t: number): Swatch {
 
 /** The legend strip for the heat ramp. */
 export const HEAT_LEGEND_GRADIENT = `linear-gradient(90deg, ${HEAT_STOPS.join(", ")})`;
+
+/**
+ * Deterministic brand-tile colour from a seed (RC11 frontend approximation).
+ * The schema has no per-option brand colour, so logo tiles get stable colour
+ * variety from the option key instead of a flat plate — same tile always gets
+ * the same colour, readable fg paired to each bg.
+ */
+const TILE_PAL: Swatch[] = [
+  { bg: "var(--fire)", fg: "var(--ink)" },
+  { bg: "var(--gold)", fg: "var(--ink)" },
+  { bg: "var(--lime)", fg: "var(--ink)" },
+  { bg: "var(--blue)", fg: "var(--ink)" },
+  { bg: "var(--ink-soft)", fg: "var(--paper)" },
+  { bg: "var(--lavender)", fg: "var(--ink)" },
+  { bg: "var(--pink)", fg: "var(--ink)" },
+];
+
+export function tileSwatch(seed: string): Swatch {
+  let h = 0;
+  for (let i = 0; i < seed.length; i++) h = (h * 31 + seed.charCodeAt(i)) >>> 0;
+  return TILE_PAL[h % TILE_PAL.length];
+}
 
 /** Light→dark ramp of one map ink (gradient fills — never flat). */
 export function mapGradientStops(ink: string): { from: string; to: string } {

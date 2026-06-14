@@ -137,8 +137,15 @@ export function ExperienceClient({
         exit: { opacity: 0, y: -16 },
       };
 
-  const questionHeading = (
-    <h2 className="font-editorial text-[26px] font-semibold leading-[1.12] text-ink sm:text-[30px]">
+  // v5 uses two distinct question sizes (parity Δ3): answer screen 36px desktop /
+  // 25px below the exp breakpoint (line 355); result screen a flat 25px (line 552).
+  const answerHeading = (
+    <h2 className="font-editorial text-[25px] font-semibold leading-[1.1] text-ink exp:text-[36px]">
+      {question.text}
+    </h2>
+  );
+  const resultHeading = (
+    <h2 className="font-editorial text-[25px] font-semibold leading-[1.15] text-ink">
       {question.text}
     </h2>
   );
@@ -162,8 +169,8 @@ export function ExperienceClient({
               </div>
             </div>
 
-            <div className="lg:grid lg:grid-cols-[0.85fr_1.15fr] lg:items-start lg:gap-12">
-              <div className="mb-6 lg:mb-0">
+            <div className="exp:grid exp:grid-cols-[0.85fr_1.15fr] exp:items-start exp:gap-12">
+              <div className="mb-6 exp:mb-0">
                 <div className="mb-4 inline-flex items-center gap-2">
                   <span className="rounded bg-ink px-[9px] py-1 font-label text-[10px] font-bold uppercase tracking-[.14em] text-lime">
                     {chipLabel}
@@ -174,7 +181,7 @@ export function ExperienceClient({
                     </span>
                   )}
                 </div>
-                {questionHeading}
+                {answerHeading}
               </div>
               <div>
                 <interaction.Component
@@ -220,13 +227,17 @@ export function ExperienceClient({
               <div className="mb-2 font-label text-[10px] uppercase tracking-[.16em] text-muted">
                 {deskName} · {result.sample_n.toLocaleString("en-IN")} votes counted
               </div>
-              {questionHeading}
+              {resultHeading}
               {result.your_payload && (
                 <motion.span
-                  initial={reduced ? false : { scale: 0.6, opacity: 0, rotate: 4 }}
-                  animate={{ scale: 1, opacity: 1, rotate: -6 }}
-                  transition={{ duration: 0.45, ease: [0.2, 0.7, 0.2, 1] }}
-                  className="absolute right-0 top-0 rounded-[7px] border-[3px] border-fire bg-paper/70 px-[11px] py-[7px] font-ui text-[15px] font-black tracking-wide text-fire uppercase"
+                  initial={reduced ? false : { scale: 2.6, opacity: 0, rotate: -18 }}
+                  animate={
+                    reduced
+                      ? { scale: 1, opacity: 1, rotate: -8 }
+                      : { scale: [2.6, 0.92, 1.05, 1], opacity: [0, 1, 1, 1], rotate: [-18, -8, -8, -8] }
+                  }
+                  transition={{ duration: 0.55, times: [0, 0.55, 0.75, 1], ease: [0.2, 0.7, 0.2, 1] }}
+                  className="absolute -top-1.5 right-0 rounded-[7px] border-[3px] border-fire bg-paper/70 px-[11px] py-[7px] font-ui text-[15px] font-black text-fire uppercase"
                 >
                   Counted ✓
                 </motion.span>
@@ -236,9 +247,9 @@ export function ExperienceClient({
             {result.still_counting ? (
               <StillCounting question={question} result={result} />
             ) : (
-              <div className="lg:grid lg:grid-cols-[1.25fr_0.75fr] lg:items-start lg:gap-6">
+              <div className="exp:grid exp:grid-cols-[1.25fr_0.75fr] exp:items-start exp:gap-6">
                 {/* MAIN — the count, read left */}
-                <div className="mb-6 flex flex-col gap-5 lg:mb-0">
+                <div className="mb-6 flex flex-col gap-5 exp:mb-0">
                   {result.early_returns && (
                     <div className="border-2 border-ink bg-gold-tint px-3 py-1.5 font-label text-xs font-bold tracking-wider text-ink">
                       EARLY RETURNS — the count is young, numbers may move
@@ -254,14 +265,14 @@ export function ExperienceClient({
                   ) : null}
 
                   {notes.length > 0 && (
-                    <div className="hidden lg:block">
+                    <div className="hidden exp:block">
                       <DeskNotes notes={notes} />
                     </div>
                   )}
                 </div>
 
                 {/* RAIL — "Your position", sticky below the masthead */}
-                <aside className="flex flex-col gap-4 lg:sticky lg:top-[90px]">
+                <aside className="flex flex-col gap-4 exp:sticky exp:top-[90px]">
                   <div className="flex items-center gap-3">
                     <span className="rounded border-[1.5px] border-ink bg-lime px-[11px] py-[5px] font-label text-[10px] font-bold uppercase tracking-[.22em] text-ink">
                       Your position
@@ -272,7 +283,7 @@ export function ExperienceClient({
                   {verdict && <PersonalCard big={verdict.big} sub={verdict.sub} />}
 
                   {notes.length > 0 && (
-                    <div className="lg:hidden">
+                    <div className="exp:hidden">
                       <DeskNotes notes={notes} inline />
                     </div>
                   )}

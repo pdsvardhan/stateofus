@@ -74,7 +74,7 @@ function Medal({ question, result }: DvProps) {
                   <span style={{ fontWeight: 700, fontSize: 15 }}>{r.label}</span>
                   <span style={{ ...mono(12.5, ".02em"), fontWeight: 700 }}>{r.pct}%</span>
                 </div>
-                <GrowBar pct={r.pct} fill={MEDALS[rk].bg} height={9} delay={0.1 + rk * 0.14} />
+                <GrowBar pct={r.pct} fill={MEDALS[rk].bg} height={9} duration={0.8} delay={0.1 + rk * 0.14} />
               </div>
               {youKey === r.key && <YouTag />}
             </div>

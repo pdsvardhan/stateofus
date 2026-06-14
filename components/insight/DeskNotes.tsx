@@ -52,7 +52,7 @@ export function DeskNotes({ notes, inline = false }: { notes: string[]; inline?:
         </span>
         <span aria-hidden className="h-0.5 flex-1 bg-ink" />
       </div>
-      <div className="mt-3.5 grid grid-cols-1 gap-3.5 md:grid-cols-2">
+      <div className="mt-3.5 grid grid-cols-1 gap-3.5 exp:grid-cols-2">
         {items.map((t, i) => (
           <Note key={i} text={t} i={i} />
         ))}

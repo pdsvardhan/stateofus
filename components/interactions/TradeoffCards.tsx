@@ -24,7 +24,7 @@ export function TradeoffCards({ question, onSubmit, submitting }: InteractionPro
   }
 
   return (
-    <div className="grid grid-cols-1 items-stretch gap-3.5 lg:grid-cols-[1fr_auto_1fr]">
+    <div className="grid grid-cols-1 items-stretch gap-3.5 exp:grid-cols-[1fr_auto_1fr]">
       {duel.map((o, i) => {
         const isPicked = picked === o.key;
         const card = (
@@ -63,11 +63,11 @@ export function TradeoffCards({ question, onSubmit, submitting }: InteractionPro
             initial={reduceMotion ? false : { opacity: 0, scale: 2.6, rotate: -18 }}
             animate={
               reduceMotion
-                ? { opacity: 1, rotate: -6 }
+                ? { opacity: 1, rotate: -8 }
                 : {
                     opacity: [0, 1, 1, 1],
                     scale: [2.6, 0.92, 1.05, 1],
-                    rotate: [-18, -8, -8, -6],
+                    rotate: [-18, -8, -8, -8],
                   }
             }
             transition={

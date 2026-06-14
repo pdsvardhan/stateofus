@@ -97,7 +97,7 @@ function Sankey({ question, result }: DvProps) {
             fill={FLOW_PAL[r.j]}
             initial={prefs.reduced ? false : { opacity: 0 }}
             animate={{ opacity: 0.7 }}
-            transition={{ duration: prefs.dur(0.7), delay: prefs.delay(r.delay) }}
+            transition={{ duration: prefs.dur(0.8), delay: prefs.delay(r.delay) }}
           />
         ))}
         {model.bands.map((b, i) => (

@@ -39,17 +39,16 @@ export function SurpriseMe({ variant }: { variant: "masthead" | "fab" }) {
         disabled={busy}
         whileHover={reduced ? undefined : { scale: 1.14, rotate: -12 }}
         whileTap={reduced ? undefined : { rotate: 180 }}
-        className="fixed bottom-6 right-[22px] z-40 flex h-14 w-14 items-center justify-center rounded-full border-2 border-ink bg-ink text-[22px] transition-colors duration-200 hover:bg-fire"
+        className="fixed bottom-6 right-[22px] z-[70] flex h-14 w-14 items-center justify-center rounded-full border-2 border-ink bg-ink text-[22px] transition-colors duration-200 hover:bg-fire"
         style={{ boxShadow: "5px 5px 0 color-mix(in srgb, var(--ink) 30%, transparent)" }}
         aria-label="Surprise me with a random question"
       >
-        <motion.span
+        <span
           aria-hidden
-          animate={reduced ? undefined : { rotate: [0, 9, -9, 0] }}
-          transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
+          style={{ display: "inline-block", animation: reduced ? undefined : "cwWobble 5s ease-in-out infinite" }}
         >
           🎲
-        </motion.span>
+        </span>
       </motion.button>
     );
   }

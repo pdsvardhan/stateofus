@@ -69,7 +69,7 @@ function Coins({ question, result }: DvProps) {
                   initial={prefs.reduced ? false : { height: 0 }}
                   animate={{ height: `${Math.max(8, Math.min(100, r.pct))}%` }}
                   transition={{
-                    duration: prefs.dur(0.7),
+                    duration: prefs.dur(1.4),
                     delay: prefs.delay(i * 0.12),
                     ease: FLOOD_EASE,
                   }}
@@ -108,7 +108,7 @@ function Coins({ question, result }: DvProps) {
                     fontWeight: 700,
                   }}
                 >
-                  you: {youSaid}
+                  you: {youSaid === "yes" ? (question.swipe_yes_label ?? "yes") : (question.swipe_no_label ?? "no")}
                 </span>
               )}
               {!isSwipe && youKey === r.key && <YouTag />}

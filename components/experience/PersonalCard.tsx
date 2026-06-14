@@ -8,7 +8,6 @@ import { motion, useReducedMotion } from "framer-motion";
 
 export function PersonalCard({ big, sub }: { big: string; sub: string }) {
   const reduced = useReducedMotion();
-  const size = big.length > 22 ? 28 : 34; // v5 scales the headline to its length
 
   return (
     <motion.div
@@ -20,10 +19,7 @@ export function PersonalCard({ big, sub }: { big: string; sub: string }) {
       <div className="mb-[9px] font-label text-[10px] font-bold uppercase tracking-[.18em] text-ink">
         Where you landed
       </div>
-      <div
-        className="font-ui font-black uppercase leading-[1.02] tracking-[-.02em] text-ink"
-        style={{ fontSize: size }}
-      >
+      <div className="font-ui text-[24px] font-black uppercase leading-[1.02] tracking-[-.02em] text-ink exp:text-[28px]">
         {big}
       </div>
       <p className="mt-[9px] font-editorial text-[15.5px] leading-[1.4] text-ink">{sub}</p>

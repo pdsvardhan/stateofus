@@ -12,7 +12,7 @@ import type { LifecycleState } from "@/lib/catalogue/enums";
 const STRIPES_FROZEN =
   "repeating-linear-gradient(-45deg, var(--ink) 0 10px, var(--ink-soft) 10px 20px)";
 const STRIPES_ARCHIVED =
-  "repeating-linear-gradient(-45deg, var(--silver) 0 10px, color-mix(in srgb, var(--silver) 80%, var(--ink)) 10px 20px)";
+  "repeating-linear-gradient(-45deg, var(--silver) 0 10px, color-mix(in srgb, var(--silver) 88%, var(--ink)) 10px 20px)";
 
 export function StatusBand({
   status,
@@ -52,7 +52,7 @@ export function StatusBand({
       className="mb-[18px] flex flex-wrap items-center gap-2.5 rounded-lg border-2 border-ink px-4 py-2.5 text-ink"
       style={{ background: STRIPES_ARCHIVED }}
     >
-      <span className="rounded border border-ink bg-paper-bright/90 px-2.5 py-[3px] font-label text-[10px] font-bold uppercase tracking-[.14em]">
+      <span className="rounded bg-paper-bright/90 px-2.5 py-[3px] font-label text-[10px] font-bold uppercase tracking-[.14em]">
         {title}
         {date ? ` · count closed ${date}` : ""}
       </span>
