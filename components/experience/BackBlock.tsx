@@ -1,9 +1,9 @@
 "use client";
 
 /**
- * BK2 back button — ink block, arrow + "Back" INSIDE the block, arrow nudges
- * on hover (LAB-004). No side text, no visible ESC keycap (LAB-005) — ESC
- * still works as a silent shortcut.
+ * BK2 back button — v5 prototype (lines 342 / 531): ink block, LIME arrow that
+ * nudges continuously (cwNudge), "Back" in Archivo 800 uppercase inside the
+ * block. ESC works as a silent shortcut (LAB-005, no visible keycap).
  */
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
@@ -22,20 +22,22 @@ export function BackBlock({ href = "/" }: { href?: string }) {
   }, [router, href]);
 
   return (
-    <motion.button
+    <button
       onClick={() => router.push(href)}
-      whileHover={reduced ? undefined : "hover"}
-      className="group flex items-center gap-2 border-2 border-ink bg-ink px-3 py-1.5 font-label text-sm font-bold text-paper-bright"
+      className="group inline-flex min-h-[44px] items-center gap-2.5 rounded-[9px] border-2 border-ink bg-ink px-4 py-2.5 text-paper shadow-[3px_3px_0_color-mix(in_srgb,var(--ink)_25%,transparent)] transition-all duration-150 hover:-translate-x-0.5 hover:-translate-y-0.5 hover:shadow-[5px_5px_0_color-mix(in_srgb,var(--ink)_45%,transparent)]"
       aria-label="Back to the front page"
     >
       <motion.span
-        variants={{ hover: { x: [-1, -5, -1] } }}
-        transition={{ duration: 0.45, repeat: Infinity, repeatDelay: 0.2 }}
         aria-hidden
+        className="text-xl font-black leading-none text-lime"
+        animate={reduced ? undefined : { x: [0, -4, 0] }}
+        transition={{ duration: 1.6, repeat: Infinity, ease: "easeInOut" }}
       >
         ←
       </motion.span>
-      Back
-    </motion.button>
+      <span className="font-ui text-[13px] font-extrabold uppercase tracking-[.05em]">
+        Back
+      </span>
+    </button>
   );
 }

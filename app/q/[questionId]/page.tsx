@@ -16,11 +16,10 @@ import { decideReveal, MIN_REVEAL_N, type RevealPattern } from "@/lib/results";
 import { DESK_BY_CATEGORY, type Category, type LifecycleState } from "@/lib/catalogue/enums";
 import type { QuestionPublic, QuestionResult } from "@/lib/types";
 import { ExperienceClient } from "@/components/experience/ExperienceClient";
-import { DeskStamp } from "@/components/experience/DeskStamp";
-import { BackBlock } from "@/components/experience/BackBlock";
+import { Masthead } from "@/components/home/Masthead";
+import { SurpriseMe } from "@/components/home/SurpriseMe";
 import { SharedContextBand } from "@/components/experience/SharedContextBand";
 import { RailRelated } from "@/components/discovery/RailRelated";
-import { INTERACTION_REGISTRY } from "@/components/interactions";
 
 export const dynamic = "force-dynamic";
 
@@ -201,20 +200,14 @@ export default async function QuestionPage(props: {
   }
 
   const result = await loadResult(question);
-  const chip = INTERACTION_REGISTRY[question.mode]?.chipLabel ?? question.mode;
   const closedDate =
     question.status === "active" || question.status === "draft"
       ? null
       : loadClosedDate(question.id);
 
   return (
-    <main className="mx-auto min-h-screen w-full max-w-2xl px-4 pb-16 lg:max-w-[1120px] lg:px-8">
-      <header className="flex items-center justify-between py-4">
-        <BackBlock href="/" />
-        <span className="bg-paper-bright border border-ink px-2 py-0.5 font-label text-xs font-bold tracking-[0.15em] text-ink uppercase">
-          {chip}
-        </span>
-      </header>
+    <div className="min-h-screen">
+      <Masthead />
 
       {inboundShare && !result?.your_payload && (
         <SharedContextBand
@@ -228,27 +221,24 @@ export default async function QuestionPage(props: {
         />
       )}
 
-      <ExperienceClient
-        question={question}
-        initialResult={result}
-        header={
-          <div className="py-6">
-            <div className="mb-3 flex items-center gap-2">
-              <DeskStamp category={question.category} />
-              {question.subcategory && (
-                <span className="font-label text-xs tracking-wider text-muted uppercase">
-                  {question.subcategory}
-                </span>
-              )}
-            </div>
-            <h1 className="font-editorial text-3xl font-extrabold leading-tight text-ink sm:text-4xl">
-              {question.text}
-            </h1>
-          </div>
-        }
-        railRelated={<RailRelated questionId={question.id} />}
-        closedDate={closedDate}
-      />
-    </main>
+      <main className="mx-auto w-full max-w-2xl px-4 pb-16 pt-8 lg:max-w-[1120px] lg:px-8">
+        <ExperienceClient
+          question={question}
+          initialResult={result}
+          railRelated={<RailRelated questionId={question.id} />}
+          closedDate={closedDate}
+        />
+      </main>
+
+      <footer className="border-t-2 border-ink bg-paper">
+        <div className="mx-auto flex max-w-[1280px] flex-wrap items-center justify-between gap-3.5 px-[22px] py-[18px]">
+          <span className="font-label text-[10px] uppercase tracking-[.14em] text-muted">
+            State of Us · the public, counted · you answer, India answers back
+          </span>
+        </div>
+      </footer>
+
+      <SurpriseMe variant="fab" />
+    </div>
   );
 }

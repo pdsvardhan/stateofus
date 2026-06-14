@@ -4,19 +4,18 @@
  * The experience orchestrator — feat-question-experience-page (#6) +
  * feat-result-reveal (#8).
  *
- * One question = one experience page (rail): question, interaction, result,
- * insight and exploration are visibility states of THIS component — there is
- * no separate result route (AC334). After answering, the result + personal
- * layer appear in place via the reveal sequence (AC335): interaction settles
- * out, DV rises in, the lime verdict + desk notes follow — 300-700ms steps,
- * reduced-motion safe.
+ * One question = one experience page (rail): the question, interaction, result,
+ * personal layer and exploration are visibility states of THIS component — no
+ * separate result route (AC334).
  *
- * Result rail rebuilt to v5 (Pure-V5, owner decision): "The count" header +
- * pill DV tabs on the left; the lime "Where you landed" PersonalCard, authored
- * DeskNotes (placement-aware), quiet ReactionBar, in-rail RailRelated (passed
- * from the server page), press pass, and the big ShareActions on the right.
+ * The page shell (masthead / footer / dice) is owned by the route; this owns
+ * the in-content header per phase, matching the v5 prototype:
+ *  - ANSWER (v5 341-356): [Back] ↔ [gold Skip + colored Desk pill]; meta = mode
+ *    chip (ink/lime) + subcategory; question h2 (Spectral 600); interaction.
+ *  - RESULT (v5 530-556): [Back]; inline StatusBand; meta = "DESK · N votes
+ *    counted"; question h2 + Counted ✓ stamp top-right; DV left / rail right.
  */
-import { useCallback, useMemo, useState, type ReactNode } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import type { QuestionPublic, QuestionResult } from "@/lib/types";
 import { dvsForQuestion } from "@/lib/dv/registry";
@@ -24,27 +23,42 @@ import { DV_REGISTRY } from "@/components/dv";
 import StillCounting from "@/components/dv/StillCounting";
 import { DvSwitcher, CountHeader } from "@/components/dv/DvSwitcher";
 import { INTERACTION_REGISTRY } from "@/components/interactions";
+import { DESK_BY_CATEGORY, type Category } from "@/lib/catalogue/enums";
 import { personalVerdict } from "@/lib/insights/personalVerdict";
 import { PersonalCard } from "./PersonalCard";
 import { DeskNotes } from "@/components/insight/DeskNotes";
 import { StatusBand } from "./StatusBand";
+import { BackBlock } from "./BackBlock";
+import { SkipChip } from "./SkipChip";
 import RegionChip from "@/components/region/RegionChip";
 import { ReactionBar } from "./ReactionBar";
 import { ShareActions } from "./ShareActions";
-import { SkipChip } from "./SkipChip";
+import type { ReactNode } from "react";
 
 type Phase = "answer" | "submitting" | "result";
+
+/** v5 top-right desk pill (line 345) — desk name on its brand-colour fill. */
+function DeskPill({ category }: { category: string }) {
+  const d = DESK_BY_CATEGORY[category as Category];
+  if (!d) return null;
+  return (
+    <span
+      style={{ background: d.color }}
+      className="rounded border-2 border-ink px-[10px] py-[5px] font-label text-[10.5px] font-bold uppercase tracking-[.12em] text-ink shadow-[2px_2px_0_color-mix(in_srgb,var(--ink)_20%,transparent)]"
+    >
+      {d.desk}
+    </span>
+  );
+}
 
 export function ExperienceClient({
   question,
   initialResult,
-  header,
   railRelated,
   closedDate,
 }: {
   question: QuestionPublic;
   initialResult: QuestionResult | null;
-  header: ReactNode;
   /** v5 in-rail "Up next" + related mini-cards — server-rendered, passed in. */
   railRelated: ReactNode;
   /** human date the count closed (frozen/archived) for the StatusBand. */
@@ -61,6 +75,8 @@ export function ExperienceClient({
   const [error, setError] = useState<string | null>(null);
 
   const interaction = INTERACTION_REGISTRY[question.mode];
+  const chipLabel = interaction?.chipLabel ?? question.mode;
+  const deskName = DESK_BY_CATEGORY[question.category as Category]?.desk ?? question.category;
 
   const onSubmit = useCallback(
     async (payload: Record<string, unknown>) => {
@@ -91,9 +107,6 @@ export function ExperienceClient({
   const dvDefs = useMemo(() => {
     const defs = dvsForQuestion(DV_REGISTRY, question);
     if (defs.length > 0) return defs;
-    // Safety net: a question whose primary DV doesn't support its mode would
-    // otherwise render a chart-less result. Fall back to ANY registered DV
-    // that supports the mode (tier/treemap/board for placements, etc.).
     const fallback = Object.values(DV_REGISTRY).find(
       (d) => d && d.supportedModes.includes(question.mode)
     );
@@ -101,8 +114,6 @@ export function ExperienceClient({
   }, [question]);
   const PrimaryDv = dvDefs[0]?.Component ?? null;
 
-  // v5 "Where you landed" verdict — derived from the live result, so it always
-  // agrees with the chart. Null until the reader has actually answered.
   const verdict = useMemo(
     () =>
       result && result.your_payload && !result.still_counting
@@ -110,7 +121,6 @@ export function ExperienceClient({
         : null,
     [question, result, dvDefs]
   );
-  // Authored desk notes (up to 2). editorial_note_2 is optional in the schema.
   const notes = useMemo(
     () =>
       [question.editorial_note, question.editorial_note_2].filter(
@@ -127,8 +137,14 @@ export function ExperienceClient({
         exit: { opacity: 0, y: -16 },
       };
 
+  const questionHeading = (
+    <h2 className="font-editorial text-[26px] font-semibold leading-[1.12] text-ink sm:text-[30px]">
+      {question.text}
+    </h2>
+  );
+
   return (
-    <div className="flex flex-col gap-6">
+    <div>
       <AnimatePresence mode="wait">
         {(phase === "answer" || phase === "submitting") && (
           <motion.section
@@ -136,28 +152,44 @@ export function ExperienceClient({
             {...rise}
             transition={{ duration: 0.4 }}
             aria-label="Answer this question"
-            className="lg:grid lg:grid-cols-[0.85fr_1.15fr] lg:items-start lg:gap-12"
           >
-            <div className="mb-6 lg:mb-0 lg:sticky lg:top-6">{header}</div>
-            <div>
-              <interaction.Component
-                question={question}
-                onSubmit={onSubmit}
-                submitting={phase === "submitting"}
-              />
-              {error && (
-                <p
-                  role="alert"
-                  className="mt-3 border-2 border-fire bg-fire-tint px-3 py-2 font-label text-sm text-ink"
-                >
-                  {error}
-                </p>
-              )}
-              <div className="mt-4 flex items-center justify-between">
+            {/* header row — back ↔ skip + desk (v5 341-347) */}
+            <div className="mb-7 flex items-center justify-between gap-3">
+              <BackBlock href="/" />
+              <div className="flex items-center gap-2.5">
                 <SkipChip questionId={question.id} />
-                <span className="font-label text-xs text-muted">
-                  Anonymous · skip anytime
-                </span>
+                <DeskPill category={question.category} />
+              </div>
+            </div>
+
+            <div className="lg:grid lg:grid-cols-[0.85fr_1.15fr] lg:items-start lg:gap-12">
+              <div className="mb-6 lg:mb-0">
+                <div className="mb-4 inline-flex items-center gap-2">
+                  <span className="rounded bg-ink px-[9px] py-1 font-label text-[10px] font-bold uppercase tracking-[.14em] text-lime">
+                    {chipLabel}
+                  </span>
+                  {question.subcategory && (
+                    <span className="font-label text-[10px] uppercase tracking-[.1em] text-muted">
+                      {question.subcategory}
+                    </span>
+                  )}
+                </div>
+                {questionHeading}
+              </div>
+              <div>
+                <interaction.Component
+                  question={question}
+                  onSubmit={onSubmit}
+                  submitting={phase === "submitting"}
+                />
+                {error && (
+                  <p
+                    role="alert"
+                    className="mt-3 border-2 border-fire bg-fire-tint px-3 py-2 font-label text-sm text-ink"
+                  >
+                    {error}
+                  </p>
+                )}
               </div>
             </div>
           </motion.section>
@@ -171,6 +203,11 @@ export function ExperienceClient({
             transition={{ duration: 0.5, delay: reduced ? 0 : 0.1 }}
             aria-label="What everyone thinks"
           >
+            {/* header row — back only (v5 530-535) */}
+            <div className="mb-5 flex items-center justify-between gap-3">
+              <BackBlock href="/" />
+            </div>
+
             {/* Lifecycle band — inline, inside the result container (v5 537-548) */}
             <StatusBand
               status={question.status}
@@ -180,13 +217,16 @@ export function ExperienceClient({
 
             {/* Question header with the Counted ✓ stamp slammed top-right (v5 550-556) */}
             <div className="relative mb-6 pr-24 sm:pr-28">
-              {header}
+              <div className="mb-2 font-label text-[10px] uppercase tracking-[.16em] text-muted">
+                {deskName} · {result.sample_n.toLocaleString("en-IN")} votes counted
+              </div>
+              {questionHeading}
               {result.your_payload && (
                 <motion.span
                   initial={reduced ? false : { scale: 0.6, opacity: 0, rotate: 4 }}
                   animate={{ scale: 1, opacity: 1, rotate: -6 }}
                   transition={{ duration: 0.45, ease: [0.2, 0.7, 0.2, 1] }}
-                  className="absolute right-0 top-6 rounded-[7px] border-[3px] border-fire bg-paper/70 px-[11px] py-[7px] font-ui text-[15px] font-black tracking-wide text-fire uppercase"
+                  className="absolute right-0 top-0 rounded-[7px] border-[3px] border-fire bg-paper/70 px-[11px] py-[7px] font-ui text-[15px] font-black tracking-wide text-fire uppercase"
                 >
                   Counted ✓
                 </motion.span>
@@ -213,7 +253,6 @@ export function ExperienceClient({
                     </div>
                   ) : null}
 
-                  {/* From the desk — wide only, under the DV */}
                   {notes.length > 0 && (
                     <div className="hidden lg:block">
                       <DeskNotes notes={notes} />
@@ -221,8 +260,8 @@ export function ExperienceClient({
                   )}
                 </div>
 
-                {/* RAIL — "Your position", sticky on desktop */}
-                <aside className="flex flex-col gap-4 lg:sticky lg:top-6">
+                {/* RAIL — "Your position", sticky below the masthead */}
+                <aside className="flex flex-col gap-4 lg:sticky lg:top-[90px]">
                   <div className="flex items-center gap-3">
                     <span className="rounded border-[1.5px] border-ink bg-lime px-[11px] py-[5px] font-label text-[10px] font-bold uppercase tracking-[.22em] text-ink">
                       Your position
@@ -232,7 +271,6 @@ export function ExperienceClient({
 
                   {verdict && <PersonalCard big={verdict.big} sub={verdict.sub} />}
 
-                  {/* desk notes inline on narrow only */}
                   {notes.length > 0 && (
                     <div className="lg:hidden">
                       <DeskNotes notes={notes} inline />

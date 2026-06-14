@@ -52,10 +52,12 @@ export type Category = (typeof CATEGORIES)[number];
 
 /** Desk names locked in V5 round-1 answers. */
 export const DESK_BY_CATEGORY: Record<Category, { desk: string; color: string }> = {
+  // Colours match the v5 prototype CATS exactly (line 1180): fire / blue / pink /
+  // gold / lime / lavender. (Daily/Culture/Bazaar were previously scrambled.)
   "City and Place Experience": { desk: "The City Desk", color: "var(--fire)" },
-  "Daily Life and Livability": { desk: "The Daily Grind", color: "var(--gold)" },
-  "Entertainment and Culture": { desk: "The Culture Desk", color: "var(--blue)" },
-  "Consumption and Brand Experience": { desk: "The Bazaar", color: "var(--pink)" },
+  "Daily Life and Livability": { desk: "The Daily Grind", color: "var(--blue)" },
+  "Entertainment and Culture": { desk: "The Culture Desk", color: "var(--pink)" },
+  "Consumption and Brand Experience": { desk: "The Bazaar", color: "var(--gold)" },
   "Identity Opinion and Society": { desk: "The Mirror", color: "var(--lavender)" },
   "Fun and Internet Chaos": { desk: "The Chaos Bureau", color: "var(--lime)" },
 };
