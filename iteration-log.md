@@ -220,3 +220,24 @@ not rebuild it. Start by re-verifying the font fix across all pages.
 **Soft warning (pre-existing):** `stale-verification` on 5 features — from the original 2026-06-12 build, not this session.
 
 **Next session pick-up:** optionally wire error-tracking; author the missing-mode/DV questions + more editorial notes. The Fix Spec in Downloads is the reference — every item in it is now built and live.
+
+## Session 2026-06-14 — V5 fidelity pass (result rail + full shell) + demo seeding
+
+**Stage:** Stage 4 (iterate) — **lightweight-direct** (owner choice: no formal lock-in gate / verifier sub-agent / ledger this round). Code work; tracker SO docs untouched (mirror:write = 0 changed / 7 unchanged).
+
+**What changed (4 commits: `389986c`, `dec58eb`, `12c2dc0`, all CI-green + screenshot-verified live):**
+- **Demo seeding for full type coverage:** authored 16 `NEW-201..216` questions across all 6 desks with valid `(mode→primary_dv)` pairings; seeded believable votes via the real `POST /api/answers` path so every mode + every validly-paired DV has ≥3 revealed examples. Repointed `NEW-91` (rank_order+coins — coins doesn't support rank_order, so its DV never rendered) → `board`. Tool: `scripts/seed-demo-content.mjs`.
+- **V5 result-rail rebuild (Pure-V5):** lime "Where you landed" `PersonalCard` + per-DV `personalVerdict.ts`; placement-aware `DeskNotes` ("From the desk", up to 2); in-rail `RailRelated` (dark "Up next 🎲" + related mini-cards) replacing the page-bottom row; big `ShareActions` (dark Download PNG). Dropped generated `InsightCards`.
+- **Result chrome:** "The count" header + pill DV-tabs; Counted-✓ stamp → top-right of question; `StatusBand` recoloured (ink/silver stripes) + inline; Map legend → pills with %+YOU. Tokens: PodiumSlots/Medal → `--silver`/`--bronze`, Podium step3 → `--muted-violet`; RankOrder bare numeral.
+- **Shared `/q` + site shell (the owner's main complaint — "no nav bar"):** mounted `Masthead` (+ new **date pill**) + `SiteFooter` + the **v5 dark-circle dice FAB** (was a lime square) on **every** public page (home/explore/search/category/about/q) — footer was missing everywhere, fab missing on 4 pages. Phase-aware in-content header in `ExperienceClient` (answer: lime Back ↔ gold Skip + colored Desk pill + mode chip; result: Back + "DESK · N votes counted").
+- **Fixed scrambled desk colours** in `DESK_BY_CATEGORY` to match v5 CATS: Daily Grind gold→blue, Culture blue→pink, Bazaar pink→gold (propagates to chips/stamps/pills everywhere).
+- **SwipeStack custom verdict labels** (v5 `q.yes`/`q.no`): `swipe_yes_label`/`swipe_no_label` (drizzle `0004`) + component + 10 seeded (Acceptable/Crime, Keep/Skip, …). Schema also added `editorial_note_2` (drizzle `0003`) for 2nd desk note.
+- **Verified the reviewer** (owner ask, anti-gaslight on the review itself): the `V5-FIDELITY-SPEC.md` claims checked out against source + v5 markup; caught two where it was off (PODIUM_STEPS stays muted-violet not silver/bronze; Sorter "tier badge" is actually a per-option brand-mark needing schema). Deep-verified QuickPick / Radial / Tier vs v5 — near-exact → components judged faithful.
+
+**Decisions:** no new ADRs (UI fidelity under existing adr-005/006). Owner calls captured: InsightCards → **Pure-V5** (drop generated); reaction counts → **keep quiet reveal**; desk-notes/verdict-wit content → **schema + UI now, light content**; FAB/date → **follow v5 not home**.
+
+**Open follow-ups:** SwipeStack labels seeded for 10 of ~18 swipe Qs (rest fall back to Yes/No); per-option brand-mark badges for the Sorter (LOGO2) still need a schema field; `editorial_note`/`editorial_note_2` authored for ~8 Qs only; `no-error-tracking` still OPEN; the heavy UI changes were not run through the formal verifier (lightweight mode).
+
+**Soft warning:** `stale-verification` on 5 features (pre-existing 2026-06-12) — now also genuinely stale vs this session's UI changes since the formal verifier was skipped.
+
+**Next session pick-up:** if returning to formal tracking, run the Stage-4 verifier over the UI changes to clear stale-verification; seed remaining swipe labels + more editorial notes; consider the Sorter brand-mark schema. Local editing mirror was `.sou-work` (SCP staging); v5 reference is `State of Us Design/State of Us v5.dc.html`.
