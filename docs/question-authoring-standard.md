@@ -72,7 +72,7 @@ over abstractions. Mild edge is good; cruelty/politics-bait is not.
 | `skip_allowed` | Always `1`. |
 | `primary_dv` | Exactly one of the **14** (§6). Never `Insight Cards` (that's the personal layer, not a DV). |
 | `secondary_dvs` | **≤2**, must differ from primary, must **not** repeat the primary's information. |
-| `geo` | `1` **only** when a map DV (`map`/`bubblemap`) is used and geography genuinely matters. |
+| `geo` | `1` when geography drives the answer — required for map DVs (`map`/`bubblemap`) **and** `sankey` (it pours state→answer flows, so it needs region data). Never set it just for flavour. |
 | `reveal_pattern` | `immediate` \| `threshold` (default) \| `progressive`. |
 | `status` | New rows are `draft`. `draft→active` **requires `approved_by`** (governance). |
 
