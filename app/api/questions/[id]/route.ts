@@ -16,7 +16,7 @@ export async function GET(
     .prepare(
       `SELECT id, category, subcategory, title, text, mode, options_json, targets_json,
               skip_allowed, primary_dv, secondary_dvs_json, insight_type, geo, status,
-              created_at
+              swipe_yes_label, swipe_no_label, created_at
        FROM questions WHERE id = ?`
     )
     .get(id) as Record<string, unknown> | undefined;
@@ -44,6 +44,8 @@ export async function GET(
       insight_type: q.insight_type,
       geo: q.geo === 1,
       status: q.status,
+      swipe_yes_label: (q.swipe_yes_label as string) ?? null,
+      swipe_no_label: (q.swipe_no_label as string) ?? null,
       created_at: q.created_at,
     },
   });

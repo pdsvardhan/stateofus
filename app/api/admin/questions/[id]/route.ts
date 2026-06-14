@@ -45,6 +45,10 @@ const patchSchema = z.object({
   subcategory: z.string().nullable().optional(),
   notes: z.string().nullable().optional(),
   mvp_priority: z.string().nullable().optional(),
+  // SwipeStack verdict labels (v5 q.yes/q.no) — persisted out-of-band like
+  // reveal_pattern since they live outside the shared questionInsertSchema.
+  swipe_yes_label: z.string().min(1).max(40).nullable().optional(),
+  swipe_no_label: z.string().min(1).max(40).nullable().optional(),
 });
 
 export async function PATCH(
@@ -120,6 +124,12 @@ export async function PATCH(
   upsertQuestion(valid.data, targets);
   if (d.reveal_pattern) {
     rawDb.prepare("UPDATE questions SET reveal_pattern = ? WHERE id = ?").run(d.reveal_pattern, id);
+  }
+  if (d.swipe_yes_label !== undefined) {
+    rawDb.prepare("UPDATE questions SET swipe_yes_label = ? WHERE id = ?").run(d.swipe_yes_label, id);
+  }
+  if (d.swipe_no_label !== undefined) {
+    rawDb.prepare("UPDATE questions SET swipe_no_label = ? WHERE id = ?").run(d.swipe_no_label, id);
   }
   return NextResponse.json({ id, updated: true });
 }
