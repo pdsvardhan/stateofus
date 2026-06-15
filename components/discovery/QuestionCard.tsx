@@ -114,8 +114,28 @@ function Ghost({ kind }: { kind: ReturnType<typeof ghostKind> }) {
 
 const dashTop: React.CSSProperties = { borderTop: "1.5px dashed rgba(24,22,42,.3)", paddingTop: 12 };
 
-/** TYPE 2a — big stat (a single dominant result) */
-function StatBlock({ p }: { p: Extract<NonNullable<DiscoveryCard["preview"]>, { kind: "stat" }> }) {
+/** TYPE 2a — big stat (a single dominant result). The visual form follows the
+ *  question's primary DV so the results rail isn't all identical bars (#6):
+ *  radial DVs read as a donut ring, everything else as the % + ink bar. */
+function StatBlock({ p, dv }: { p: Extract<NonNullable<DiscoveryCard["preview"]>, { kind: "stat" }>; dv: DvId }) {
+  if (dv === "radial") {
+    return (
+      <div style={dashTop} className="flex items-center gap-3.5">
+        <span
+          style={{
+            position: "relative", width: 56, height: 56, flexShrink: 0, borderRadius: "50%",
+            background: `conic-gradient(${p.color} ${p.pct * 3.6}deg, var(--paper-edge) 0)`,
+            border: "1.5px solid var(--ink)", display: "inline-flex", alignItems: "center", justifyContent: "center",
+          }}
+        >
+          <span style={{ width: 36, height: 36, borderRadius: "50%", background: "var(--paper-bright)", border: "1.5px solid var(--ink)", display: "inline-flex", alignItems: "center", justifyContent: "center", fontWeight: 900, fontSize: 14, letterSpacing: "-0.02em" }}>
+            {p.pct}%
+          </span>
+        </span>
+        <span style={{ fontWeight: 700, fontSize: 13.5, lineHeight: 1.25, flex: 1 }}>{p.line}</span>
+      </div>
+    );
+  }
   return (
     <div style={dashTop}>
       <div className="flex items-baseline gap-[9px]">
@@ -187,7 +207,7 @@ export function QuestionCard({ card, wide = true }: { card: DiscoveryCard; wide?
     >
       <div className="flex flex-wrap items-center gap-[7px]">
         <span style={{ width: 11, height: 11, borderRadius: 3, border: "1.5px solid var(--ink)", background: desk?.color ?? "var(--gold)", display: "inline-block" }} />
-        <span className="font-label uppercase" style={{ fontSize: 9.5, letterSpacing: "0.14em", color: "var(--muted)" }}>
+        <span className="font-label font-bold uppercase" style={{ fontSize: 9.5, letterSpacing: "0.14em", color: desk?.textColor ?? "var(--muted)" }}>
           {desk?.desk.replace("The ", "") ?? card.category}
         </span>
         <span
@@ -202,7 +222,7 @@ export function QuestionCard({ card, wide = true }: { card: DiscoveryCard; wide?
         {card.text}
       </div>
 
-      {variant === "stat" && card.preview?.kind === "stat" && <StatBlock p={card.preview} />}
+      {variant === "stat" && card.preview?.kind === "stat" && <StatBlock p={card.preview} dv={card.primary_dv as DvId} />}
       {variant === "tug" && card.preview?.kind === "tug" && <TugBlock p={card.preview} />}
       {variant === "teaser" && <TeaserBlock dv={card.primary_dv as DvId} />}
 

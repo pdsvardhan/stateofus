@@ -44,7 +44,7 @@ export function TrendingRail({ cards }: { cards: DiscoveryCard[] }) {
                 <span className="font-label font-bold uppercase" style={{ fontSize: 9.5, letterSpacing: "0.06em", color: "var(--lime)" }}>
                   {c.sample_n > 0 ? `${c.sample_n.toLocaleString("en-IN")} votes` : "fresh"}
                 </span>
-                <span className="font-label uppercase" style={{ fontSize: 9.5, letterSpacing: "0.06em", color: "var(--muted-warm)" }}>
+                <span className="font-label uppercase" style={{ fontSize: 9.5, letterSpacing: "0.06em", color: DESK_BY_CATEGORY[c.category as Category]?.color ?? "var(--muted-warm)" }}>
                   {DESK_BY_CATEGORY[c.category as Category]?.desk ?? c.mode.replace(/_/g, " ")}
                 </span>
               </div>

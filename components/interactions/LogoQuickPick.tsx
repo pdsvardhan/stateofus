@@ -2,16 +2,18 @@
 
 /**
  * Logo Quick Pick — brand-tile grid (v5 `logoquick`).
- * Real brand logos are not licensed yet, so each tile renders the locked v5
- * MVP treatment: a bold typographic mark (first letter on a paper-white
- * plate, ink border) above the brand name. Design-approved per DECISIONS —
- * not a stub.
+ * iter-3 #22 (adr-009-stateofus-brand-icons): real brand glyphs from Simple Icons,
+ * bundled locally and rendered monochrome (ink) to fit the newspaper aesthetic.
+ * Brands Simple Icons doesn't carry fall back to the original typographic mark
+ * (first letter on a paper-white plate). Supersedes the "logos not licensed"
+ * placeholder-only decision.
  */
 import { useState } from "react";
 import { motion } from "framer-motion";
 import type { InteractionProps } from "@/lib/interactions/registry";
 import { useDelayedSubmit } from "./useDelayedSubmit";
 import { tileSwatch } from "@/lib/dv/palette";
+import { BRAND_ICONS, normalizeBrand } from "@/lib/brand-icons";
 
 export function LogoQuickPick({ question, onSubmit, submitting }: InteractionProps) {
   const [picked, setPicked] = useState<string | null>(null);
@@ -28,6 +30,7 @@ export function LogoQuickPick({ question, onSubmit, submitting }: InteractionPro
       {question.options.map((o, i) => {
         const isPicked = picked === o.key;
         const tile = tileSwatch(o.key);
+        const icon = BRAND_ICONS[normalizeBrand(o.label)];
         return (
           <motion.button
             key={o.key}
@@ -46,12 +49,20 @@ export function LogoQuickPick({ question, onSubmit, submitting }: InteractionPro
               isPicked ? "bg-lime" : "bg-paper-bright"
             }`}
           >
-            <span
-              className="inline-flex h-[52px] w-[52px] items-center justify-center rounded-xl border-2 border-ink text-[19px] font-black"
-              style={{ background: tile.bg, color: tile.fg }}
-            >
-              {(o.label.trim()[0] ?? "?").toUpperCase()}
-            </span>
+            {icon ? (
+              <span className="inline-flex h-[52px] w-[52px] items-center justify-center rounded-xl border-2 border-ink bg-paper-white">
+                <svg viewBox="0 0 24 24" width="28" height="28" fill="var(--ink)" role="img" aria-hidden>
+                  <path d={icon.path} />
+                </svg>
+              </span>
+            ) : (
+              <span
+                className="inline-flex h-[52px] w-[52px] items-center justify-center rounded-xl border-2 border-ink text-[19px] font-black"
+                style={{ background: tile.bg, color: tile.fg }}
+              >
+                {(o.label.trim()[0] ?? "?").toUpperCase()}
+              </span>
+            )}
             <span className="text-center text-sm font-bold">{o.label}</span>
             {isPicked && (
               <motion.span

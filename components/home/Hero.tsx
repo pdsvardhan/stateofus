@@ -42,7 +42,7 @@ export function Hero({ heroes }: { heroes: DiscoveryCard[] }) {
         role="link"
         tabIndex={0}
         onKeyDown={(e) => e.key === "Enter" && open()}
-        className="group min-h-[340px] shadow-[7px_7px_0_var(--ink)] transition-[transform,box-shadow] hover:-translate-x-0.5 hover:-translate-y-0.5 hover:shadow-[9px_9px_0_var(--ink)] exp:min-h-[280px]"
+        className="group min-h-[268px] shadow-[7px_7px_0_var(--ink)] transition-[transform,box-shadow] hover:-translate-x-0.5 hover:-translate-y-0.5 hover:shadow-[9px_9px_0_var(--ink)] exp:min-h-[236px]"
         style={{
           border: "2px solid var(--ink)",
           borderRadius: 12,
@@ -75,7 +75,7 @@ export function Hero({ heroes }: { heroes: DiscoveryCard[] }) {
           style={{
             animation: reduced ? undefined : "cwFadeSwap .45s cubic-bezier(.2,.7,.2,1)",
             position: "relative",
-            minHeight: 175,
+            minHeight: 132,
             display: "flex",
             flexDirection: "column",
             gap: 14,
@@ -145,9 +145,6 @@ export function Hero({ heroes }: { heroes: DiscoveryCard[] }) {
           />
         ))}
         <CarBtn label="Next" onClick={() => setIdx((i) => (i + 1) % heroes.length)}>→</CarBtn>
-        <span className="font-label" style={{ fontSize: 10, letterSpacing: "0.12em", color: "var(--muted)" }}>
-          {idx + 1}/{heroes.length}
-        </span>
       </div>
     </div>
   );

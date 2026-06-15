@@ -77,16 +77,20 @@ export const CATEGORIES = [
 ] as const;
 export type Category = (typeof CATEGORIES)[number];
 
-/** Desk names locked in V5 round-1 answers. */
-export const DESK_BY_CATEGORY: Record<Category, { desk: string; color: string }> = {
+/** Desk names locked in V5 round-1 answers.
+ *  `color`     — the bright accent: fills, dots, chips, and label text on DARK surfaces.
+ *  `textColor` — the AA-contrast dark variant (#4): desk/category LABEL TEXT on LIGHT
+ *                surfaces, where the bright accent would be unreadable. One designated
+ *                colour per desk, used across the app. */
+export const DESK_BY_CATEGORY: Record<Category, { desk: string; color: string; textColor: string }> = {
   // Colours match the v5 prototype CATS exactly (line 1180): fire / blue / pink /
   // gold / lime / lavender. (Daily/Culture/Bazaar were previously scrambled.)
-  "City and Place Experience": { desk: "The City Desk", color: "var(--fire)" },
-  "Daily Life and Livability": { desk: "The Daily Grind", color: "var(--blue)" },
-  "Entertainment and Culture": { desk: "The Culture Desk", color: "var(--pink)" },
-  "Consumption and Brand Experience": { desk: "The Bazaar", color: "var(--gold)" },
-  "Identity Opinion and Society": { desk: "The Mirror", color: "var(--lavender)" },
-  "Fun and Internet Chaos": { desk: "The Chaos Bureau", color: "var(--lime)" },
+  "City and Place Experience": { desk: "The City Desk", color: "var(--fire)", textColor: "var(--fire-ink)" },
+  "Daily Life and Livability": { desk: "The Daily Grind", color: "var(--blue)", textColor: "var(--blue-ink)" },
+  "Entertainment and Culture": { desk: "The Culture Desk", color: "var(--pink)", textColor: "var(--pink-ink)" },
+  "Consumption and Brand Experience": { desk: "The Bazaar", color: "var(--gold)", textColor: "var(--gold-ink)" },
+  "Identity Opinion and Society": { desk: "The Mirror", color: "var(--lavender)", textColor: "var(--lavender-ink)" },
+  "Fun and Internet Chaos": { desk: "The Chaos Bureau", color: "var(--lime)", textColor: "var(--lime-ink)" },
 };
 
 export const LIFECYCLE_STATES = [

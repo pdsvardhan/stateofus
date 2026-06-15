@@ -22,7 +22,6 @@ const BTN =
 
 export function ShareActions({ questionId }: { questionId: string }) {
   const [open, setOpen] = useState(false);
-  const [copied, setCopied] = useState(false);
   const [toast, setToast] = useState<string | null>(null);
 
   function showToast(msg: string) {
@@ -44,13 +43,6 @@ export function ShareActions({ questionId }: { questionId: string }) {
     showToast("🔗 Link copied — pass it along");
   }
 
-  async function copyLink() {
-    await navigator.clipboard.writeText(`${window.location.origin}/q/${questionId}`);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 1800);
-    showToast("🔗 Link copied — paste it anywhere");
-  }
-
   return (
     <div className="relative flex flex-wrap gap-3">
       <button
@@ -67,16 +59,7 @@ export function ShareActions({ questionId }: { questionId: string }) {
         aria-expanded={open}
         className={`${BTN} min-w-[150px] flex-1 bg-ink text-paper hover:shadow-[5px_5px_0_color-mix(in_srgb,var(--ink)_40%,transparent)]`}
       >
-        ⬇&nbsp;Download&nbsp;<span className="ml-1 text-lime">PNG</span>
-      </button>
-
-      <button
-        type="button"
-        onClick={copyLink}
-        aria-label="Copy a link to this question"
-        className={`${BTN} ${copied ? "bg-lime" : "bg-paper-bright"} text-ink hover:shadow-[5px_5px_0_var(--ink)]`}
-      >
-        {copied ? "Copied ✓" : "Link"}
+        ⬇&nbsp;Download
       </button>
 
       {/* download style popover */}
