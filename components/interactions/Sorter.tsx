@@ -4,19 +4,14 @@
  * Sorter — shared by bucket_sort and tier_placement (v5 `sort`), parameterized
  * by question.targets ({kind: "buckets"|"tiers", labels}).
  *
- * Locked interaction (LAB-001 + LAB-002 + FB-016/017):
- *  - S1 tray structure: pool of chips up top, current item teed up in a
- *    separate "Now sorting" focus zone clearly above the targets.
- *  - S3 bucket treatment: solid colour-filled chunky target cards (TIERBG
- *    palette fire/gold/lime/blue, cycled).
- *  - Tap-only path (AC340): tap a chip to tee it up, tap a bucket to file.
- *  - Drag path: drag any chip (pool or focus) — a lime ghost pill follows the
- *    pointer; drop inside a bucket to file straight in.
+ * iter-3 #26/#27/#28/#29 — TAP-ONLY (drag removed; the old drag path felt
+ * broken). Tap a chip to tee it up into a slim staging strip, then tap a bucket
+ * to file it. The "Now sorting" caption is gone and the strip is slimmed.
+ *  - Tap-only path (AC340): tap a chip → tap a bucket.
  *  - LAB-002 early submit after ≥1 placement; unplaced items are per-item
  *    skips. Full sort auto-counts after the v5 520ms filing beat.
  */
-import { useRef, useState } from "react";
-import type { PointerEvent as ReactPointerEvent } from "react";
+import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import type { InteractionProps } from "@/lib/interactions/registry";
 import {
@@ -28,13 +23,6 @@ import {
 } from "./logic";
 import { useDelayedSubmit } from "./useDelayedSubmit";
 
-type DragState = {
-  key: string;
-  x0: number;
-  y0: number;
-  moved: boolean;
-};
-
 export function Sorter({ question, onSubmit, submitting }: InteractionProps) {
   const labels = question.targets?.labels ?? [];
   const items = question.options;
@@ -43,10 +31,7 @@ export function Sorter({ question, onSubmit, submitting }: InteractionProps) {
 
   const [placements, setPlacements] = useState<Record<string, number>>({});
   const [selected, setSelected] = useState<string | null>(null);
-  const [ghost, setGhost] = useState<{ key: string; x: number; y: number } | null>(null);
   const [counting, setCounting] = useState(false);
-  const drag = useRef<DragState | null>(null);
-  const bucketRefs = useRef<(HTMLDivElement | null)[]>([]);
   const { submitAfter, reduceMotion } = useDelayedSubmit(onSubmit);
 
   const current = nextSortItem(itemKeys, placements, selected);
@@ -84,79 +69,31 @@ export function Sorter({ question, onSubmit, submitting }: InteractionProps) {
     submitAfter(0, placementsPayload(placements, labels), () => setCounting(false));
   }
 
-  function hitBucket(x: number, y: number): number {
-    for (let i = 0; i < labels.length; i++) {
-      const el = bucketRefs.current[i];
-      if (!el) continue;
-      const r = el.getBoundingClientRect();
-      if (x >= r.left && x <= r.right && y >= r.top && y <= r.bottom) return i;
-    }
-    return -1;
-  }
-
-  function chipDown(key: string) {
-    return (e: ReactPointerEvent<HTMLButtonElement>) => {
-      if (locked) return;
-      drag.current = { key, x0: e.clientX, y0: e.clientY, moved: false };
-      e.currentTarget.setPointerCapture(e.pointerId);
-    };
-  }
-
-  function chipMove(e: ReactPointerEvent<HTMLButtonElement>) {
-    const d = drag.current;
-    if (!d) return;
-    const dx = e.clientX - d.x0;
-    const dy = e.clientY - d.y0;
-    if (!d.moved && Math.sqrt(dx * dx + dy * dy) > 7) d.moved = true;
-    if (d.moved) setGhost({ key: d.key, x: e.clientX, y: e.clientY });
-  }
-
-  function chipUp(e: ReactPointerEvent<HTMLButtonElement>) {
-    const d = drag.current;
-    if (!d) return;
-    drag.current = null;
-    if (d.moved) {
-      const ti = hitBucket(e.clientX, e.clientY);
-      if (ti >= 0) file(d.key, ti);
-      setGhost(null);
-    } else {
-      // plain tap: tee the chip up in the focus zone
-      setSelected(d.key);
-      setGhost(null);
-    }
-  }
-
   const pool = items.filter((o) => placements[o.key] === undefined && o.key !== current);
-  const targetsActive = current !== null || ghost !== null;
+  const targetsActive = current !== null;
 
   return (
     <div>
-      <div className="mb-3 font-label text-[11px] uppercase tracking-[0.14em] text-muted">
+      <div className="mb-3.5 font-label text-[11px] uppercase tracking-[0.14em] text-muted">
         {filedCount} of {items.length} filed · tap a chip to tee it up, then tap a
-        bucket — or drag straight in
+        bucket to file it
       </div>
 
-      {/* S1 pool tray */}
-      <div className="mb-3.5 flex min-h-[62px] flex-wrap items-center gap-2 rounded-[10px] border-2 border-dashed border-ink bg-paper-bright/60 p-[13px]">
-        {pool.map((o) => {
-          const ghosting = ghost?.key === o.key;
-          return (
-            <button
-              key={o.key}
-              type="button"
-              onPointerDown={chipDown(o.key)}
-              onPointerMove={chipMove}
-              onPointerUp={chipUp}
-              disabled={locked}
-              style={{ touchAction: "none" }}
-              className={`inline-flex min-h-[44px] cursor-grab select-none items-center gap-2 rounded-full border-2 border-ink px-[15px] py-2.5 font-ui text-sm font-bold transition-colors duration-200 hover:-translate-x-px hover:-translate-y-px ${
-                ghosting ? "bg-paper-edge text-muted-warm" : "bg-paper-bright text-ink"
-              }`}
-            >
-              {o.label}
-            </button>
-          );
-        })}
+      {/* S1 pool tray — restyled tap chips (#27); no dashed frame, chunkier pills */}
+      <div className="mb-3 flex flex-wrap items-center gap-2">
+        {pool.map((o) => (
+          <button
+            key={o.key}
+            type="button"
+            onClick={() => {
+              if (!locked) setSelected(o.key);
+            }}
+            disabled={locked}
+            className="inline-flex min-h-[42px] select-none items-center rounded-full border-2 border-ink bg-paper-bright px-[16px] py-2 font-ui text-sm font-bold text-ink shadow-[2px_2px_0_color-mix(in_srgb,var(--ink)_18%,transparent)] transition-all duration-150 hover:-translate-x-px hover:-translate-y-px hover:bg-paper-white hover:shadow-[3px_3px_0_var(--ink)] disabled:opacity-50 disabled:shadow-none"
+          >
+            {o.label}
+          </button>
+        ))}
         {!current && pool.length === 0 && (
           <span className="font-label text-[11px] uppercase tracking-[0.1em] text-muted">
             All filed — counting your sort…
@@ -164,48 +101,25 @@ export function Sorter({ question, onSubmit, submitting }: InteractionProps) {
         )}
       </div>
 
-      {/* "Now sorting" focus zone — current item, clearly separated (FB-016/017) */}
-      {current !== null && ghost?.key !== current && (
-        <div className="mb-4 rounded-xl border-2 border-dashed border-ink bg-paper-bright/75 px-3.5 pb-3.5 pt-3 text-center">
-          <div className="mb-[9px] font-label text-[10px] uppercase tracking-[0.16em] text-muted">
-            Now sorting
-          </div>
-          <motion.button
+      {/* slim staging strip — teed-up item (#26 slimmed, #28 no caption, #29 reworded) */}
+      {current !== null && (
+        <div className="mb-4 flex items-center justify-between gap-3 rounded-lg border-2 border-dashed border-ink bg-paper-bright/75 px-3 py-2">
+          <motion.span
             key={current}
-            type="button"
-            onPointerDown={chipDown(current)}
-            onPointerMove={chipMove}
-            onPointerUp={chipUp}
-            disabled={locked}
-            initial={reduceMotion ? false : { opacity: 0, scale: 0.6 }}
-            animate={
-              reduceMotion
-                ? { opacity: 1, scale: 1 }
-                : { opacity: 1, scale: 1, y: [0, -5, 0] }
-            }
-            transition={{
-              opacity: { duration: 0.3 },
-              scale: { duration: 0.3, ease: [0.34, 1.56, 0.64, 1] },
-              y: { duration: 2.6, delay: 1, repeat: Infinity, ease: "easeInOut" },
-            }}
-            style={{
-              touchAction: "none",
-              boxShadow: "6px 6px 0 color-mix(in srgb, var(--ink) 30%, transparent)",
-            }}
-            className="inline-flex cursor-grab select-none items-center gap-2.5 rounded-xl border-2 border-ink bg-ink px-[22px] py-[13px] text-paper"
+            initial={reduceMotion ? false : { opacity: 0, x: -8 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.25, ease: [0.34, 1.56, 0.64, 1] }}
+            className="inline-flex items-center rounded-md border-2 border-ink bg-ink px-3 py-1.5 font-ui text-[14px] font-extrabold text-paper"
           >
-            <span className="text-base tracking-[2px] text-muted-warm">⠿</span>
-            <span className="font-ui text-[16.5px] font-extrabold">
-              {labelByKey.get(current)}
-            </span>
-          </motion.button>
-          <div className="mt-[9px] font-label text-[10px] uppercase tracking-[0.12em] text-muted">
-            ▼ drag it down, or just tap a bucket ▼
-          </div>
+            {labelByKey.get(current)}
+          </motion.span>
+          <span className="font-label text-[10px] uppercase tracking-[0.12em] text-muted">
+            tap a bucket below to file it ↓
+          </span>
         </div>
       )}
 
-      {/* S3 solid-colour bucket cards (LAB-001) */}
+      {/* S3 solid-colour bucket cards (LAB-001) — tap to file */}
       <div
         className="grid grid-cols-1 gap-3 exp:[grid-template-columns:repeat(var(--bucket-n),1fr)]"
         style={{ "--bucket-n": labels.length } as React.CSSProperties}
@@ -215,9 +129,6 @@ export function Sorter({ question, onSubmit, submitting }: InteractionProps) {
           return (
             <div
               key={label}
-              ref={(el) => {
-                bucketRefs.current[ti] = el;
-              }}
               onClick={() => {
                 if (current) file(current, ti);
               }}
@@ -293,25 +204,6 @@ export function Sorter({ question, onSubmit, submitting }: InteractionProps) {
           <span className="text-lime">→</span>
         </motion.button>
       ) : null}
-
-      {/* drag ghost — lime pill riding the pointer */}
-      {ghost && (
-        <div
-          className="pointer-events-none fixed left-0 top-0 z-50"
-          style={{
-            transform: `translate(${ghost.x}px, ${ghost.y}px) translate(-50%, -50%) rotate(-4deg)`,
-          }}
-        >
-          <span
-            style={{
-              boxShadow: "5px 5px 0 color-mix(in srgb, var(--ink) 30%, transparent)",
-            }}
-            className="inline-block rounded-full border-2 border-ink bg-lime px-4 py-2.5 font-ui text-sm font-bold text-ink"
-          >
-            {labelByKey.get(ghost.key)}
-          </span>
-        </div>
-      )}
     </div>
   );
 }

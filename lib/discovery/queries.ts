@@ -416,7 +416,7 @@ export function composeFeedRows(excludeIds: Set<string> = new Set()): FeedRowDef
   }
 
   return [
-    { key: "locked", title: "Vote to unlock", sub: "answers hidden until you vote", cards: groups.locked },
+    { key: "locked", title: "Vote to unlock", sub: "", cards: groups.locked },
     { key: "results", title: "Results are out", sub: "the country has spoken", cards: groups.results },
     { key: "quick", title: "Quick picks", sub: "one tap, thirty seconds", cards: groups.quick },
     { key: "sort", title: "The sorting desk", sub: "file things where they belong", cards: groups.sort },

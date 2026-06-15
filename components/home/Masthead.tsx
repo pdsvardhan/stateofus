@@ -27,7 +27,7 @@ export function Masthead() {
             width={300}
             height={118}
             priority
-            style={{ height: 38, width: "auto", mixBlendMode: "multiply" }}
+            style={{ height: 33, width: "auto", mixBlendMode: "multiply" }}
           />
         </Link>
         <div className="hidden font-label font-bold uppercase text-ink exp:block" style={{ letterSpacing: "0.22em", fontSize: 11 }}>

@@ -28,6 +28,16 @@
   --blue: #7da7ff;
   --pink: #f2a0c4;
   --lavender: #b79ce4; /* The Mirror desk (MR1) */
+  /* desk label ink — AA-contrast text variants of the desk accents, for desk/
+     category LABEL TEXT on light surfaces (the bright accents above are fill-only
+     and unreadable as small text on paper). One designated colour per desk, used
+     across the app. #4 (iter-3). */
+  --fire-ink: #c2371f; /* The City Desk */
+  --blue-ink: #2f5ccc; /* The Daily Grind */
+  --pink-ink: #bd3d77; /* The Culture Desk */
+  --gold-ink: #9a6800; /* The Bazaar */
+  --lavender-ink: #7449bf; /* The Mirror */
+  --lime-ink: #5c7a12; /* The Chaos Bureau */
   --agree: #2b8a3e; /* the one blessed green (CA-003) */
   --silver: #c9c5d6; /* podium step 2 (v5 prototype) */
   --bronze: #d98e5f; /* podium step 3 (v5 prototype) */

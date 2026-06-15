@@ -45,9 +45,6 @@ export function DeskChips({ active }: { active?: string }) {
           </Link>
         );
       })}
-      <Link href="/search" className={chip} style={{ ...chipStyle, background: "var(--paper)" }}>
-        🔍 Search
-      </Link>
     </div>
   );
 }

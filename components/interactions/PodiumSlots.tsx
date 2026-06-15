@@ -35,6 +35,9 @@ export function PodiumSlots({ question, onSubmit, submitting }: InteractionProps
   const labelByKey = new Map(question.options.map((o) => [o.key, o.label]));
   const allFilled = slots.every((s) => s !== null);
   const locked = submitting || counting;
+  // The next slot a tap will fill (gold → silver → bronze). Drives the active-slot
+  // highlight so it's obvious where the next pick lands (#15). -1 once full.
+  const activeSlot = slots.findIndex((s) => s === null);
 
   function take(key: string) {
     if (locked) return;
@@ -66,7 +69,8 @@ export function PodiumSlots({ question, onSubmit, submitting }: InteractionProps
   return (
     <div>
       <div className="mb-3.5 font-label text-[11px] uppercase tracking-[0.14em] text-muted">
-        Tap an option to place it · gold fills first · tap a slot to clear it
+        Tap an option below — it lands on the highlighted step. Fill 1st, then 2nd,
+        then 3rd · tap a filled step to clear it
       </div>
 
       <div className="mb-5 flex items-end gap-3">
@@ -74,6 +78,7 @@ export function PodiumSlots({ question, onSubmit, submitting }: InteractionProps
           const meta = SLOT_META[si];
           const filledKey = slots[si];
           const filled = filledKey !== null;
+          const isActive = !filled && si === activeSlot;
           return (
             <div key={meta.rank} className="flex flex-1 flex-col items-center gap-2">
               <motion.button
@@ -83,12 +88,27 @@ export function PodiumSlots({ question, onSubmit, submitting }: InteractionProps
                 aria-label={
                   filled
                     ? `Clear ${labelByKey.get(filledKey)} from ${meta.place} place`
-                    : `${meta.place} place — empty`
+                    : isActive
+                      ? `${meta.place} place — next pick lands here`
+                      : `${meta.place} place — empty`
                 }
-                whileHover={!locked && !reduceMotion ? { y: -3 } : undefined}
-                transition={{ duration: 0.18, ease: [0.34, 1.56, 0.64, 1] }}
-                className={`min-h-[56px] w-full rounded-[10px] border-2 border-ink p-2 font-ui text-[13.5px] font-extrabold ${
-                  filled ? "border-solid bg-lime" : "border-dashed bg-paper-bright"
+                whileHover={!locked && filled && !reduceMotion ? { y: -3 } : undefined}
+                animate={
+                  isActive && !reduceMotion
+                    ? { scale: [1, 1.03, 1] }
+                    : { scale: 1 }
+                }
+                transition={
+                  isActive && !reduceMotion
+                    ? { duration: 1.6, repeat: Infinity, ease: "easeInOut" }
+                    : { duration: 0.18, ease: [0.34, 1.56, 0.64, 1] }
+                }
+                className={`min-h-[56px] w-full rounded-[10px] border-2 p-2 font-ui text-[13.5px] font-extrabold transition-colors ${
+                  filled
+                    ? "border-solid border-ink bg-lime"
+                    : isActive
+                      ? "border-solid border-ink bg-lime/30 shadow-[0_0_0_3px_var(--lime)]"
+                      : "border-dashed border-ink/35 bg-paper-bright/50 opacity-70"
                 }`}
               >
                 <AnimatePresence mode="wait" initial={false}>
@@ -102,15 +122,23 @@ export function PodiumSlots({ question, onSubmit, submitting }: InteractionProps
                     >
                       {labelByKey.get(filledKey)} ×
                     </motion.span>
+                  ) : isActive ? (
+                    <motion.span
+                      key="active"
+                      initial={false}
+                      className="inline-block font-label text-[10px] font-bold uppercase tracking-[0.1em] text-ink"
+                    >
+                      {meta.place} place
+                      <br />
+                      tap an option ↓
+                    </motion.span>
                   ) : (
                     <motion.span
                       key="empty"
                       initial={false}
                       className="inline-block font-label text-[10px] font-bold uppercase tracking-[0.1em] text-muted"
                     >
-                      {meta.place} place
-                      <br />
-                      tap an option ↓
+                      {meta.place}
                     </motion.span>
                   )}
                 </AnimatePresence>
@@ -122,7 +150,7 @@ export function PodiumSlots({ question, onSubmit, submitting }: InteractionProps
                   boxShadow:
                     "inset 0 -6px 0 color-mix(in srgb, var(--ink) 15%, transparent)",
                 }}
-                className="flex w-full items-center justify-center rounded-t-lg border-2 border-ink font-ui text-[21px] font-black italic text-ink"
+                className="flex w-full items-center justify-center rounded-t-lg border-2 border-ink font-ui text-[19px] font-extrabold text-ink"
               >
                 {meta.rank}
               </div>

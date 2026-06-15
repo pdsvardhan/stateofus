@@ -220,34 +220,24 @@ export function ExperienceClient({
               votes={result.sample_n}
             />
 
-            {/* Question header with the Counted ✓ stamp slammed top-right (v5 550-556) */}
-            <div className="relative mb-6 pr-24 sm:pr-28">
+            {/* Question header — canonical vote count lives here (trust visible,
+                never dominant); the Counted ✓ stamp was removed per iter-3 #10/#17. */}
+            <div className="mb-6">
               <div className="mb-2 font-label text-[10px] uppercase tracking-[.16em] text-muted">
                 {deskName} · {result.sample_n.toLocaleString("en-IN")} votes counted
               </div>
               {resultHeading}
-              {result.your_payload && (
-                <motion.span
-                  initial={reduced ? false : { scale: 2.6, opacity: 0, rotate: -18 }}
-                  animate={
-                    reduced
-                      ? { scale: 1, opacity: 1, rotate: -8 }
-                      : { scale: [2.6, 0.92, 1.05, 1], opacity: [0, 1, 1, 1], rotate: [-18, -8, -8, -8] }
-                  }
-                  transition={{ duration: 0.55, times: [0, 0.55, 0.75, 1], ease: [0.2, 0.7, 0.2, 1] }}
-                  className="absolute -top-1.5 right-0 rounded-[7px] border-[3px] border-fire bg-paper/70 px-[11px] py-[7px] font-ui text-[15px] font-black text-fire uppercase"
-                >
-                  Counted ✓
-                </motion.span>
-              )}
             </div>
 
             {result.still_counting ? (
               <StillCounting question={question} result={result} />
             ) : (
-              <div className="exp:grid exp:grid-cols-[1.25fr_0.75fr] exp:items-start exp:gap-6">
-                {/* MAIN — the count, read left */}
-                <div className="mb-6 flex flex-col gap-5 exp:mb-0">
+              // iter-3 #19/#20/#21: stacked single column — result viz → where you
+              // landed (personal insight + desk notes) → rate + share inline →
+              // recommendations below the viz.
+              <div className="mx-auto flex max-w-[860px] flex-col gap-7">
+                {/* the count, read first */}
+                <div className="flex flex-col gap-5">
                   {result.early_returns && (
                     <div className="border-2 border-ink bg-gold-tint px-3 py-1.5 font-label text-xs font-bold tracking-wider text-ink">
                       EARLY RETURNS — the count is young, numbers may move
@@ -261,53 +251,45 @@ export function ExperienceClient({
                       <PrimaryDv question={question} result={result} dvId={dvDefs[0].id} />
                     </div>
                   ) : null}
-
-                  {notes.length > 0 && (
-                    <div className="hidden exp:block">
-                      <DeskNotes notes={notes} />
-                    </div>
-                  )}
                 </div>
 
-                {/* RAIL — "Your position", sticky below the masthead */}
-                <aside className="flex flex-col gap-4 exp:sticky exp:top-[90px]">
+                {/* WHERE YOU LANDED — mandatory personal insight + desk notes */}
+                <div className="flex flex-col gap-4">
                   <div className="flex items-center gap-3">
                     <span className="rounded border-[1.5px] border-ink bg-lime px-[11px] py-[5px] font-label text-[10px] font-bold uppercase tracking-[.22em] text-ink">
-                      Your position
+                      Where you landed
                     </span>
                     <span aria-hidden className="h-0.5 flex-1 bg-ink" />
                   </div>
-
                   {verdict && <PersonalCard big={verdict.big} sub={verdict.sub} />}
-
-                  {notes.length > 0 && (
-                    <div className="exp:hidden">
-                      <DeskNotes notes={notes} inline />
-                    </div>
-                  )}
-
-                  <ReactionBar questionId={question.id} />
-
-                  {railRelated}
-
+                  {notes.length > 0 && <DeskNotes notes={notes} />}
                   {question.geo && <RegionChip />}
+                </div>
 
-                  <ShareActions questionId={question.id} />
-
-                  <div className="flex items-center justify-between border-t-2 border-ink pt-3">
-                    <span className="font-label text-xs text-muted">
-                      {result.sample_n.toLocaleString("en-IN")} counted
-                    </span>
-                    {answerable && result.your_payload && (
-                      <button
-                        onClick={() => setPhase("answer")}
-                        className="font-label text-xs font-bold text-ink underline decoration-2 underline-offset-2"
-                      >
-                        Change my answer
-                      </button>
-                    )}
+                {/* rate the question + share/download, one line (#20/#21) */}
+                <div className="flex flex-col gap-4 border-t-2 border-ink pt-5 exp:flex-row exp:items-center exp:justify-between exp:gap-6">
+                  <div className="shrink-0">
+                    <ReactionBar questionId={question.id} />
                   </div>
-                </aside>
+                  <div className="w-full exp:max-w-[440px]">
+                    <ShareActions questionId={question.id} />
+                  </div>
+                </div>
+
+                {/* recommendations / up next — below the result (#19) */}
+                {railRelated}
+
+                {/* change my answer (vote count is canonical in the header above) */}
+                {answerable && result.your_payload && (
+                  <div className="flex justify-end border-t-2 border-ink pt-3">
+                    <button
+                      onClick={() => setPhase("answer")}
+                      className="font-label text-xs font-bold text-ink underline decoration-2 underline-offset-2"
+                    >
+                      Change my answer
+                    </button>
+                  </div>
+                )}
               </div>
             )}
           </motion.section>

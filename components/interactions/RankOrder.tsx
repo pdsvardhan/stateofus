@@ -92,7 +92,7 @@ export function RankOrder({ question, onSubmit, submitting }: InteractionProps) 
               <span className="shrink-0 text-[15px] tracking-[2px] text-muted-warm">
                 ⠿
               </span>
-              <span className="w-[34px] shrink-0 font-ui text-[19px] font-black italic text-fire">
+              <span className="w-[34px] shrink-0 font-ui text-[18px] font-extrabold text-fire">
                 {pos + 1}
               </span>
               <span className="flex-1 font-ui text-[15px] font-semibold">
