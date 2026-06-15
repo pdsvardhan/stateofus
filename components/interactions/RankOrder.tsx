@@ -44,14 +44,14 @@ export function RankOrder({ question, onSubmit, submitting }: InteractionProps) 
   function arrowClass(atEdge: boolean): string {
     if (atEdge) return "pointer-events-none opacity-0";
     if (dragUsed)
-      return "opacity-25 focus-visible:opacity-100 group-focus-within:opacity-100 group-hover:opacity-100";
+      return "opacity-25 hover:opacity-100 focus-visible:opacity-100";
     return "opacity-100";
   }
 
   return (
     <div>
       <div className="mb-3.5 font-label text-[11px] uppercase tracking-[0.14em] text-muted">
-        Drag rows into place (or nudge with the arrows) · #1 = your top spot
+        Drag rows into place (or nudge with the arrows)
       </div>
 
       <Reorder.Group

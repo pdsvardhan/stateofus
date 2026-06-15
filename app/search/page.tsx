@@ -24,11 +24,6 @@ export default async function SearchPage(props: {
    <div className="min-h-screen">
     <Masthead />
     <main className="mx-auto max-w-[1280px] px-[22px] pb-[90px] pt-8">
-      <div className="pb-3">
-        <Link href="/" className="font-label text-xs font-bold text-ink underline decoration-2 underline-offset-2">
-          ← Front page
-        </Link>
-      </div>
       <h1 className="mb-4 font-editorial text-3xl font-extrabold text-ink">Search the catalogue</h1>
 
       <form action="/search" method="get" role="search" className="mb-6 flex gap-2">

@@ -134,11 +134,6 @@ body {
    slipped under it entirely. Authoring-time sizing is the correct enforcement. */
 
 /* ---- v5 prototype keyframes (ported verbatim) ---- */
-@keyframes cwPulse {
-  0% { box-shadow: 0 0 0 0 rgba(255, 90, 71, 0.55); }
-  70% { box-shadow: 0 0 0 9px rgba(255, 90, 71, 0); }
-  100% { box-shadow: 0 0 0 0 rgba(255, 90, 71, 0); }
-}
 @keyframes cwGrow { from { transform: scaleX(0); } to { transform: scaleX(1); } }
 @keyframes cwRise { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
 @keyframes cwPopIn { from { opacity: 0; transform: scale(0.6); } to { opacity: 1; transform: scale(1); } }
