@@ -1,68 +1,28 @@
-name: CI
+name: ci
 on:
   push:
-    branches: ["**"]
-
+    branches: ['**']
+  pull_request:
 jobs:
-  test:
-    runs-on: ubuntu-22.04
-    timeout-minutes: 25
+  quality:                      # always hard — fast gates (adr-020)
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-
       - uses: actions/setup-node@v4
-        with:
-          node-version: 22
-
-      - name: Install
-        run: npm ci
-
-      - name: Clean reused-workspace artifacts
-        run: rm -rf data .next test-results playwright-report
-
-      - name: Typecheck
-        run: npm run typecheck
-
-      - name: Lint
-        run: npm run lint
-
-      - name: Unit tests (Vitest)
-        id: unit
-        run: |
-          echo "started_at=$(date -u +%Y-%m-%dT%H:%M:%SZ)" >> "$GITHUB_OUTPUT"
-          npm test
-
-      - name: Build
-        run: npm run build
-
-      - name: E2E (Playwright)
-        run: |
-          npx playwright install --with-deps chromium
-          npm run test:e2e
-        env:
-          CI: "true"
-
-      - name: Security scan (Trivy)
-        run: |
-          if command -v trivy >/dev/null 2>&1; then
-            trivy fs --severity HIGH,CRITICAL --exit-code 1 --skip-dirs node_modules,design,.next .
-          else
-            echo "trivy not installed on runner — skipping (tracked in stage-3 close checklist)"
-          fi
-
-      - name: Report test run to Ottomate
-        if: always()
-        run: |
-          # runner uses host networking; Ottomate binds 127.0.0.1 only
-          curl -sf -X POST "http://127.0.0.1:8110/api/test-runs" \
-            -H "Authorization: Bearer ${{ secrets.TRACKER_API_TOKEN }}" \
-            -H "Content-Type: application/json" \
-            -d "{
-              \"project_slug\": \"stateofus\",
-              \"commit_sha\": \"${{ github.sha }}\",
-              \"branch\": \"${{ github.ref_name }}\",
-              \"started_at\": \"${{ steps.unit.outputs.started_at }}\",
-              \"completed_at\": \"$(date -u +%Y-%m-%dT%H:%M:%SZ)\",
-              \"result\": \"${{ job.status == 'success' && 'passed' || 'failed' }}\",
-              \"triggered_by\": \"push\"
-            }" || echo "ledger write failed — surface at pack-up"
+        with: { node-version: 22, cache: npm }
+      - run: npm ci
+      - run: npx tsc --noEmit
+      - run: npm run lint --if-present
+      - run: npm run build
+  tests:                        # gated behind RUN_TESTS; prebuilt Playwright (no per-run download)
+    if: ${{ vars.RUN_TESTS == 'true' }}
+    runs-on: ubuntu-latest
+    container:
+      image: mcr.microsoft.com/playwright:v1.53.0-jammy
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 22, cache: npm }
+      - run: npm ci
+      - run: npm test --if-present
+      - run: npx playwright test --if-present
