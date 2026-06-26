@@ -20,6 +20,11 @@ const MODE_TAG: Record<string, string> = {
   tier_placement: "Tier placement",
   rank_order: "Rank order",
   podium_slots: "Podium",
+  spectrum: "Spectrum",
+  coin_allocation: "Coin allocation",
+  two_axis: "Two-axis",
+  bracket: "Bracket",
+  pin_map: "Pin on map",
 };
 
 /** primary DV id → which ghost family to draw */
@@ -34,26 +39,73 @@ function ghostKind(dv: DvId): "bars" | "donut" | "podium" | "map" | "flow" | "ti
   return "bars";
 }
 
-function Ghost({ kind }: { kind: ReturnType<typeof ghostKind> }) {
+/** ghost accent palette (cycled) — matches the fixed dummy shapes' inks. */
+const GHOST_INKS = ["var(--fire)", "var(--gold)", "var(--blue)", "var(--lime)", "var(--pink)"];
+
+/**
+ * The DV-typed mini shape behind teaser cards AND on data cards (variant "dv").
+ * When `props` (descending result proportions, integer %) is supplied, the
+ * proportion-bearing shapes (bars/donut/podium/treemap/tier) are driven by the
+ * real numbers instead of fixed dummy widths; map/flow/heat keep their fixed
+ * representative look (no single-% mapping). Reuses the existing visuals.
+ */
+function Ghost({ kind, props }: { kind: ReturnType<typeof ghostKind>; props?: number[] }) {
+  const live = props && props.length > 0 ? props : null;
   switch (kind) {
-    case "donut":
+    case "donut": {
+      // build conic stops from the live shares (capped to 5), else the dummy ring.
+      let ring = "conic-gradient(var(--fire) 0 38%, var(--gold) 38% 62%, var(--blue) 62% 83%, var(--lime) 83% 100%)";
+      if (live) {
+        const total = live.reduce((a, b) => a + b, 0) || 1;
+        let acc = 0;
+        const stops = live
+          .slice(0, 5)
+          .map((p, i) => {
+            const from = (acc / total) * 360;
+            acc += p;
+            const to = (acc / total) * 360;
+            return `${GHOST_INKS[i % GHOST_INKS.length]} ${from}deg ${to}deg`;
+          })
+          .join(", ");
+        ring = `conic-gradient(${stops})`;
+      }
+      const bars = live ? live.slice(0, 2) : [70, 45];
+      const maxBar = Math.max(...bars, 1);
       return (
         <div className="flex items-center gap-3">
-          <span style={{ width: 44, height: 44, borderRadius: "50%", background: "conic-gradient(var(--fire) 0 38%, var(--gold) 38% 62%, var(--blue) 62% 83%, var(--lime) 83% 100%)", border: "1.5px solid var(--ink)", flexShrink: 0 }} />
+          <span style={{ width: 44, height: 44, borderRadius: "50%", background: ring, border: "1.5px solid var(--ink)", flexShrink: 0 }} />
           <span className="flex flex-1 flex-col gap-[5px]">
-            <span style={{ height: 8, borderRadius: 100, background: "var(--fire)", width: "70%" }} />
-            <span style={{ height: 8, borderRadius: 100, background: "var(--gold)", width: "45%" }} />
+            {bars.map((p, i) => (
+              <span key={i} style={{ height: 8, borderRadius: 100, background: GHOST_INKS[i % GHOST_INKS.length], width: `${Math.max(18, Math.round((p / maxBar) * 100))}%` }} />
+            ))}
           </span>
         </div>
       );
-    case "podium":
+    }
+    case "podium": {
+      // 3 steps in visual order 2|1|3; heights from top-3 shares when live.
+      const top3 = live ? live.slice(0, 3) : [60, 100, 38];
+      const max = Math.max(...top3, 1);
+      const h = (p: number) => `${Math.max(24, Math.round((p / max) * 100))}%`;
+      const steps = live
+        ? [
+            { p: top3[1] ?? 0, bg: "var(--ink-soft)" },
+            { p: top3[0] ?? 0, bg: "var(--fire)" },
+            { p: top3[2] ?? 0, bg: "var(--muted-violet)" },
+          ]
+        : [
+            { p: 60, bg: "var(--ink-soft)" },
+            { p: 100, bg: "var(--fire)" },
+            { p: 38, bg: "var(--muted-violet)" },
+          ];
       return (
         <div className="flex items-end gap-[7px]" style={{ height: 46 }}>
-          <span style={{ flex: 1, height: "60%", background: "var(--ink-soft)", borderRadius: "4px 4px 0 0" }} />
-          <span style={{ flex: 1, height: "100%", background: "var(--fire)", borderRadius: "4px 4px 0 0" }} />
-          <span style={{ flex: 1, height: "38%", background: "var(--muted-violet)", borderRadius: "4px 4px 0 0" }} />
+          {steps.map((s, i) => (
+            <span key={i} style={{ flex: 1, height: h(s.p), background: s.bg, borderRadius: "4px 4px 0 0" }} />
+          ))}
         </div>
       );
+    }
     case "map":
       return (
         <div style={{ display: "grid", gridTemplateColumns: "repeat(6,1fr)", gap: 3, maxWidth: 150 }}>
@@ -91,9 +143,13 @@ function Ghost({ kind }: { kind: ReturnType<typeof ghostKind> }) {
           ))}
         </div>
       );
-    case "treemap":
+    case "treemap": {
+      // first column width follows the leader's share when live (bigger leader
+      // → wider first block); reuse the same 5-block mosaic otherwise.
+      const leader = live ? live[0] : 50;
+      const firstFr = Math.max(1.6, Math.min(4, (leader / 100) * 5));
       return (
-        <div style={{ display: "grid", gridTemplateColumns: "3fr 2fr 1.4fr", gridTemplateRows: "24px 20px", gap: 3 }}>
+        <div style={{ display: "grid", gridTemplateColumns: `${firstFr}fr 2fr 1.4fr`, gridTemplateRows: "24px 20px", gap: 3 }}>
           <span style={{ gridRow: "1 / 3", background: "var(--fire)", borderRadius: 3 }} />
           <span style={{ background: "var(--gold)", borderRadius: 3 }} />
           <span style={{ background: "var(--blue)", borderRadius: 3 }} />
@@ -101,14 +157,22 @@ function Ghost({ kind }: { kind: ReturnType<typeof ghostKind> }) {
           <span style={{ background: "var(--pink)", borderRadius: 3 }} />
         </div>
       );
-    default:
+    }
+    default: {
+      // bars family — widths from the top shares when live, else the dummy set.
+      const vals = live ? live.slice(0, 3) : [82, 64, 47];
+      const max = Math.max(...vals, 1);
       return (
         <div className="flex flex-col gap-1.5">
-          <span style={{ height: 9, borderRadius: 100, background: "var(--fire)", width: "82%" }} />
-          <span style={{ height: 9, borderRadius: 100, background: "var(--gold)", width: "64%" }} />
-          <span style={{ height: 9, borderRadius: 100, background: "var(--blue)", width: "47%" }} />
+          {vals.map((p, i) => (
+            <span
+              key={i}
+              style={{ height: 9, borderRadius: 100, background: GHOST_INKS[i % GHOST_INKS.length], width: `${Math.max(16, Math.round((p / max) * 100))}%` }}
+            />
+          ))}
         </div>
       );
+    }
   }
 }
 
@@ -168,6 +232,22 @@ function TugBlock({ p }: { p: Extract<NonNullable<DiscoveryCard["preview"]>, { k
   );
 }
 
+/** TYPE 2c — DV mini (the question's real result DV, unblurred, with live
+ *  proportions). Renders for modes whose result isn't a single % / tug, so each
+ *  data card reflects its actual DV instead of falling back to a teaser. */
+function DvBlock({ p }: { p: Extract<NonNullable<DiscoveryCard["preview"]>, { kind: "dv" }> }) {
+  return (
+    <div style={dashTop}>
+      <div className="font-label font-bold uppercase" style={{ fontSize: 9.5, letterSpacing: "0.14em", color: "var(--fire)", marginBottom: 8 }}>
+        India has decided
+      </div>
+      <div style={{ minHeight: 44 }}>
+        <Ghost kind={ghostKind(p.primary_dv as DvId)} props={p.props} />
+      </div>
+    </div>
+  );
+}
+
 /** TYPE 1 — teaser (DV-typed ghost behind the lock badge) */
 function TeaserBlock({ dv }: { dv: DvId }) {
   return (
@@ -212,9 +292,9 @@ export function QuestionCard({ card, wide = true }: { card: DiscoveryCard; wide?
         </span>
         <span
           className="font-label font-bold uppercase text-ink"
-          style={{ fontSize: 9.5, letterSpacing: "0.1em", border: "1.5px solid var(--ink)", background: variant === "stat" || variant === "tug" ? "var(--lime)" : desk?.color ?? "var(--lime)", padding: "3px 14px 3px 9px", marginLeft: "auto", clipPath: "polygon(0 0, calc(100% - 7px) 0, 100% 100%, 0 100%)" }}
+          style={{ fontSize: 9.5, letterSpacing: "0.1em", border: "1.5px solid var(--ink)", background: variant === "stat" || variant === "tug" || variant === "dv" ? "var(--lime)" : desk?.color ?? "var(--lime)", padding: "3px 14px 3px 9px", marginLeft: "auto", clipPath: "polygon(0 0, calc(100% - 7px) 0, 100% 100%, 0 100%)" }}
         >
-          {variant === "stat" || variant === "tug" ? "Result" : MODE_TAG[card.mode] ?? card.mode}
+          {variant === "stat" || variant === "tug" || variant === "dv" ? "Result" : MODE_TAG[card.mode] ?? card.mode}
         </span>
       </div>
 
@@ -224,6 +304,7 @@ export function QuestionCard({ card, wide = true }: { card: DiscoveryCard; wide?
 
       {variant === "stat" && card.preview?.kind === "stat" && <StatBlock p={card.preview} dv={card.primary_dv as DvId} />}
       {variant === "tug" && card.preview?.kind === "tug" && <TugBlock p={card.preview} />}
+      {variant === "dv" && card.preview?.kind === "dv" && <DvBlock p={card.preview} />}
       {variant === "teaser" && <TeaserBlock dv={card.primary_dv as DvId} />}
 
       <div className="mt-auto flex items-center justify-between gap-2.5">
