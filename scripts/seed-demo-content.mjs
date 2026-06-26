@@ -32,10 +32,17 @@ const ADMIN_COOKIE = createHash("sha256").update(ADMIN_TOKEN).digest("hex");
 const MIN_REVEAL_N = 10;
 
 /* ----------------------------- registry mirror ---------------------------- */
-const PICK_MODES = ["quick_pick", "logo_quick_pick", "tradeoff_cards"];
+// iter-5: PICK_MODES gained coin_allocation / bracket / pin_map (all { counts });
+// new modes spectrum / two_axis added. Mirrors lib/dv/transforms PICK_MODES +
+// components/dv/*.tsx supportedModes.
+const PICK_MODES = [
+  "quick_pick", "logo_quick_pick", "tradeoff_cards",
+  "coin_allocation", "bracket", "pin_map",
+];
 const ALL_MODES = [
   "quick_pick", "tradeoff_cards", "swipe_stack", "bucket_sort",
   "tier_placement", "rank_order", "podium_slots", "logo_quick_pick",
+  "spectrum", "coin_allocation", "two_axis", "bracket", "pin_map",
 ];
 // DV -> modes it can render (mirrors components/dv/*.tsx supportedModes)
 const DV_SUPPORTED = {
@@ -47,12 +54,13 @@ const DV_SUPPORTED = {
   map: [...PICK_MODES, "swipe_stack"],
   bubblemap: [...ALL_MODES],
   tier: ["bucket_sort", "tier_placement"],
-  board: ["rank_order", "swipe_stack", "bucket_sort", "tier_placement"],
+  board: ["rank_order", "swipe_stack", "bucket_sort", "tier_placement", "bracket"],
   podium: ["podium_slots", "rank_order", ...PICK_MODES],
   medal: ["podium_slots", "rank_order", ...PICK_MODES],
   treemap: [...PICK_MODES, "bucket_sort", "tier_placement"],
-  heatmatrix: ["bucket_sort", "tier_placement"],
+  heatmatrix: ["bucket_sort", "tier_placement", "two_axis"],
   sankey: [...PICK_MODES],
+  distribution: ["spectrum"],
 };
 const ALL_DVS = Object.keys(DV_SUPPORTED);
 const valid = (mode, dv) => (DV_SUPPORTED[dv] || []).includes(mode);
@@ -111,6 +119,19 @@ const DEMO = [
   { id: "NEW-214", category: CAT.mirror, mode: "tier_placement", primary_dv: "heatmatrix", secondary_dvs: ["tier"], text: "Tier these life goals by how much they actually matter to you.", options: opt("Money", "Fame", "Family", "Freedom", "Health"), targets: { kind: "tiers", labels: ["S", "A", "B", "C"] } },
   { id: "NEW-215", category: CAT.daily, mode: "rank_order", primary_dv: "podium", secondary_dvs: ["board"], text: "Rank these by how much you'd hate losing them for a week.", options: opt("Phone", "Wi-Fi", "Fridge", "Geyser") },
   { id: "NEW-216", category: CAT.ent, mode: "swipe_stack", primary_dv: "coins", secondary_dvs: ["split"], text: "Swipe: would you rewatch these on a lazy Sunday?", options: opt("Sholay", "DDLJ", "3 Idiots", "Gully Boy", "RRR") },
+  // iter-5 new modes (DEMO-* per mode; ids stay in the NEW-2xx manual range
+  // because questionInsertSchema rejects DEMO-* ids — same reason NEW-201..216
+  // above use NEW-*). notes tag them so they read as the per-mode demos.
+  // DEMO-SPEC — spectrum: options[0]/[1] are the scale's end labels.
+  { id: "NEW-217", category: CAT.mirror, mode: "spectrum", primary_dv: "distribution", secondary_dvs: [], text: "On work, where do you sit: hustle or balance?", options: opt("All balance", "All hustle") },
+  // DEMO-COIN — coin_allocation: spend a 10-coin budget across options.
+  { id: "NEW-218", category: CAT.daily, mode: "coin_allocation", primary_dv: "coins", secondary_dvs: ["radial"], text: "Split 10 coins: where should your city spend next?", options: opt("Roads", "Parks", "Transit", "Schools", "Hospitals") },
+  // DEMO-2AX — two_axis: targets = [xLow, xHigh, yLow, yHigh] quadrant axes.
+  { id: "NEW-219", category: CAT.fun, mode: "two_axis", primary_dv: "heatmatrix", secondary_dvs: [], text: "Place each app: boring↔fun, useful↔useless.", options: opt("Instagram", "LinkedIn", "WhatsApp", "Notes", "YouTube"), targets: { kind: "buckets", labels: ["Boring", "Fun", "Useful", "Useless"] } },
+  // DEMO-BRKT — bracket: single-elim, crown a champion.
+  { id: "NEW-220", category: CAT.ent, mode: "bracket", primary_dv: "board", secondary_dvs: [], text: "Bracket it out: the ultimate Indian street snack.", options: opt("Pani puri", "Vada pav", "Samosa", "Pav bhaji", "Bhel", "Kachori", "Dosa", "Momos") },
+  // DEMO-PIN — pin_map: options are regions; pin where you stand.
+  { id: "NEW-221", category: CAT.city, mode: "pin_map", primary_dv: "map", secondary_dvs: ["bubblemap"], text: "Which state genuinely feels like home to you?", options: opt("Maharashtra", "Karnataka", "Tamil Nadu", "Delhi", "West Bengal", "Kerala", "Gujarat", "Punjab") },
 ];
 
 async function ensureQuestion(q) {
@@ -171,6 +192,25 @@ function payloadFor(mode, opts, targets) {
   }
   if (mode === "rank_order") { const o = [...keys]; for (let i = o.length - 1; i > 0; i--) { const j = r(i + 1);[o[i], o[j]] = [o[j], o[i]]; } return { order: o }; }
   if (mode === "podium_slots") { const o = [...keys]; for (let i = o.length - 1; i > 0; i--) { const j = r(i + 1);[o[i], o[j]] = [o[j], o[i]]; } return { slots: { first: o[0], second: o[1], third: o[2] } }; }
+  // iter-5 new modes
+  if (mode === "spectrum") { const x = Math.random(); return { value: Math.min(100, Math.floor(x * 101)) }; }
+  if (mode === "coin_allocation") {
+    // spend 1..10 coins, weighted toward a couple of options
+    const alloc = {};
+    let budget = 10;
+    const order = [...keys].sort(() => 0.5 - Math.random());
+    for (let i = 0; i < order.length && budget > 0; i++) {
+      const last = i === order.length - 1;
+      const give = last ? budget : r(Math.min(budget, 5) + 1);
+      if (give > 0) alloc[order[i]] = give;
+      budget -= give;
+    }
+    if (Object.keys(alloc).length === 0) alloc[keys[0]] = 1; // never empty
+    return { alloc };
+  }
+  if (mode === "two_axis") { const quads = ["q1", "q2", "q3", "q4"]; const placements = {}; keys.forEach((k) => { placements[k] = quads[r(4)]; }); return { placements }; }
+  if (mode === "bracket") return { winner: keys[skew(keys.length)] };
+  if (mode === "pin_map") return { region: keys[skew(keys.length)] };
   return null;
 }
 
