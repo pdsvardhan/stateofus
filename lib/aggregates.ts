@@ -25,6 +25,7 @@ function emptyAgg(mode: Mode): Agg {
     case "tradeoff_cards":
     case "coin_allocation":
     case "bracket":
+    case "pin_map":
       return { counts: {} };
     case "swipe_stack":
       return { cards: {} };
@@ -73,6 +74,12 @@ function applyToAgg(mode: Mode, agg: Agg, payload: Record<string, unknown>, sign
       // SAME pick shape — bump the champion's count (championCount per option).
       const counts = (agg.counts ??= {}) as Record<string, number>;
       bump(counts, payload.winner as string, sign);
+      return;
+    }
+    case "pin_map": {
+      // SAME pick shape — bump the chosen region's count.
+      const counts = (agg.counts ??= {}) as Record<string, number>;
+      bump(counts, payload.region as string, sign);
       return;
     }
     case "swipe_stack": {

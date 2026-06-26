@@ -15,16 +15,16 @@ import { useMemo, useRef } from "react";
 import { motion } from "framer-motion";
 import type { DvDefinition, DvProps } from "@/lib/dv/registry";
 import type { QuestionOption } from "@/lib/types";
-import { INDIA_VIEWBOX, matchStateKey } from "@/lib/dv/india";
-import { mapInk } from "@/lib/dv/palette";
-import { PICK_MODES, shareRowsFor, formatCount, yourPick } from "@/lib/dv/transforms";
+import { INDIA_VIEWBOX, locationForState, matchStateKey } from "@/lib/dv/india";
+import { mapGradientStops, mapInk } from "@/lib/dv/palette";
+import { PICK_MODES, pickShares, shareRowsFor, formatCount, yourPick, yourRegion } from "@/lib/dv/transforms";
 import { IndiaPaths, useCentroids } from "./india-base";
 import { Caption, EASE, Plate, SampleLine, mono, useMotionPrefs } from "./chrome";
 
 /** a state needs this many answers before we call a winner (CA-007) */
 const STATE_FLOOR_N = 3;
 
-function MapDv({ question, result }: DvProps) {
+function WinnerMap({ question, result }: DvProps) {
   const prefs = useMotionPrefs();
   const svgRef = useRef<SVGSVGElement | null>(null);
   const centroids = useCentroids(svgRef);
@@ -211,12 +211,146 @@ function MapDv({ question, result }: DvProps) {
   );
 }
 
+/**
+ * pin_map view — here the question's OPTIONS are regions, and the overall
+ * aggregate counts are votes-per-region. Each option is matched to an India
+ * location (by label) and filled with intensity = its national share, so the
+ * map reads as "where India pins itself". Regions that can't be matched to a
+ * boundary still appear in the legend with their %, so no vote is hidden.
+ */
+function PinMap({ question, result }: DvProps) {
+  const prefs = useMotionPrefs();
+  const youKey = yourRegion(result.your_payload ?? null);
+
+  const rows = useMemo(
+    () => pickShares((result.aggregate ?? {}) as Record<string, unknown>, question.options),
+    [question.options, result.aggregate]
+  );
+  const pctByKey = useMemo(() => new Map(rows.map((r) => [r.key, r.pct])), [rows]);
+  const maxPct = useMemo(() => rows.reduce((m, r) => Math.max(m, r.pct), 0), [rows]);
+
+  // option label → India location name (when it matches a real boundary)
+  const locationByKey = useMemo(() => {
+    const map = new Map<string, string>();
+    for (const o of question.options) {
+      const loc = locationForState(o.label);
+      if (loc) map.set(o.key, loc.name);
+    }
+    return map;
+  }, [question.options]);
+  // reverse: location name → option key (first match wins)
+  const keyByLocation = useMemo(() => {
+    const map = new Map<string, string>();
+    for (const [key, name] of locationByKey) if (!map.has(name)) map.set(name, key);
+    return map;
+  }, [locationByKey]);
+
+  const stops = mapGradientStops("var(--fire)");
+  const fillFor = (locationName: string): string => {
+    const key = keyByLocation.get(locationName);
+    if (!key) return "var(--paper-edge)";
+    const pct = pctByKey.get(key) ?? 0;
+    if (maxPct <= 0) return "var(--paper-edge)";
+    const t = Math.max(0.12, pct / maxPct); // floor so a pinned region is always visible
+    return `color-mix(in srgb, ${stops.to} ${Math.round(t * 100)}%, ${stops.from})`;
+  };
+
+  return (
+    <Plate>
+      <motion.div
+        initial={prefs.reduced ? false : { opacity: 0, y: 18 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.55, ease: EASE }}
+        style={{ maxWidth: 520, margin: "0 auto", display: "flex", flexDirection: "column" }}
+      >
+        <Caption style={{ marginBottom: 10 }}>Where India pins itself · darker = more votes</Caption>
+        <svg
+          viewBox={INDIA_VIEWBOX}
+          role="img"
+          aria-label="Votes by region"
+          style={{ width: "100%", height: "auto", maxHeight: 480, order: 2 }}
+        >
+          <IndiaPaths
+            fillFor={fillFor}
+            titleFor={(name) => {
+              const key = keyByLocation.get(name);
+              return key ? `${name} · ${pctByKey.get(key) ?? 0}%` : name;
+            }}
+          />
+        </svg>
+
+        {/* legend — every region option with its national %, YOU on the reader's pin */}
+        <div style={{ display: "flex", flexWrap: "wrap", gap: 8, marginBottom: 12, order: 1 }}>
+          {rows
+            .slice()
+            .sort((a, b) => b.pct - a.pct)
+            .map((r) => (
+              <span
+                key={r.key}
+                style={{
+                  fontFamily: "var(--font-ui)",
+                  fontSize: 12.5,
+                  fontWeight: 700,
+                  display: "inline-flex",
+                  alignItems: "center",
+                  gap: 6,
+                  border: "2px solid var(--ink)",
+                  borderRadius: 100,
+                  padding: "6px 12px",
+                  background: r.key === youKey ? "var(--lime)" : "var(--paper-bright)",
+                  color: "var(--ink)",
+                }}
+              >
+                {r.label}
+                <strong>{r.pct}%</strong>
+                {!locationByKey.has(r.key) && (
+                  <span style={{ ...mono(8), color: "var(--muted)" }}>off-map</span>
+                )}
+                {r.key === youKey && (
+                  <span
+                    style={{
+                      ...mono(8),
+                      fontWeight: 700,
+                      border: "1.5px solid var(--ink)",
+                      borderRadius: 100,
+                      padding: "1px 6px",
+                      background: "var(--ink)",
+                      color: "var(--lime)",
+                    }}
+                  >
+                    YOU
+                  </span>
+                )}
+              </span>
+            ))}
+        </div>
+
+        <Caption style={{ marginTop: 8, order: 3 }}>
+          Region colour = its share of all pins · real boundaries, house inks
+        </Caption>
+        <SampleLine n={result.sample_n} style={{ order: 5 }} />
+      </motion.div>
+    </Plate>
+  );
+}
+
+function MapDv(props: DvProps) {
+  const { question, result } = props;
+  if (result.still_counting || !result.aggregate) {
+    // WinnerMap/PinMap both surface the count; still-counting is handled by the
+    // switcher upstream, but guard here too for direct renders.
+    return <WinnerMap {...props} />;
+  }
+  return question.mode === "pin_map" ? <PinMap {...props} /> : <WinnerMap {...props} />;
+}
+
 export const mapDefinition: DvDefinition = {
   id: "map",
   family: "geo",
-  label: "Winner map",
+  // PICK_MODES now includes pin_map; swipe_stack rounds out the winner-map set.
   supportedModes: [...PICK_MODES, "swipe_stack"],
   Component: MapDv,
+  label: "Winner map",
 };
 
 export default MapDv;

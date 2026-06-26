@@ -23,6 +23,7 @@ export const MODES = [
   "coin_allocation",
   "two_axis",
   "bracket",
+  "pin_map",
 ] as const;
 export type Mode = (typeof MODES)[number];
 
@@ -41,6 +42,7 @@ export const MODE_LABEL: Record<Mode, string> = {
   coin_allocation: "Coin Allocation",
   two_axis: "Two-Axis",
   bracket: "Bracket",
+  pin_map: "Pin on Map",
 };
 
 /** Per-mode default hint line (v5 `q.hint`) — the editorial micro-line under the
@@ -59,6 +61,7 @@ export const MODE_HINT: Record<Mode, string> = {
   coin_allocation: "spend your 10 coins",
   two_axis: "place each in a quadrant",
   bracket: "tap the winner each round",
+  pin_map: "tap where you stand",
 };
 
 export const DV_IDS = [
@@ -133,6 +136,7 @@ export const MODE_BY_LABEL: Record<string, Mode> = {
   "Coin Allocation": "coin_allocation",
   "Two-Axis": "two_axis",
   Bracket: "bracket",
+  "Pin on Map": "pin_map",
   // authored YAML already uses canonical tokens
   quick_pick: "quick_pick",
   tradeoff_cards: "tradeoff_cards",
@@ -146,6 +150,7 @@ export const MODE_BY_LABEL: Record<string, Mode> = {
   coin_allocation: "coin_allocation",
   two_axis: "two_axis",
   bracket: "bracket",
+  pin_map: "pin_map",
 };
 
 /**

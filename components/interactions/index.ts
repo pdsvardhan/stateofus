@@ -17,6 +17,7 @@ import { Spectrum } from "./Spectrum";
 import { CoinAllocation } from "./CoinAllocation";
 import { TwoAxis } from "./TwoAxis";
 import { Bracket } from "./Bracket";
+import { PinMap } from "./PinMap";
 
 export const INTERACTION_REGISTRY: InteractionRegistry = {
   quick_pick: { mode: "quick_pick", chipLabel: "Quick Pick", Component: QuickPick },
@@ -51,6 +52,7 @@ export const INTERACTION_REGISTRY: InteractionRegistry = {
   },
   two_axis: { mode: "two_axis", chipLabel: "Two-Axis", Component: TwoAxis },
   bracket: { mode: "bracket", chipLabel: "Bracket", Component: Bracket },
+  pin_map: { mode: "pin_map", chipLabel: "Pin on Map", Component: PinMap },
 };
 
 export {
@@ -65,4 +67,5 @@ export {
   CoinAllocation,
   TwoAxis,
   Bracket,
+  PinMap,
 };

@@ -69,6 +69,18 @@ export function computeTopline(
         statement: "of brackets crowned this",
       };
     }
+    case "pin_map": {
+      // counts hold votes per region option — headline is the most-pinned region.
+      const counts = (aggregate.counts ?? {}) as Record<string, number>;
+      const entries = Object.entries(counts).filter(([, n]) => n > 0);
+      if (entries.length === 0) return null;
+      const [topKey, topN] = entries.sort((a, b) => b[1] - a[1])[0];
+      return {
+        label: labelOf(topKey),
+        pct: Math.round((topN / sampleN) * 100),
+        statement: "pinned themselves here",
+      };
+    }
     case "swipe_stack": {
       const cards = (aggregate.cards ?? {}) as Record<string, { yes: number; no: number }>;
       const entries = Object.entries(cards).filter(([, v]) => v.yes + v.no > 0);

@@ -24,6 +24,9 @@ export const PICK_MODES: Mode[] = [
   // bracket also shares { counts } — each count is an option's championship wins,
   // so pick-family transforms render share-of-titles directly.
   "bracket",
+  // pin_map also shares { counts } — each count is votes for that region option,
+  // so pick-family transforms render region popularity directly.
+  "pin_map",
 ];
 
 type Agg = Record<string, unknown> | null | undefined;
@@ -109,6 +112,12 @@ export function yourValue(payload: Record<string, unknown> | null): number | nul
 export function yourWinner(payload: Record<string, unknown> | null): string | null {
   if (!payload || typeof payload.winner !== "string") return null;
   return payload.winner;
+}
+
+/** pin_map: the region option key the reader pinned. */
+export function yourRegion(payload: Record<string, unknown> | null): string | null {
+  if (!payload || typeof payload.region !== "string") return null;
+  return payload.region;
 }
 
 /* ------------------------------------------------------------------ */
