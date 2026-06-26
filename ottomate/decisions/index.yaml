@@ -90,3 +90,15 @@ decisions:
       - curated
       - cat:product
     body_path: decisions/2026-06-14-iter-19-deferred-features.md
+  - id: adr-009-stateofus-brand-icons
+    project_slug: stateofus
+    title: Real brand glyphs on Logo Quick Pick, with a typographic fallback
+    status: accepted
+    date: 2026-06-16T00:00:00.000Z
+    tags:
+      - iter-3
+      - interactions
+      - product
+      - curated
+      - cat:product
+    body_path: decisions/2026-06-16-iter-3-brand-icons.md
