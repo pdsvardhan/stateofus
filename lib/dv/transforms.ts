@@ -14,7 +14,14 @@
 import type { Mode } from "@/lib/catalogue/enums";
 import type { QuestionOption, QuestionTargets } from "@/lib/types";
 
-export const PICK_MODES: Mode[] = ["quick_pick", "logo_quick_pick", "tradeoff_cards"];
+export const PICK_MODES: Mode[] = [
+  "quick_pick",
+  "logo_quick_pick",
+  "tradeoff_cards",
+  // coin_allocation shares the pick aggregate shape ({ counts }); its counts are
+  // total coins per option, so pick-family transforms render coin-share directly.
+  "coin_allocation",
+];
 
 type Agg = Record<string, unknown> | null | undefined;
 

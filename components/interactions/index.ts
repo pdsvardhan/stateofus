@@ -14,6 +14,7 @@ import { Sorter } from "./Sorter";
 import { RankOrder } from "./RankOrder";
 import { PodiumSlots } from "./PodiumSlots";
 import { Spectrum } from "./Spectrum";
+import { CoinAllocation } from "./CoinAllocation";
 
 export const INTERACTION_REGISTRY: InteractionRegistry = {
   quick_pick: { mode: "quick_pick", chipLabel: "Quick Pick", Component: QuickPick },
@@ -41,6 +42,11 @@ export const INTERACTION_REGISTRY: InteractionRegistry = {
     Component: LogoQuickPick,
   },
   spectrum: { mode: "spectrum", chipLabel: "Spectrum", Component: Spectrum },
+  coin_allocation: {
+    mode: "coin_allocation",
+    chipLabel: "Coin Allocation",
+    Component: CoinAllocation,
+  },
 };
 
 export {
@@ -52,4 +58,5 @@ export {
   RankOrder,
   PodiumSlots,
   Spectrum,
+  CoinAllocation,
 };

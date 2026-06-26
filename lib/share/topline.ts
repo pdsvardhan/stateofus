@@ -41,6 +41,20 @@ export function computeTopline(
         statement: "of the count picked this",
       };
     }
+    case "coin_allocation": {
+      // counts hold total coins per option — headline is the top option's
+      // share of ALL coins spent, not of voters.
+      const counts = (aggregate.counts ?? {}) as Record<string, number>;
+      const entries = Object.entries(counts).filter(([, n]) => n > 0);
+      if (entries.length === 0) return null;
+      const totalCoins = entries.reduce((a, [, n]) => a + n, 0);
+      const [topKey, topN] = entries.sort((a, b) => b[1] - a[1])[0];
+      return {
+        label: labelOf(topKey),
+        pct: totalCoins > 0 ? Math.round((topN / totalCoins) * 100) : 0,
+        statement: "of every coin went here",
+      };
+    }
     case "swipe_stack": {
       const cards = (aggregate.cards ?? {}) as Record<string, { yes: number; no: number }>;
       const entries = Object.entries(cards).filter(([, v]) => v.yes + v.no > 0);
