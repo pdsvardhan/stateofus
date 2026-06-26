@@ -55,6 +55,7 @@ export const payloadSchemas = {
   two_axis: z
     .object({ placements: z.record(optionKey, z.enum(["q1", "q2", "q3", "q4"])) })
     .refine((p) => Object.keys(p.placements).length >= 1, "place at least one item"),
+  bracket: z.object({ winner: optionKey }),
 } satisfies Record<Mode, z.ZodTypeAny>;
 
 export type AnswerPayload = {
@@ -85,6 +86,7 @@ export function validatePayload(
   const referenced: string[] = [];
   const p = parsed.data as Record<string, unknown>;
   if ("pick" in p) referenced.push(p.pick as string);
+  if ("winner" in p) referenced.push(p.winner as string);
   if ("votes" in p) referenced.push(...Object.keys(p.votes as object));
   if ("placements" in p) referenced.push(...Object.keys(p.placements as object));
   if ("alloc" in p) referenced.push(...Object.keys(p.alloc as object));

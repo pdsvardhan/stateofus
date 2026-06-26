@@ -55,6 +55,20 @@ export function computeTopline(
         statement: "of every coin went here",
       };
     }
+    case "bracket": {
+      // counts hold championship wins per option — headline is the most-crowned
+      // option's share of all titles.
+      const counts = (aggregate.counts ?? {}) as Record<string, number>;
+      const entries = Object.entries(counts).filter(([, n]) => n > 0);
+      if (entries.length === 0) return null;
+      const totalTitles = entries.reduce((a, [, n]) => a + n, 0);
+      const [topKey, topN] = entries.sort((a, b) => b[1] - a[1])[0];
+      return {
+        label: labelOf(topKey),
+        pct: totalTitles > 0 ? Math.round((topN / totalTitles) * 100) : 0,
+        statement: "of brackets crowned this",
+      };
+    }
     case "swipe_stack": {
       const cards = (aggregate.cards ?? {}) as Record<string, { yes: number; no: number }>;
       const entries = Object.entries(cards).filter(([, v]) => v.yes + v.no > 0);

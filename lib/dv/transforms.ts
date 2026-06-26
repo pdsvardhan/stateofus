@@ -21,6 +21,9 @@ export const PICK_MODES: Mode[] = [
   // coin_allocation shares the pick aggregate shape ({ counts }); its counts are
   // total coins per option, so pick-family transforms render coin-share directly.
   "coin_allocation",
+  // bracket also shares { counts } — each count is an option's championship wins,
+  // so pick-family transforms render share-of-titles directly.
+  "bracket",
 ];
 
 type Agg = Record<string, unknown> | null | undefined;
@@ -100,6 +103,12 @@ export function yourSlots(
 export function yourValue(payload: Record<string, unknown> | null): number | null {
   if (!payload || typeof payload.value !== "number") return null;
   return payload.value;
+}
+
+/** bracket: the option key the reader crowned champion. */
+export function yourWinner(payload: Record<string, unknown> | null): string | null {
+  if (!payload || typeof payload.winner !== "string") return null;
+  return payload.winner;
 }
 
 /* ------------------------------------------------------------------ */
@@ -360,6 +369,11 @@ export function boardRowsFor(
   if (mode === "swipe_stack") {
     const rows = swipeYesShares(agg, options).map(({ key, label, pct }) => ({ key, label, pct }));
     return { rows, caption: "The leaderboard · % swiping yes" };
+  }
+  if (mode === "bracket") {
+    // counts = championship wins per option — board by share of titles.
+    const rows = pickShares(agg, options).map(({ key, label, pct }) => ({ key, label, pct }));
+    return { rows, caption: "The leaderboard · share of championships" };
   }
   // bucket_sort / tier_placement — share filed under the top target
   const labels = targets?.labels ?? [];
