@@ -21,6 +21,7 @@ export const MODES = [
   "logo_quick_pick",
   "spectrum",
   "coin_allocation",
+  "two_axis",
 ] as const;
 export type Mode = (typeof MODES)[number];
 
@@ -37,6 +38,7 @@ export const MODE_LABEL: Record<Mode, string> = {
   logo_quick_pick: "Quick Pick",
   spectrum: "Spectrum",
   coin_allocation: "Coin Allocation",
+  two_axis: "Two-Axis",
 };
 
 /** Per-mode default hint line (v5 `q.hint`) — the editorial micro-line under the
@@ -53,6 +55,7 @@ export const MODE_HINT: Record<Mode, string> = {
   logo_quick_pick: "tap the badge you trust",
   spectrum: "drag to where you stand",
   coin_allocation: "spend your 10 coins",
+  two_axis: "place each in a quadrant",
 };
 
 export const DV_IDS = [
@@ -125,6 +128,7 @@ export const MODE_BY_LABEL: Record<string, Mode> = {
   "Logo Quick Pick": "logo_quick_pick",
   Spectrum: "spectrum",
   "Coin Allocation": "coin_allocation",
+  "Two-Axis": "two_axis",
   // authored YAML already uses canonical tokens
   quick_pick: "quick_pick",
   tradeoff_cards: "tradeoff_cards",
@@ -136,6 +140,7 @@ export const MODE_BY_LABEL: Record<string, Mode> = {
   logo_quick_pick: "logo_quick_pick",
   spectrum: "spectrum",
   coin_allocation: "coin_allocation",
+  two_axis: "two_axis",
 };
 
 /**

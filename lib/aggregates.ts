@@ -29,6 +29,7 @@ function emptyAgg(mode: Mode): Agg {
       return { cards: {} };
     case "bucket_sort":
     case "tier_placement":
+    case "two_axis":
       return { items: {} };
     case "rank_order":
       return { items: {} };
@@ -76,7 +77,9 @@ function applyToAgg(mode: Mode, agg: Agg, payload: Record<string, unknown>, sign
       return;
     }
     case "bucket_sort":
-    case "tier_placement": {
+    case "tier_placement":
+    case "two_axis": {
+      // SAME place shape — two_axis's "target" is the quadrant id (q1..q4).
       const items = (agg.items ??= {}) as Record<string, Record<string, number>>;
       for (const [k, target] of Object.entries(payload.placements as Record<string, string>)) {
         items[k] ??= {};

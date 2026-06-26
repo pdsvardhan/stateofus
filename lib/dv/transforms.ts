@@ -233,6 +233,42 @@ export function placementRows(
 }
 
 /* ------------------------------------------------------------------ */
+/* two_axis — 2×2 quadrant grid (place shape, quadrant targets q1..q4) */
+/* ------------------------------------------------------------------ */
+
+/** Quadrant ids, in grid reading order: top-left, top-right, bottom-left,
+ *  bottom-right. Shared by the interaction (placement) and the heat matrix
+ *  (render) so both agree on where each quadrant sits. */
+export const QUADRANTS = ["q1", "q2", "q3", "q4"] as const;
+export type Quadrant = (typeof QUADRANTS)[number];
+
+export type QuadrantCell = {
+  quadrant: Quadrant;
+  /** option keys/labels India placed in this quadrant, by placement count desc */
+  items: { key: string; label: string; count: number }[];
+  /** total placements landing in this quadrant */
+  count: number;
+  /** share of all placements (0–100, rounded across the four cells) */
+  pct: number;
+};
+
+/** Aggregate the place-shape items into the four quadrant cells. */
+export function quadrantCells(agg: Agg, options: QuestionOption[]): QuadrantCell[] {
+  const items = (agg?.items ?? {}) as Record<string, Record<string, number>>;
+  const counts = QUADRANTS.map((q) =>
+    options.reduce((sum, o) => sum + Math.max(0, items[o.key]?.[q] ?? 0), 0)
+  );
+  const pcts = roundedShares(counts);
+  return QUADRANTS.map((q, qi) => {
+    const cellItems = options
+      .map((o) => ({ key: o.key, label: o.label, count: Math.max(0, items[o.key]?.[q] ?? 0) }))
+      .filter((it) => it.count > 0)
+      .sort((a, b) => b.count - a.count);
+    return { quadrant: q, items: cellItems, count: counts[qi], pct: pcts[qi] };
+  });
+}
+
+/* ------------------------------------------------------------------ */
 /* rank_order                                                          */
 /* ------------------------------------------------------------------ */
 

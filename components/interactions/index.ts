@@ -15,6 +15,7 @@ import { RankOrder } from "./RankOrder";
 import { PodiumSlots } from "./PodiumSlots";
 import { Spectrum } from "./Spectrum";
 import { CoinAllocation } from "./CoinAllocation";
+import { TwoAxis } from "./TwoAxis";
 
 export const INTERACTION_REGISTRY: InteractionRegistry = {
   quick_pick: { mode: "quick_pick", chipLabel: "Quick Pick", Component: QuickPick },
@@ -47,6 +48,7 @@ export const INTERACTION_REGISTRY: InteractionRegistry = {
     chipLabel: "Coin Allocation",
     Component: CoinAllocation,
   },
+  two_axis: { mode: "two_axis", chipLabel: "Two-Axis", Component: TwoAxis },
 };
 
 export {
@@ -59,4 +61,5 @@ export {
   PodiumSlots,
   Spectrum,
   CoinAllocation,
+  TwoAxis,
 };

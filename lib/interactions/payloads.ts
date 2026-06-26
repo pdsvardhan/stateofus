@@ -52,6 +52,9 @@ export const payloadSchemas = {
       const total = Object.values(p.alloc).reduce((a, b) => a + b, 0);
       return total >= 1 && total <= COIN_BUDGET;
     }, `spend between 1 and ${COIN_BUDGET} coins`),
+  two_axis: z
+    .object({ placements: z.record(optionKey, z.enum(["q1", "q2", "q3", "q4"])) })
+    .refine((p) => Object.keys(p.placements).length >= 1, "place at least one item"),
 } satisfies Record<Mode, z.ZodTypeAny>;
 
 export type AnswerPayload = {

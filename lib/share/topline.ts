@@ -87,6 +87,26 @@ export function computeTopline(
         statement: `filed under "${best.target}"`,
       };
     }
+    case "two_axis": {
+      // place shape, quadrant targets (q1..q4) — headline is the item with the
+      // strongest single-quadrant consensus. Quadrant names need axis labels
+      // (not available here), so the statement stays label-free.
+      const items = (aggregate.items ?? {}) as Record<string, Record<string, number>>;
+      let best: { label: string; share: number } | null = null;
+      for (const [k, quads] of Object.entries(items)) {
+        const total = Object.values(quads).reduce((a, b) => a + b, 0);
+        if (total === 0) continue;
+        const top = Object.values(quads).sort((a, b) => b - a)[0];
+        const share = top / total;
+        if (!best || share > best.share) best = { label: labelOf(k), share };
+      }
+      if (!best) return null;
+      return {
+        label: best.label,
+        pct: Math.round(best.share * 100),
+        statement: "landed in one quadrant",
+      };
+    }
     case "rank_order": {
       const items = (aggregate.items ?? {}) as Record<
         string,
