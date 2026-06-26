@@ -10,10 +10,12 @@
 import { rawDb } from "@/lib/db/client";
 import { CATEGORIES, DESK_BY_CATEGORY, type Category } from "@/lib/catalogue/enums";
 
-/** Result preview shown on a feed card (stat = one dominant %, tug = two-sided). */
+/** Result preview shown on a feed card (stat = one dominant %, tug = two-sided,
+ *  dv = the question's real result DV as a mini Ghost shape with live props). */
 export type CardPreview =
   | { kind: "stat"; pct: number; line: string; color: string }
-  | { kind: "tug"; score: string; lLabel: string; rLabel: string; lPct: number; rPct: number };
+  | { kind: "tug"; score: string; lLabel: string; rLabel: string; lPct: number; rPct: number }
+  | { kind: "dv"; primary_dv: string; props: number[] };
 
 export type DiscoveryCard = {
   id: string;
@@ -25,7 +27,7 @@ export type DiscoveryCard = {
   status: string;
   sample_n: number;
   /** home feed only: which prototype card variant to render */
-  variant?: "plain" | "teaser" | "stat" | "tug";
+  variant?: "plain" | "teaser" | "stat" | "tug" | "dv";
   preview?: CardPreview | null;
 };
 
@@ -78,7 +80,8 @@ function decorate(r: Record<string, unknown>): DiscoveryCard {
       base.mode,
       r.options_json as string,
       (r.agg_json as string) ?? null,
-      base.category
+      base.category,
+      base.primary_dv
     );
     if (preview) return { ...base, variant: preview.kind, preview };
   }
@@ -285,12 +288,77 @@ const RESULT_THRESHOLD = 5;
 /** how many fresh questions head the "Vote to unlock" rail */
 const LOCKED_QUOTA = 6;
 
-/** Build a stat/tug preview from a question's overall aggregate. */
+/**
+ * The top result proportions (descending integer %, up to 5) from any mode's
+ * aggregate — feeds the `dv` mini-preview so a data card's Ghost shape reflects
+ * the real result, not fixed dummy widths. Returns [] when nothing is
+ * computable (the card then falls back to a teaser).
+ */
+function dvProps(mode: string, agg: Record<string, unknown>): number[] {
+  const fromCounts = (counts: Record<string, number>): number[] => {
+    const vals = Object.values(counts).filter((n) => n > 0);
+    const total = vals.reduce((a, b) => a + b, 0);
+    if (total <= 0) return [];
+    return vals
+      .map((n) => Math.round((n / total) * 100))
+      .sort((a, b) => b - a)
+      .slice(0, 5);
+  };
+
+  // pick family (incl. coin_allocation / bracket / pin_map — all { counts })
+  if ("counts" in agg) return fromCounts((agg.counts ?? {}) as Record<string, number>);
+
+  // swipe: each card's yes-share (per-card, independent) — top few
+  if (mode === "swipe_stack") {
+    const cards = (agg.cards ?? {}) as Record<string, { yes: number; no: number }>;
+    return Object.values(cards)
+      .map((v) => {
+        const tot = (v.yes || 0) + (v.no || 0);
+        return tot > 0 ? Math.round(((v.yes || 0) / tot) * 100) : 0;
+      })
+      .filter((p) => p > 0)
+      .sort((a, b) => b - a)
+      .slice(0, 5);
+  }
+
+  // place (bucket_sort / tier_placement / two_axis): per item, share landing in
+  // its consensus target — top items
+  if ("items" in agg) {
+    const items = (agg.items ?? {}) as Record<string, Record<string, number>>;
+    const out: number[] = [];
+    for (const targets of Object.values(items)) {
+      if (typeof targets !== "object" || targets === null) continue;
+      const vals = Object.values(targets) as number[];
+      // rank items: { posSum, count, firsts } — use firsts as the salient signal
+      const total = vals.reduce((a, b) => a + (b > 0 ? b : 0), 0);
+      const top = vals.reduce((m, b) => Math.max(m, b), 0);
+      if (total > 0) out.push(Math.round((top / total) * 100));
+    }
+    return out.filter((p) => p > 0).sort((a, b) => b - a).slice(0, 5);
+  }
+
+  // spectrum: bucket shares
+  if ("buckets" in agg) {
+    const buckets = (agg.buckets ?? []) as number[];
+    const total = buckets.reduce((a, b) => a + (b > 0 ? b : 0), 0);
+    if (total <= 0) return [];
+    return buckets
+      .map((n) => (n > 0 ? Math.round((n / total) * 100) : 0))
+      .filter((p) => p > 0)
+      .sort((a, b) => b - a)
+      .slice(0, 5);
+  }
+
+  return [];
+}
+
+/** Build a stat/tug/dv preview from a question's overall aggregate. */
 export function buildPreview(
   mode: string,
   optionsJson: string,
   aggJson: string | null,
-  category: string
+  category: string,
+  primaryDv?: string
 ): CardPreview | null {
   if (!aggJson) return null;
   let opts: { key: string; label: string }[];
@@ -344,7 +412,12 @@ export function buildPreview(
     };
   }
 
-  // place / rank / podium previews aren't a single % — show those as plain.
+  // place / rank / podium / spectrum / two_axis etc. aren't a single % — render
+  // the question's real result DV as a mini Ghost shape with live proportions.
+  if (primaryDv) {
+    const props = dvProps(mode, agg);
+    if (props.length > 0) return { kind: "dv", primary_dv: primaryDv, props };
+  }
   return null;
 }
 
@@ -389,7 +462,8 @@ export function composeFeedRows(excludeIds: Set<string> = new Set()): FeedRowDef
         base.mode,
         r.options_json as string,
         (r.agg_json as string) ?? null,
-        base.category
+        base.category,
+        base.primary_dv
       );
       if (preview) {
         groups.results.push({ ...base, variant: preview.kind, preview });

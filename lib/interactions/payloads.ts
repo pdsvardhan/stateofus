@@ -10,6 +10,9 @@ import type { Mode } from "@/lib/catalogue/enums";
 
 const optionKey = z.string().min(1).max(40);
 
+/** coin_allocation budget — every voter spends up to this many coins. */
+export const COIN_BUDGET = 10;
+
 export const payloadSchemas = {
   quick_pick: z.object({ pick: optionKey }),
   logo_quick_pick: z.object({ pick: optionKey }),
@@ -40,6 +43,20 @@ export const payloadSchemas = {
       );
       return new Set(filled).size === filled.length;
     }, "same item in multiple slots"),
+  // spectrum carries a 0–100 position, not option keys — validatePayload's
+  // key-reference check is a no-op for it (no pick/votes/placements/order/slots).
+  spectrum: z.object({ value: z.number().int().min(0).max(100) }),
+  coin_allocation: z
+    .object({ alloc: z.record(optionKey, z.number().int().min(0)) })
+    .refine((p) => {
+      const total = Object.values(p.alloc).reduce((a, b) => a + b, 0);
+      return total >= 1 && total <= COIN_BUDGET;
+    }, `spend between 1 and ${COIN_BUDGET} coins`),
+  two_axis: z
+    .object({ placements: z.record(optionKey, z.enum(["q1", "q2", "q3", "q4"])) })
+    .refine((p) => Object.keys(p.placements).length >= 1, "place at least one item"),
+  bracket: z.object({ winner: optionKey }),
+  pin_map: z.object({ region: optionKey }),
 } satisfies Record<Mode, z.ZodTypeAny>;
 
 export type AnswerPayload = {
@@ -70,8 +87,11 @@ export function validatePayload(
   const referenced: string[] = [];
   const p = parsed.data as Record<string, unknown>;
   if ("pick" in p) referenced.push(p.pick as string);
+  if ("winner" in p) referenced.push(p.winner as string);
+  if ("region" in p) referenced.push(p.region as string);
   if ("votes" in p) referenced.push(...Object.keys(p.votes as object));
   if ("placements" in p) referenced.push(...Object.keys(p.placements as object));
+  if ("alloc" in p) referenced.push(...Object.keys(p.alloc as object));
   if ("order" in p) referenced.push(...(p.order as string[]));
   if ("slots" in p) {
     const s = p.slots as Record<string, string | undefined>;

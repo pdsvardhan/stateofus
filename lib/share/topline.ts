@@ -41,6 +41,46 @@ export function computeTopline(
         statement: "of the count picked this",
       };
     }
+    case "coin_allocation": {
+      // counts hold total coins per option — headline is the top option's
+      // share of ALL coins spent, not of voters.
+      const counts = (aggregate.counts ?? {}) as Record<string, number>;
+      const entries = Object.entries(counts).filter(([, n]) => n > 0);
+      if (entries.length === 0) return null;
+      const totalCoins = entries.reduce((a, [, n]) => a + n, 0);
+      const [topKey, topN] = entries.sort((a, b) => b[1] - a[1])[0];
+      return {
+        label: labelOf(topKey),
+        pct: totalCoins > 0 ? Math.round((topN / totalCoins) * 100) : 0,
+        statement: "of every coin went here",
+      };
+    }
+    case "bracket": {
+      // counts hold championship wins per option — headline is the most-crowned
+      // option's share of all titles.
+      const counts = (aggregate.counts ?? {}) as Record<string, number>;
+      const entries = Object.entries(counts).filter(([, n]) => n > 0);
+      if (entries.length === 0) return null;
+      const totalTitles = entries.reduce((a, [, n]) => a + n, 0);
+      const [topKey, topN] = entries.sort((a, b) => b[1] - a[1])[0];
+      return {
+        label: labelOf(topKey),
+        pct: totalTitles > 0 ? Math.round((topN / totalTitles) * 100) : 0,
+        statement: "of brackets crowned this",
+      };
+    }
+    case "pin_map": {
+      // counts hold votes per region option — headline is the most-pinned region.
+      const counts = (aggregate.counts ?? {}) as Record<string, number>;
+      const entries = Object.entries(counts).filter(([, n]) => n > 0);
+      if (entries.length === 0) return null;
+      const [topKey, topN] = entries.sort((a, b) => b[1] - a[1])[0];
+      return {
+        label: labelOf(topKey),
+        pct: Math.round((topN / sampleN) * 100),
+        statement: "pinned themselves here",
+      };
+    }
     case "swipe_stack": {
       const cards = (aggregate.cards ?? {}) as Record<string, { yes: number; no: number }>;
       const entries = Object.entries(cards).filter(([, v]) => v.yes + v.no > 0);
@@ -73,6 +113,26 @@ export function computeTopline(
         statement: `filed under "${best.target}"`,
       };
     }
+    case "two_axis": {
+      // place shape, quadrant targets (q1..q4) — headline is the item with the
+      // strongest single-quadrant consensus. Quadrant names need axis labels
+      // (not available here), so the statement stays label-free.
+      const items = (aggregate.items ?? {}) as Record<string, Record<string, number>>;
+      let best: { label: string; share: number } | null = null;
+      for (const [k, quads] of Object.entries(items)) {
+        const total = Object.values(quads).reduce((a, b) => a + b, 0);
+        if (total === 0) continue;
+        const top = Object.values(quads).sort((a, b) => b - a)[0];
+        const share = top / total;
+        if (!best || share > best.share) best = { label: labelOf(k), share };
+      }
+      if (!best) return null;
+      return {
+        label: best.label,
+        pct: Math.round(best.share * 100),
+        statement: "landed in one quadrant",
+      };
+    }
     case "rank_order": {
       const items = (aggregate.items ?? {}) as Record<
         string,
@@ -97,6 +157,22 @@ export function computeTopline(
         label: labelOf(top[0]),
         pct: Math.round((top[1].first / sampleN) * 100),
         statement: "put this in 1st place",
+      };
+    }
+    case "spectrum": {
+      const count = Math.max(0, (aggregate.count as number) ?? 0);
+      const sum = Math.max(0, (aggregate.sum as number) ?? 0);
+      if (count < 1) return null;
+      const mean = Math.round(sum / count);
+      // headline reads as a 0–100 lean toward whichever end the average favours.
+      const leansHigh = mean >= 50;
+      const label = leansHigh
+        ? (options[1]?.label ?? "the high end")
+        : (options[0]?.label ?? "the low end");
+      return {
+        label,
+        pct: leansHigh ? mean : 100 - mean,
+        statement: "is where India leans",
       };
     }
   }

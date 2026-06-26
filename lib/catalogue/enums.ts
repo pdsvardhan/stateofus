@@ -19,6 +19,11 @@ export const MODES = [
   "rank_order",
   "podium_slots",
   "logo_quick_pick",
+  "spectrum",
+  "coin_allocation",
+  "two_axis",
+  "bracket",
+  "pin_map",
 ] as const;
 export type Mode = (typeof MODES)[number];
 
@@ -33,6 +38,11 @@ export const MODE_LABEL: Record<Mode, string> = {
   rank_order: "Rank Order",
   podium_slots: "Podium Slots",
   logo_quick_pick: "Quick Pick",
+  spectrum: "Spectrum",
+  coin_allocation: "Coin Allocation",
+  two_axis: "Two-Axis",
+  bracket: "Bracket",
+  pin_map: "Pin on Map",
 };
 
 /** Per-mode default hint line (v5 `q.hint`) — the editorial micro-line under the
@@ -47,6 +57,11 @@ export const MODE_HINT: Record<Mode, string> = {
   rank_order: "put them in your strict order",
   podium_slots: "tap into your top three",
   logo_quick_pick: "tap the badge you trust",
+  spectrum: "drag to where you stand",
+  coin_allocation: "spend your 10 coins",
+  two_axis: "place each in a quadrant",
+  bracket: "tap the winner each round",
+  pin_map: "tap where you stand",
 };
 
 export const DV_IDS = [
@@ -64,6 +79,7 @@ export const DV_IDS = [
   "treemap", // P1 treemap
   "heatmatrix", // heat matrix
   "sankey", // sankey flow
+  "distribution", // spectrum histogram (0–100 scale)
 ] as const;
 export type DvId = (typeof DV_IDS)[number];
 
@@ -116,6 +132,11 @@ export const MODE_BY_LABEL: Record<string, Mode> = {
   "Rank Order": "rank_order",
   "Podium Slots": "podium_slots",
   "Logo Quick Pick": "logo_quick_pick",
+  Spectrum: "spectrum",
+  "Coin Allocation": "coin_allocation",
+  "Two-Axis": "two_axis",
+  Bracket: "bracket",
+  "Pin on Map": "pin_map",
   // authored YAML already uses canonical tokens
   quick_pick: "quick_pick",
   tradeoff_cards: "tradeoff_cards",
@@ -125,6 +146,11 @@ export const MODE_BY_LABEL: Record<string, Mode> = {
   rank_order: "rank_order",
   podium_slots: "podium_slots",
   logo_quick_pick: "logo_quick_pick",
+  spectrum: "spectrum",
+  coin_allocation: "coin_allocation",
+  two_axis: "two_axis",
+  bracket: "bracket",
+  pin_map: "pin_map",
 };
 
 /**

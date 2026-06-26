@@ -11,6 +11,7 @@
  *         { items: { [optionKey]: { [target]: n } } }
  *  rank   (rank_order): { items: { [optionKey]: { posSum: n, count: n, firsts: n } } }
  *  podium (podium_slots): { items: { [optionKey]: { first: n, second: n, third: n } } }
+ *  spectrum: { buckets: number[11], sum: n, count: n } — bucket = clamp(floor(value/10),0,10)
  */
 import { rawDb } from "@/lib/db/client";
 import type { Mode } from "@/lib/catalogue/enums";
@@ -22,17 +23,28 @@ function emptyAgg(mode: Mode): Agg {
     case "quick_pick":
     case "logo_quick_pick":
     case "tradeoff_cards":
+    case "coin_allocation":
+    case "bracket":
+    case "pin_map":
       return { counts: {} };
     case "swipe_stack":
       return { cards: {} };
     case "bucket_sort":
     case "tier_placement":
+    case "two_axis":
       return { items: {} };
     case "rank_order":
       return { items: {} };
     case "podium_slots":
       return { items: {} };
+    case "spectrum":
+      return { buckets: new Array(11).fill(0), sum: 0, count: 0 };
   }
+}
+
+/** spectrum bucket index: clamp(floor(value/10), 0, 10) — 0..100 → 0..10. */
+function spectrumBucket(value: number): number {
+  return Math.max(0, Math.min(10, Math.floor(value / 10)));
 }
 
 function applyToAgg(mode: Mode, agg: Agg, payload: Record<string, unknown>, sign: 1 | -1): void {
@@ -49,6 +61,27 @@ function applyToAgg(mode: Mode, agg: Agg, payload: Record<string, unknown>, sign
       bump(counts, payload.pick as string, sign);
       return;
     }
+    case "coin_allocation": {
+      // SAME pick shape — but each option's count is bumped by the coins spent
+      // on it (so coins renders total coin-share, not headcount).
+      const counts = (agg.counts ??= {}) as Record<string, number>;
+      for (const [k, coins] of Object.entries(payload.alloc as Record<string, number>)) {
+        if (coins > 0) bump(counts, k, sign * coins);
+      }
+      return;
+    }
+    case "bracket": {
+      // SAME pick shape — bump the champion's count (championCount per option).
+      const counts = (agg.counts ??= {}) as Record<string, number>;
+      bump(counts, payload.winner as string, sign);
+      return;
+    }
+    case "pin_map": {
+      // SAME pick shape — bump the chosen region's count.
+      const counts = (agg.counts ??= {}) as Record<string, number>;
+      bump(counts, payload.region as string, sign);
+      return;
+    }
     case "swipe_stack": {
       const cards = (agg.cards ??= {}) as Record<string, { yes: number; no: number }>;
       for (const [k, v] of Object.entries(payload.votes as Record<string, "yes" | "no">)) {
@@ -58,7 +91,9 @@ function applyToAgg(mode: Mode, agg: Agg, payload: Record<string, unknown>, sign
       return;
     }
     case "bucket_sort":
-    case "tier_placement": {
+    case "tier_placement":
+    case "two_axis": {
+      // SAME place shape — two_axis's "target" is the quadrant id (q1..q4).
       const items = (agg.items ??= {}) as Record<string, Record<string, number>>;
       for (const [k, target] of Object.entries(payload.placements as Record<string, string>)) {
         items[k] ??= {};
@@ -92,6 +127,15 @@ function applyToAgg(mode: Mode, agg: Agg, payload: Record<string, unknown>, sign
         items[k] ??= { first: 0, second: 0, third: 0 };
         items[k][place] += sign;
       }
+      return;
+    }
+    case "spectrum": {
+      const buckets = (agg.buckets ??= new Array(11).fill(0)) as number[];
+      const value = payload.value as number;
+      const b = spectrumBucket(value);
+      buckets[b] = Math.max(0, (buckets[b] ?? 0) + sign);
+      agg.sum = Math.max(0, ((agg.sum as number) ?? 0) + sign * value);
+      agg.count = Math.max(0, ((agg.count as number) ?? 0) + sign);
       return;
     }
   }

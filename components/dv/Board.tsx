@@ -13,6 +13,7 @@ import {
   yourOrder,
   yourPlacements,
   yourVotes,
+  yourWinner,
 } from "@/lib/dv/transforms";
 import { paperVeil } from "@/lib/dv/palette";
 import { Caption, GrowBar, Plate, Rise, SampleLine, mono } from "./chrome";
@@ -34,6 +35,7 @@ function Board({ question, result }: DvProps) {
   const order = yourOrder(result.your_payload);
   const votes = yourVotes(result.your_payload);
   const placements = yourPlacements(result.your_payload);
+  const winner = yourWinner(result.your_payload);
   const youSaid = (key: string): string | null => {
     if (question.mode === "rank_order" && order) {
       const pos = order.indexOf(key);
@@ -41,6 +43,9 @@ function Board({ question, result }: DvProps) {
     }
     if (question.mode === "swipe_stack" && votes) {
       return votes[key] !== undefined ? votes[key] : null;
+    }
+    if (question.mode === "bracket" && winner) {
+      return key === winner ? "your champion" : null;
     }
     if (placements) return placements[key] ?? null;
     return null;
@@ -118,7 +123,7 @@ export const boardDefinition: DvDefinition = {
   id: "board",
   family: "rank",
   label: "Leaderboard",
-  supportedModes: ["rank_order", "swipe_stack", "bucket_sort", "tier_placement"],
+  supportedModes: ["rank_order", "swipe_stack", "bucket_sort", "tier_placement", "bracket"],
   Component: Board,
 };
 

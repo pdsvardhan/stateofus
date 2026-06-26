@@ -14,7 +14,20 @@
 import type { Mode } from "@/lib/catalogue/enums";
 import type { QuestionOption, QuestionTargets } from "@/lib/types";
 
-export const PICK_MODES: Mode[] = ["quick_pick", "logo_quick_pick", "tradeoff_cards"];
+export const PICK_MODES: Mode[] = [
+  "quick_pick",
+  "logo_quick_pick",
+  "tradeoff_cards",
+  // coin_allocation shares the pick aggregate shape ({ counts }); its counts are
+  // total coins per option, so pick-family transforms render coin-share directly.
+  "coin_allocation",
+  // bracket also shares { counts } — each count is an option's championship wins,
+  // so pick-family transforms render share-of-titles directly.
+  "bracket",
+  // pin_map also shares { counts } — each count is votes for that region option,
+  // so pick-family transforms render region popularity directly.
+  "pin_map",
+];
 
 type Agg = Record<string, unknown> | null | undefined;
 
@@ -87,6 +100,48 @@ export function yourSlots(
 ): { first?: string; second?: string; third?: string } | null {
   if (!payload || typeof payload.slots !== "object" || payload.slots === null) return null;
   return payload.slots as { first?: string; second?: string; third?: string };
+}
+
+/** spectrum: the 0–100 position the reader placed themselves at. */
+export function yourValue(payload: Record<string, unknown> | null): number | null {
+  if (!payload || typeof payload.value !== "number") return null;
+  return payload.value;
+}
+
+/** bracket: the option key the reader crowned champion. */
+export function yourWinner(payload: Record<string, unknown> | null): string | null {
+  if (!payload || typeof payload.winner !== "string") return null;
+  return payload.winner;
+}
+
+/** pin_map: the region option key the reader pinned. */
+export function yourRegion(payload: Record<string, unknown> | null): string | null {
+  if (!payload || typeof payload.region !== "string") return null;
+  return payload.region;
+}
+
+/* ------------------------------------------------------------------ */
+/* spectrum — histogram model from { buckets[11], sum, count }         */
+/* ------------------------------------------------------------------ */
+
+export type SpectrumModel = {
+  /** the 11 bucket counts (0–9, 10–19, …, 100) */
+  buckets: number[];
+  /** count of the tallest bucket — for normalizing bar heights */
+  peak: number;
+  /** total answers counted */
+  count: number;
+  /** mean position 0–100, or null when nothing counted */
+  mean: number | null;
+};
+
+export function spectrumModel(agg: Agg): SpectrumModel {
+  const rawBuckets = (agg?.buckets ?? []) as number[];
+  const buckets = Array.from({ length: 11 }, (_, i) => Math.max(0, rawBuckets[i] ?? 0));
+  const sum = Math.max(0, (agg?.sum as number) ?? 0);
+  const count = Math.max(0, (agg?.count as number) ?? 0);
+  const peak = buckets.reduce((a, b) => Math.max(a, b), 0);
+  return { buckets, peak, count, mean: count > 0 ? sum / count : null };
 }
 
 /* ------------------------------------------------------------------ */
@@ -196,6 +251,42 @@ export function placementRows(
 }
 
 /* ------------------------------------------------------------------ */
+/* two_axis — 2×2 quadrant grid (place shape, quadrant targets q1..q4) */
+/* ------------------------------------------------------------------ */
+
+/** Quadrant ids, in grid reading order: top-left, top-right, bottom-left,
+ *  bottom-right. Shared by the interaction (placement) and the heat matrix
+ *  (render) so both agree on where each quadrant sits. */
+export const QUADRANTS = ["q1", "q2", "q3", "q4"] as const;
+export type Quadrant = (typeof QUADRANTS)[number];
+
+export type QuadrantCell = {
+  quadrant: Quadrant;
+  /** option keys/labels India placed in this quadrant, by placement count desc */
+  items: { key: string; label: string; count: number }[];
+  /** total placements landing in this quadrant */
+  count: number;
+  /** share of all placements (0–100, rounded across the four cells) */
+  pct: number;
+};
+
+/** Aggregate the place-shape items into the four quadrant cells. */
+export function quadrantCells(agg: Agg, options: QuestionOption[]): QuadrantCell[] {
+  const items = (agg?.items ?? {}) as Record<string, Record<string, number>>;
+  const counts = QUADRANTS.map((q) =>
+    options.reduce((sum, o) => sum + Math.max(0, items[o.key]?.[q] ?? 0), 0)
+  );
+  const pcts = roundedShares(counts);
+  return QUADRANTS.map((q, qi) => {
+    const cellItems = options
+      .map((o) => ({ key: o.key, label: o.label, count: Math.max(0, items[o.key]?.[q] ?? 0) }))
+      .filter((it) => it.count > 0)
+      .sort((a, b) => b.count - a.count);
+    return { quadrant: q, items: cellItems, count: counts[qi], pct: pcts[qi] };
+  });
+}
+
+/* ------------------------------------------------------------------ */
 /* rank_order                                                          */
 /* ------------------------------------------------------------------ */
 
@@ -287,6 +378,11 @@ export function boardRowsFor(
   if (mode === "swipe_stack") {
     const rows = swipeYesShares(agg, options).map(({ key, label, pct }) => ({ key, label, pct }));
     return { rows, caption: "The leaderboard · % swiping yes" };
+  }
+  if (mode === "bracket") {
+    // counts = championship wins per option — board by share of titles.
+    const rows = pickShares(agg, options).map(({ key, label, pct }) => ({ key, label, pct }));
+    return { rows, caption: "The leaderboard · share of championships" };
   }
   // bucket_sort / tier_placement — share filed under the top target
   const labels = targets?.labels ?? [];
