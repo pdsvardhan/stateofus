@@ -1,27 +1,26 @@
 "use client";
 /**
- * ShareActions — v5's three big result actions (prototype lines 988–995).
- *  • Share        — paper, ink text (Web Share API → clipboard fallback)
- *  • ⬇ Download PNG — big DARK button, "PNG" in lime (opens the 3 card styles)
- *  • Link         — paper; copies the canonical URL, flips to "Copied ✓"
+ * ShareActions — v5's result actions (prototype lines 988–995).
+ *  • Share        — paper, ink text. Web Share API when available; ALWAYS copies
+ *                   the canonical question link to the clipboard too (iter-4 #314).
+ *  • ⬇ Download   — big DARK button; one tap downloads the single standard card
+ *                   image (iter-4 #313 — the d1/d2/d3 style chooser was removed;
+ *                   the result DV varies, the card template is fixed = d2).
  *
  * Keeps the existing /api/og/:id?style=…&download=1 pipeline and the ?s=1
- * inbound-share marker. Replaces ShareSheet's placement in the result rail.
+ * inbound-share marker.
  */
 import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 
-const CARD_STYLES = [
-  { id: "d2", label: "Front page", def: true },
-  { id: "d1", label: "Editorial", def: false },
-  { id: "d3", label: "Stat poster", def: false },
-] as const;
+/** The one standard download card. The result DV varies inside it; the template
+ *  is fixed. If this default ever changes, change it here only. */
+const DOWNLOAD_STYLE = "d2";
 
 const BTN =
   "flex min-h-[56px] items-center justify-center rounded-lg border-2 border-ink px-[18px] py-4 font-ui text-[14.5px] font-extrabold uppercase tracking-[.04em] transition-all duration-150 hover:-translate-x-0.5 hover:-translate-y-0.5";
 
 export function ShareActions({ questionId }: { questionId: string }) {
-  const [open, setOpen] = useState(false);
   const [toast, setToast] = useState<string | null>(null);
 
   function showToast(msg: string) {
@@ -31,16 +30,22 @@ export function ShareActions({ questionId }: { questionId: string }) {
 
   async function share() {
     const url = `${window.location.origin}/q/${questionId}?s=1`;
+    // iter-4 #314: always copy the link, even when the native share sheet opens.
+    let copied = false;
+    try {
+      await navigator.clipboard.writeText(url);
+      copied = true;
+    } catch {
+      copied = false;
+    }
     if (navigator.share) {
       try {
         await navigator.share({ title: "State of Us", url });
-        return;
       } catch {
-        return; // dismissal is a choice
+        // dismissal is a choice — the link is already on the clipboard.
       }
     }
-    await navigator.clipboard.writeText(url);
-    showToast("🔗 Link copied — pass it along");
+    showToast(copied ? "🔗 Link copied — pass it along" : "Couldn’t copy — try again");
   }
 
   return (
@@ -53,42 +58,14 @@ export function ShareActions({ questionId }: { questionId: string }) {
         Share
       </button>
 
-      <button
-        type="button"
-        onClick={() => setOpen((v) => !v)}
-        aria-expanded={open}
+      {/* iter-4 #313: one tap → the single standard card image, no style chooser. */}
+      <a
+        href={`/api/og/${questionId}?style=${DOWNLOAD_STYLE}&download=1`}
+        onClick={() => showToast("Card on its way")}
         className={`${BTN} min-w-[150px] flex-1 bg-ink text-paper hover:shadow-[5px_5px_0_color-mix(in_srgb,var(--ink)_40%,transparent)]`}
       >
         ⬇&nbsp;Download
-      </button>
-
-      {/* download style popover */}
-      <AnimatePresence>
-        {open && (
-          <motion.div
-            initial={{ opacity: 0, y: 8 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: 8 }}
-            transition={{ duration: 0.22 }}
-            className="absolute right-0 top-full z-10 mt-2 flex w-48 flex-col border-2 border-ink bg-paper-white shadow-[4px_4px_0_var(--ink)]"
-          >
-            {CARD_STYLES.map((s) => (
-              <a
-                key={s.id}
-                href={`/api/og/${questionId}?style=${s.id}&download=1`}
-                onClick={() => {
-                  setOpen(false);
-                  showToast("Card on its way");
-                }}
-                className="border-b-2 border-ink px-3 py-2.5 font-label text-sm font-bold text-ink last:border-b-0 hover:bg-lime"
-              >
-                {s.label}
-                {s.def && <span className="ml-1 text-xs text-muted">· default</span>}
-              </a>
-            ))}
-          </motion.div>
-        )}
-      </AnimatePresence>
+      </a>
 
       {/* copied / share toast — v5 pill */}
       <AnimatePresence>
