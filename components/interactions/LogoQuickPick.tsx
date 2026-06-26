@@ -5,8 +5,12 @@
  * iter-3 #22 (adr-009-stateofus-brand-icons): real brand glyphs from Simple Icons,
  * bundled locally and rendered monochrome (ink) to fit the newspaper aesthetic.
  * Brands Simple Icons doesn't carry fall back to the original typographic mark
- * (first letter on a paper-white plate). Supersedes the "logos not licensed"
- * placeholder-only decision.
+ * (first letter on a paper-white plate).
+ * iter-4 #315: CONSISTENCY — real glyphs render only when EVERY option in the
+ * question resolves to one. If any option lacks a glyph, all options use the
+ * typographic tile, so a question is never a mix of logos and letters (no option
+ * looks favoured). When the missing brand assets land, those questions light up
+ * their logos again with no further change.
  */
 import { useState } from "react";
 import { motion } from "framer-motion";
@@ -19,6 +23,11 @@ export function LogoQuickPick({ question, onSubmit, submitting }: InteractionPro
   const [picked, setPicked] = useState<string | null>(null);
   const { submitAfter, reduceMotion } = useDelayedSubmit(onSubmit);
 
+  // iter-4 #315: all-or-nothing per question — logos only when every option has one.
+  const allResolved = question.options.every(
+    (o) => BRAND_ICONS[normalizeBrand(o.label)]
+  );
+
   function pick(key: string) {
     if (picked !== null || submitting) return;
     setPicked(key);
@@ -30,7 +39,7 @@ export function LogoQuickPick({ question, onSubmit, submitting }: InteractionPro
       {question.options.map((o, i) => {
         const isPicked = picked === o.key;
         const tile = tileSwatch(o.key);
-        const icon = BRAND_ICONS[normalizeBrand(o.label)];
+        const icon = allResolved ? BRAND_ICONS[normalizeBrand(o.label)] : undefined;
         return (
           <motion.button
             key={o.key}
