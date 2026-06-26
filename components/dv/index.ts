@@ -17,6 +17,7 @@ import { medalDefinition } from "./Medal";
 import { treemapDefinition } from "./Treemap";
 import { heatmatrixDefinition } from "./HeatMatrix";
 import { sankeyDefinition } from "./Sankey";
+import { distributionDefinition } from "./Distribution";
 
 export const DV_REGISTRY: Partial<DvRegistry> = {
   split: splitDefinition,
@@ -33,4 +34,5 @@ export const DV_REGISTRY: Partial<DvRegistry> = {
   treemap: treemapDefinition,
   heatmatrix: heatmatrixDefinition,
   sankey: sankeyDefinition,
+  distribution: distributionDefinition,
 };

@@ -13,6 +13,7 @@ import { SwipeStack } from "./SwipeStack";
 import { Sorter } from "./Sorter";
 import { RankOrder } from "./RankOrder";
 import { PodiumSlots } from "./PodiumSlots";
+import { Spectrum } from "./Spectrum";
 
 export const INTERACTION_REGISTRY: InteractionRegistry = {
   quick_pick: { mode: "quick_pick", chipLabel: "Quick Pick", Component: QuickPick },
@@ -39,6 +40,7 @@ export const INTERACTION_REGISTRY: InteractionRegistry = {
     chipLabel: "Quick Pick",
     Component: LogoQuickPick,
   },
+  spectrum: { mode: "spectrum", chipLabel: "Spectrum", Component: Spectrum },
 };
 
 export {
@@ -49,4 +51,5 @@ export {
   Sorter,
   RankOrder,
   PodiumSlots,
+  Spectrum,
 };

@@ -89,6 +89,36 @@ export function yourSlots(
   return payload.slots as { first?: string; second?: string; third?: string };
 }
 
+/** spectrum: the 0–100 position the reader placed themselves at. */
+export function yourValue(payload: Record<string, unknown> | null): number | null {
+  if (!payload || typeof payload.value !== "number") return null;
+  return payload.value;
+}
+
+/* ------------------------------------------------------------------ */
+/* spectrum — histogram model from { buckets[11], sum, count }         */
+/* ------------------------------------------------------------------ */
+
+export type SpectrumModel = {
+  /** the 11 bucket counts (0–9, 10–19, …, 100) */
+  buckets: number[];
+  /** count of the tallest bucket — for normalizing bar heights */
+  peak: number;
+  /** total answers counted */
+  count: number;
+  /** mean position 0–100, or null when nothing counted */
+  mean: number | null;
+};
+
+export function spectrumModel(agg: Agg): SpectrumModel {
+  const rawBuckets = (agg?.buckets ?? []) as number[];
+  const buckets = Array.from({ length: 11 }, (_, i) => Math.max(0, rawBuckets[i] ?? 0));
+  const sum = Math.max(0, (agg?.sum as number) ?? 0);
+  const count = Math.max(0, (agg?.count as number) ?? 0);
+  const peak = buckets.reduce((a, b) => Math.max(a, b), 0);
+  return { buckets, peak, count, mean: count > 0 ? sum / count : null };
+}
+
 /* ------------------------------------------------------------------ */
 /* pick family                                                         */
 /* ------------------------------------------------------------------ */

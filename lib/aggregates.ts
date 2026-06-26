@@ -11,6 +11,7 @@
  *         { items: { [optionKey]: { [target]: n } } }
  *  rank   (rank_order): { items: { [optionKey]: { posSum: n, count: n, firsts: n } } }
  *  podium (podium_slots): { items: { [optionKey]: { first: n, second: n, third: n } } }
+ *  spectrum: { buckets: number[11], sum: n, count: n } — bucket = clamp(floor(value/10),0,10)
  */
 import { rawDb } from "@/lib/db/client";
 import type { Mode } from "@/lib/catalogue/enums";
@@ -32,7 +33,14 @@ function emptyAgg(mode: Mode): Agg {
       return { items: {} };
     case "podium_slots":
       return { items: {} };
+    case "spectrum":
+      return { buckets: new Array(11).fill(0), sum: 0, count: 0 };
   }
+}
+
+/** spectrum bucket index: clamp(floor(value/10), 0, 10) — 0..100 → 0..10. */
+function spectrumBucket(value: number): number {
+  return Math.max(0, Math.min(10, Math.floor(value / 10)));
 }
 
 function applyToAgg(mode: Mode, agg: Agg, payload: Record<string, unknown>, sign: 1 | -1): void {
@@ -92,6 +100,15 @@ function applyToAgg(mode: Mode, agg: Agg, payload: Record<string, unknown>, sign
         items[k] ??= { first: 0, second: 0, third: 0 };
         items[k][place] += sign;
       }
+      return;
+    }
+    case "spectrum": {
+      const buckets = (agg.buckets ??= new Array(11).fill(0)) as number[];
+      const value = payload.value as number;
+      const b = spectrumBucket(value);
+      buckets[b] = Math.max(0, (buckets[b] ?? 0) + sign);
+      agg.sum = Math.max(0, ((agg.sum as number) ?? 0) + sign * value);
+      agg.count = Math.max(0, ((agg.count as number) ?? 0) + sign);
       return;
     }
   }

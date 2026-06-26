@@ -40,6 +40,9 @@ export const payloadSchemas = {
       );
       return new Set(filled).size === filled.length;
     }, "same item in multiple slots"),
+  // spectrum carries a 0–100 position, not option keys — validatePayload's
+  // key-reference check is a no-op for it (no pick/votes/placements/order/slots).
+  spectrum: z.object({ value: z.number().int().min(0).max(100) }),
 } satisfies Record<Mode, z.ZodTypeAny>;
 
 export type AnswerPayload = {

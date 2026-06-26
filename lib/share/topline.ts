@@ -99,5 +99,21 @@ export function computeTopline(
         statement: "put this in 1st place",
       };
     }
+    case "spectrum": {
+      const count = Math.max(0, (aggregate.count as number) ?? 0);
+      const sum = Math.max(0, (aggregate.sum as number) ?? 0);
+      if (count < 1) return null;
+      const mean = Math.round(sum / count);
+      // headline reads as a 0–100 lean toward whichever end the average favours.
+      const leansHigh = mean >= 50;
+      const label = leansHigh
+        ? (options[1]?.label ?? "the high end")
+        : (options[0]?.label ?? "the low end");
+      return {
+        label,
+        pct: leansHigh ? mean : 100 - mean,
+        statement: "is where India leans",
+      };
+    }
   }
 }
