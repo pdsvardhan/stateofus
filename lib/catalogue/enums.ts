@@ -2,10 +2,10 @@
  * Canonical enums — feat-question-data-model.
  *
  * Sources of truth:
- *  - Interaction modes: the 8 product modes (adr-005 §4 — design grew 5 → 8).
- *    v5 prototype tokens map 1:1 (quick/trade/swipe/sort/rank/slots/logoquick;
- *    bucket_sort + tier_placement both render through the sorter component).
- *  - DV ids: the 14 renderer tokens shipped in the v5 prototype (adr-006 §1).
+ *  - Interaction modes: 13 product modes (adr-005 §4 grew 5 → 8; iter-5 added
+ *    spectrum / coin_allocation / two_axis / bracket / pin_map → 13).
+ *    bucket_sort + tier_placement both render through the sorter component.
+ *  - DV ids: 15 renderer tokens (v5 prototype shipped 14; iter-5 added `distribution`).
  *  - Categories: the 6 desks (CA-020 added The Mirror / Identity).
  *  - Lifecycle: DOC-3 governance states.
  */

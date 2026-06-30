@@ -1,4 +1,4 @@
-# ComWatch — Iteration Log
+# State of Us — Iteration Log
 
 ## 2026-06-12 — Stage 0 + Stage 1 (session 1)
 
