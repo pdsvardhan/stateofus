@@ -127,8 +127,11 @@ auth_config:
   project_slug: stateofus
   strategy: custom
   providers:
-    - "admin-gate: token or CF Access — mechanism decided at Stage 2; public
-      product remains fully anonymous"
+    - "admin-gate: ADMIN_TOKEN -> SHA-256 signed httpOnly cookie (sou_admin),
+      enforced by app middleware on /admin/* + /api/admin/* (503 if ADMIN_TOKEN
+      unset, constant-time compare, 12h). Public product is fully anonymous
+      (device-cookie dedup only). Authentik forward-auth wrap was planned
+      (adr-006 s3) but deferred - NOT wired."
   session_management: cookie
   mfa_supported: false
   auth_library: custom
@@ -136,28 +139,32 @@ third_party_services:
   - id: 28
     project_slug: stateofus
     name: Cloudflare Tunnel
-    purpose: Public exposure of comwatch.vault7a.xyz
+    purpose: Public exposure of stateofus.vault7a.xyz
     auth_method: bearer-token
     failure_mode: Site unreachable externally; LAN access remains
     terms_acceptance: n-a
   - id: 29
     project_slug: stateofus
     name: Gitea
-    purpose: Source repo pdsv/comwatch
+    purpose: Source repo pdsv/stateofus on git.vault7a.xyz
     auth_method: bearer-token
     failure_mode: Push blocked; work continues locally
     terms_acceptance: n-a
   - id: 30
     project_slug: stateofus
-    name: IP geolocation provider (TBD Stage 2)
-    purpose: Coarse region for geographic DVs + region insights
-    auth_method: api-key
-    failure_mode: "Silent-skip: geo DVs show national aggregate, region insights hidden"
+    name: geoip-lite (offline MaxMind GeoLite2)
+    purpose: Coarse India region (state/city) resolved LOCALLY from a bundled
+      MaxMind GeoLite2 dataset via the geoip-lite npm package - no live API, no
+      key. The 'TBD Stage 2 provider' was resolved by choosing an offline
+      library. IP is read, used, dropped (never stored).
+    auth_method: anonymous
+    failure_mode: "Silent-skip: geo DVs show national aggregate, region insights
+      hidden; one-tap user correction available"
     terms_acceptance: n-a
   - id: 31
     project_slug: stateofus
     name: NPM Proxy Manager
-    purpose: Reverse proxy comwatch.vault7a.xyz -> :8510
+    purpose: Reverse proxy stateofus.vault7a.xyz -> :8510
     auth_method: bearer-token
     failure_mode: Site unreachable externally
     terms_acceptance: n-a
@@ -175,11 +182,4 @@ secrets:
     where_stored: env-vars
     what_for: Salt for device-scoped pseudonymous identity hashing (vote dedup +
       comparisons)
-    rotation_cadence: quarterly
-  - id: 22
-    project_slug: stateofus
-    name: IPGEO_API_KEY
-    where_stored: env-vars
-    what_for: IP geolocation provider key (provider TBD at Stage 2); silent-skip on
-      failure
     rotation_cadence: quarterly

@@ -335,7 +335,9 @@ features:
   - id: feat-region-capture
     title: Region capture (IP-geo + optional refine)
     short_description: Coarse city/state from IP automatically + one-tap optional
-      correction on geo questions (user decision 2026-06-12).
+      correction on geo questions (user decision 2026-06-12). Implemented via
+      offline geoip-lite (bundled MaxMind GeoLite2), India-only, no live
+      API/key; IP is read then dropped, never stored.
     type: backend
     status: done
     priority: P1

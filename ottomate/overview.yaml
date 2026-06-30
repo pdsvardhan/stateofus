@@ -9,19 +9,19 @@ summary:
     maps - plus a personal insight layer comparing you to the country.
     Anonymous, curated, built like a newspaper: editorial desks, editions, and
     results that read like front pages."
-  core_idea: "State of Us (working titles: Public Pulse, ComWatch) turns
-    public-opinion polling into a rewarding experience loop: Question -> Answer
-    -> Aggregation -> Visualization -> Reaction -> Return. One question = one
-    experience page: a fast thumb-friendly interaction, an instantly readable
-    primary visualization, 0-2 secondary visualizations for curiosity, and a
-    mandatory template-driven personal insight layer (you matched 12%, your city
-    differs). Questions are curated assets with lifecycle governance
-    (draft/active/paused/frozen/archived), discovered through a curated
-    multi-source homepage with editorial desks, trending, explore, and search.
-    Anonymous participation only - skip always allowed, sample sizes always
-    visible, results designed to be shared. The visual language is a
-    neo-brutalist newspaper: ink, fire, lime and cream, stamps and section
-    rules, the public counted like a daily edition."
+  core_idea: "State of Us turns public-opinion polling into a rewarding experience
+    loop: Question -> Answer -> Aggregation -> Visualization -> Reaction ->
+    Return. One question = one experience page: a fast thumb-friendly
+    interaction, an instantly readable primary visualization, 0-2 secondary
+    visualizations for curiosity, and a mandatory template-driven personal
+    insight layer (you matched 12%, your city differs). Questions are curated
+    assets with lifecycle governance (draft/active/paused/frozen/archived),
+    discovered through a curated multi-source homepage with editorial desks,
+    trending, explore, and search. Anonymous participation only - skip always
+    allowed, sample sizes always visible, results designed to be shared. The
+    visual language is a neo-brutalist newspaper: ink, fire, lime and cream,
+    stamps and section rules, the public counted like a daily edition. (Renamed
+    from the working titles Public Pulse / ComWatch - adr-004.)"
 current_status: building
 lifecycle_phase: building
 scope_size: large
@@ -29,7 +29,7 @@ target_devices: both
 hosting_target: vault7a-docker
 port: 8510
 public_url: https://stateofus.vault7a.xyz
-repository_url: http://localhost:3300/pdsv/stateofus
+repository_url: http://git.vault7a.xyz/pdsv/stateofus
 problem_statement: "Surveys and polls feel like work: you fill a form and get
   nothing back. There is no satisfying way to answer structured public questions
   and immediately discover what other people think. Existing tools optimize for
