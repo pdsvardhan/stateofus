@@ -23,7 +23,7 @@ export default async function SearchPage(props: {
   return (
    <div className="min-h-screen">
     <Masthead />
-    <main className="mx-auto max-w-[1280px] px-[22px] pb-[90px] pt-8">
+    <main className="mx-auto max-w-[1280px] px-[22px] pb-[90px] pt-8 wide:max-w-[1700px]">
       <h1 className="mb-4 font-editorial text-3xl font-extrabold text-ink">Search the catalogue</h1>
 
       <form action="/search" method="get" role="search" className="mb-6 flex gap-2">
@@ -66,7 +66,7 @@ export default async function SearchPage(props: {
           <p className="mb-3 font-label text-xs text-muted">
             {results.questions.length} matching questions
           </p>
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 wide:grid-cols-4">
             {results.questions.map((c) => (
               <QuestionCard key={c.id} card={c} wide={false} />
             ))}

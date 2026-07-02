@@ -27,7 +27,7 @@ export default async function CategoryPage(props: {
   return (
     <div className="min-h-screen">
       <Masthead />
-      <main className="mx-auto max-w-[1280px] px-[22px] pb-[90px] pt-8">
+      <main className="mx-auto max-w-[1280px] px-[22px] pb-[90px] pt-8 wide:max-w-[1700px]">
         <div className="pb-3">
           <Link href="/" className="font-label text-xs font-bold text-ink underline decoration-2 underline-offset-2">
             ← Front page
@@ -45,7 +45,7 @@ export default async function CategoryPage(props: {
         <div className="py-5">
           <DeskChips active={category} />
         </div>
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3" style={{ justifyItems: "stretch" }}>
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 wide:grid-cols-4" style={{ justifyItems: "stretch" }}>
           {cards.map((c) => (
             <QuestionCard key={c.id} card={c} wide={false} />
           ))}

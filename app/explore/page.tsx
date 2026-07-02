@@ -32,7 +32,7 @@ export default async function ExplorePage(props: {
   return (
     <div className="min-h-screen">
       <Masthead />
-      <main className="mx-auto max-w-[1280px] px-[22px] pb-[90px] pt-8">
+      <main className="mx-auto max-w-[1280px] px-[22px] pb-[90px] pt-8 wide:max-w-[1700px]">
         <div className="pb-3">
           <Link href="/" className="font-label text-xs font-bold text-ink underline decoration-2 underline-offset-2">
             ← Front page
@@ -72,7 +72,7 @@ export default async function ExplorePage(props: {
           </h2>
         )}
         <p className="mb-3 font-label uppercase text-muted" style={{ fontSize: 10, letterSpacing: "0.1em" }}>{cards.length} questions</p>
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 wide:grid-cols-4">
           {cards.map((c) => (
             <QuestionCard key={c.id} card={c} wide={false} />
           ))}

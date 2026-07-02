@@ -83,9 +83,23 @@
 
 /* The v5 prototype switches single↔two-column at innerWidth > 980 (JS `wide`),
    not Tailwind's lg=1024. Custom `exp:` breakpoint restores the design's switch
-   point on the experience/home/about surfaces (parity RC3 / global Δ1). */
+   point on the experience/home/about surfaces (parity RC3 / global Δ1).
+   `wide:` (1440px) is the iter-6 wide-monitor tier: content cap 1280→1700,
+   denser browse grids, larger display type (report #63 [15]). */
 @theme {
   --breakpoint-exp: 980px;
+  --breakpoint-wide: 1440px;
+}
+
+/* Editorial headline — one line at every tier; the wide tier lets the display
+   face actually use the extra canvas instead of stranding it as margin. */
+.editorial-headline {
+  font-size: clamp(40px, 5.2vw, 64px);
+}
+@media (min-width: 1440px) {
+  .editorial-headline {
+    font-size: clamp(64px, 4vw, 80px);
+  }
 }
 
 html {

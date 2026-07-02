@@ -32,7 +32,7 @@ export default function Home() {
   return (
     <div className="min-h-screen">
       <Masthead />
-      <main className="mx-auto max-w-[1280px] px-[22px] pb-[90px] pt-10">
+      <main className="mx-auto max-w-[1280px] px-[22px] pb-[90px] pt-10 wide:max-w-[1700px]">
         <EditorialHeader />
         <DeskChips />
 
@@ -46,7 +46,7 @@ export default function Home() {
             </div>
           </div>
 
-          <div className="flex w-full shrink-0 flex-col gap-5 exp:w-[310px] exp:sticky exp:top-[90px] exp:self-start">
+          <div className="flex w-full shrink-0 flex-col gap-5 exp:w-[310px] exp:sticky exp:top-[90px] exp:self-start wide:w-[360px]">
             <TrendingRail cards={trending.slice(0, 5)} />
             <HouseRules />
           </div>

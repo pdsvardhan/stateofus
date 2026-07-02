@@ -13,11 +13,12 @@ export function EditorialHeader() {
         Today&apos;s edition
       </div>
       <h1
+        className="editorial-headline"
         style={{
           fontFamily: "var(--font-ui)",
           fontWeight: 900,
-          /* one line on desktop; scales down on narrow screens without wrapping */
-          fontSize: "clamp(40px, 5.2vw, 64px)",
+          /* one line at every tier — size lives in .editorial-headline
+             (globals.css) so the wide monitor tier can scale it up */
           lineHeight: 0.96,
           letterSpacing: "-0.03em",
           textTransform: "uppercase",
