@@ -1,8 +1,11 @@
 /**
  * RailRelated — v5's in-rail "Up next" + related mini-cards (prototype lines
  * 941–962). Replaces the full-width <RelatedRow> at the page bottom.
- *   • Up-next: DARK ink card, "Up next · picked blind 🎲 · {desk}", Spectral
- *     question, lime "Answer it →".
+ *   • iter-6 item-411: the whole rail is ONE card family (paper-bright + ink
+ *     border + house shadow) under a "Keep going" section rule — the dark
+ *     ink up-next card read as out-of-place next to the paper minis
+ *     (report #50 [3]). Up-next keeps salience via the lime clipped tag +
+ *     fire CTA, not a different surface.
  *   • Related: 2 compact feed-family cards — desk dot + category + clipped tag
  *     pill + Spectral title + "{n} voted" + →.
  * Server component (no hooks) — mounted inside the result <aside> via a prop
@@ -25,18 +28,39 @@ export function RailRelated({ questionId }: { questionId: string }) {
 
   return (
     <div className="flex flex-col gap-2.5">
-      {/* Up next — blind pick (dark) */}
+      {/* section rule — anchors the rail like a feed-row header */}
+      <div className="flex items-baseline gap-3">
+        <span className="font-ui text-[16px] font-black uppercase" style={{ letterSpacing: "-0.01em" }}>
+          Keep going
+        </span>
+        <span aria-hidden style={{ flex: 1, height: 2, background: "rgba(24,22,42,.22)" }} />
+      </div>
+
+      {/* Up next — blind pick, same paper family as the minis */}
       <Link
         href={`/q/${next.id}`}
-        className="block rounded-[10px] border-2 border-ink bg-ink px-5 py-[18px] text-paper transition-all duration-150 hover:-translate-x-0.5 hover:-translate-y-0.5 hover:shadow-[6px_6px_0_color-mix(in_srgb,var(--ink)_35%,transparent)]"
+        className="block rounded-[10px] border-2 border-ink bg-paper-bright px-5 py-[18px] shadow-[4px_4px_0_color-mix(in_srgb,var(--ink)_16%,transparent)] transition-all duration-150 hover:-translate-x-0.5 hover:-translate-y-0.5 hover:shadow-[6px_6px_0_var(--ink)]"
       >
-        <span className="font-label text-[10px] font-bold uppercase tracking-[.14em] text-lime">
-          Up next · picked blind 🎲 · {nextDesk.name}
+        <span className="flex items-center gap-1.5">
+          <span
+            aria-hidden
+            className="h-2.5 w-2.5 rounded-[3px] border-[1.5px] border-ink"
+            style={{ background: nextDesk.color }}
+          />
+          <span className="font-label text-[10px] uppercase tracking-[.1em] text-muted">
+            {nextDesk.name}
+          </span>
+          <span
+            className="ml-auto border-[1.5px] border-ink bg-lime py-0.5 pl-[7px] pr-3 font-label text-[10px] font-bold uppercase tracking-[.08em] text-ink"
+            style={{ clipPath: "polygon(0 0, calc(100% - 6px) 0, 100% 100%, 0 100%)" }}
+          >
+            Up next · picked blind 🎲
+          </span>
         </span>
-        <span className="mt-2 mb-1.5 block font-editorial text-[17px] font-semibold leading-[1.2]">
+        <span className="mt-2 mb-1.5 block font-editorial text-[17px] font-semibold leading-[1.2] text-ink">
           {next.text}
         </span>
-        <span className="font-ui text-[13.5px] font-extrabold uppercase text-lime">Answer it →</span>
+        <span className="font-ui text-[13.5px] font-extrabold uppercase text-fire">Answer it →</span>
       </Link>
 
       {/* Related mini-cards (feed family) */}
