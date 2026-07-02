@@ -15,7 +15,7 @@ import { CATEGORIES, DESK_BY_CATEGORY, type Category } from "@/lib/catalogue/enu
 export type CardPreview =
   | { kind: "stat"; pct: number; line: string; color: string }
   | { kind: "tug"; score: string; lLabel: string; rLabel: string; lPct: number; rPct: number }
-  | { kind: "dv"; primary_dv: string; props: number[] };
+  | { kind: "dv"; primary_dv: string; props: number[]; labels: string[] };
 
 export type DiscoveryCard = {
   id: string;
@@ -289,20 +289,32 @@ const RESULT_THRESHOLD = 5;
 const LOCKED_QUOTA = 6;
 
 /**
- * The top result proportions (descending integer %, up to 5) from any mode's
- * aggregate — feeds the `dv` mini-preview so a data card's Ghost shape reflects
- * the real result, not fixed dummy widths. Returns [] when nothing is
- * computable (the card then falls back to a teaser).
+ * The top result shares (descending integer %, up to 5) from any mode's
+ * aggregate, each tied to its option label — feeds the `dv` mini-preview so a
+ * data card's Ghost shape carries readable context (iter-6 item 409: "colour
+ * blocks with no context"), not just proportional blocks. `labels[i]` belongs
+ * to `props[i]`; an entry is "" when no label is derivable (spectrum buckets
+ * are positional). Returns empty arrays when nothing is computable (the card
+ * then falls back to a teaser).
  */
-function dvProps(mode: string, agg: Record<string, unknown>): number[] {
-  const fromCounts = (counts: Record<string, number>): number[] => {
-    const vals = Object.values(counts).filter((n) => n > 0);
-    const total = vals.reduce((a, b) => a + b, 0);
-    if (total <= 0) return [];
-    return vals
-      .map((n) => Math.round((n / total) * 100))
-      .sort((a, b) => b - a)
+function dvProps(
+  mode: string,
+  agg: Record<string, unknown>,
+  labelOf: (k: string) => string
+): { props: number[]; labels: string[] } {
+  const none = { props: [] as number[], labels: [] as string[] };
+  const pack = (entries: { pct: number; label: string }[]) => {
+    const top = entries
+      .filter((e) => e.pct > 0)
+      .sort((a, b) => b.pct - a.pct)
       .slice(0, 5);
+    return { props: top.map((e) => e.pct), labels: top.map((e) => e.label) };
+  };
+  const fromCounts = (counts: Record<string, number>) => {
+    const entries = Object.entries(counts).filter(([, n]) => n > 0);
+    const total = entries.reduce((a, [, n]) => a + n, 0);
+    if (total <= 0) return none;
+    return pack(entries.map(([k, n]) => ({ pct: Math.round((n / total) * 100), label: labelOf(k) })));
   };
 
   // pick family (incl. coin_allocation / bracket / pin_map — all { counts })
@@ -311,45 +323,39 @@ function dvProps(mode: string, agg: Record<string, unknown>): number[] {
   // swipe: each card's yes-share (per-card, independent) — top few
   if (mode === "swipe_stack") {
     const cards = (agg.cards ?? {}) as Record<string, { yes: number; no: number }>;
-    return Object.values(cards)
-      .map((v) => {
+    return pack(
+      Object.entries(cards).map(([k, v]) => {
         const tot = (v.yes || 0) + (v.no || 0);
-        return tot > 0 ? Math.round(((v.yes || 0) / tot) * 100) : 0;
+        return { pct: tot > 0 ? Math.round(((v.yes || 0) / tot) * 100) : 0, label: labelOf(k) };
       })
-      .filter((p) => p > 0)
-      .sort((a, b) => b - a)
-      .slice(0, 5);
+    );
   }
 
   // place (bucket_sort / tier_placement / two_axis): per item, share landing in
   // its consensus target — top items
   if ("items" in agg) {
     const items = (agg.items ?? {}) as Record<string, Record<string, number>>;
-    const out: number[] = [];
-    for (const targets of Object.values(items)) {
+    const out: { pct: number; label: string }[] = [];
+    for (const [itemKey, targets] of Object.entries(items)) {
       if (typeof targets !== "object" || targets === null) continue;
       const vals = Object.values(targets) as number[];
       // rank items: { posSum, count, firsts } — use firsts as the salient signal
       const total = vals.reduce((a, b) => a + (b > 0 ? b : 0), 0);
       const top = vals.reduce((m, b) => Math.max(m, b), 0);
-      if (total > 0) out.push(Math.round((top / total) * 100));
+      if (total > 0) out.push({ pct: Math.round((top / total) * 100), label: labelOf(itemKey) });
     }
-    return out.filter((p) => p > 0).sort((a, b) => b - a).slice(0, 5);
+    return pack(out);
   }
 
-  // spectrum: bucket shares
+  // spectrum: bucket shares — positional, no per-bucket option label
   if ("buckets" in agg) {
     const buckets = (agg.buckets ?? []) as number[];
     const total = buckets.reduce((a, b) => a + (b > 0 ? b : 0), 0);
-    if (total <= 0) return [];
-    return buckets
-      .map((n) => (n > 0 ? Math.round((n / total) * 100) : 0))
-      .filter((p) => p > 0)
-      .sort((a, b) => b - a)
-      .slice(0, 5);
+    if (total <= 0) return none;
+    return pack(buckets.map((n) => ({ pct: n > 0 ? Math.round((n / total) * 100) : 0, label: "" })));
   }
 
-  return [];
+  return none;
 }
 
 /** Build a stat/tug/dv preview from a question's overall aggregate. */
@@ -415,8 +421,8 @@ export function buildPreview(
   // place / rank / podium / spectrum / two_axis etc. aren't a single % — render
   // the question's real result DV as a mini Ghost shape with live proportions.
   if (primaryDv) {
-    const props = dvProps(mode, agg);
-    if (props.length > 0) return { kind: "dv", primary_dv: primaryDv, props };
+    const { props, labels } = dvProps(mode, agg, labelOf);
+    if (props.length > 0) return { kind: "dv", primary_dv: primaryDv, props, labels };
   }
   return null;
 }

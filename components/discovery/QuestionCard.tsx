@@ -47,10 +47,13 @@ const GHOST_INKS = ["var(--fire)", "var(--gold)", "var(--blue)", "var(--lime)", 
  * When `props` (descending result proportions, integer %) is supplied, the
  * proportion-bearing shapes (bars/donut/podium/treemap/tier) are driven by the
  * real numbers instead of fixed dummy widths; map/flow/heat keep their fixed
- * representative look (no single-% mapping). Reuses the existing visuals.
+ * representative look (no single-% mapping). When `labels` accompany live
+ * props (iter-6 item 409), the live families also name their options + show
+ * the % so the mini-DV is readable standalone, not just colour blocks.
  */
-function Ghost({ kind, props }: { kind: ReturnType<typeof ghostKind>; props?: number[] }) {
+function Ghost({ kind, props, labels }: { kind: ReturnType<typeof ghostKind>; props?: number[]; labels?: string[] }) {
   const live = props && props.length > 0 ? props : null;
+  const named = live && labels && labels.some((l) => l) ? labels : null;
   switch (kind) {
     case "donut": {
       // build conic stops from the live shares (capped to 5), else the dummy ring.
@@ -68,6 +71,25 @@ function Ghost({ kind, props }: { kind: ReturnType<typeof ghostKind>; props?: nu
           })
           .join(", ");
         ring = `conic-gradient(${stops})`;
+      }
+      if (live && named) {
+        // legend rows replace the abstract side bars: dot + option + %
+        return (
+          <div className="flex items-center gap-3">
+            <span style={{ width: 44, height: 44, borderRadius: "50%", background: ring, border: "1.5px solid var(--ink)", flexShrink: 0 }} />
+            <span className="flex min-w-0 flex-1 flex-col gap-[4px]">
+              {live.slice(0, 3).map((p, i) => (
+                <span key={i} className="flex min-w-0 items-center gap-[6px]">
+                  <span style={{ width: 8, height: 8, borderRadius: 100, background: GHOST_INKS[i % GHOST_INKS.length], border: "1px solid var(--ink)", flexShrink: 0 }} />
+                  <span className="font-label truncate font-bold uppercase" style={{ fontSize: 9.5, letterSpacing: "0.06em", flex: 1, fontWeight: i === 0 ? 800 : 700, color: i === 0 ? "var(--ink)" : "var(--muted)" }}>
+                    {labels![i] || `Option ${i + 1}`}
+                  </span>
+                  <span className="font-label" style={{ fontSize: 10, fontWeight: 900, flexShrink: 0 }}>{p}%</span>
+                </span>
+              ))}
+            </span>
+          </div>
+        );
       }
       const bars = live ? live.slice(0, 2) : [70, 45];
       const maxBar = Math.max(...bars, 1);
@@ -99,10 +121,18 @@ function Ghost({ kind, props }: { kind: ReturnType<typeof ghostKind>; props?: nu
             { p: 38, bg: "var(--muted-violet)" },
           ];
       return (
-        <div className="flex items-end gap-[7px]" style={{ height: 46 }}>
-          {steps.map((s, i) => (
-            <span key={i} style={{ flex: 1, height: h(s.p), background: s.bg, borderRadius: "4px 4px 0 0" }} />
-          ))}
+        <div className="flex flex-col gap-[5px]">
+          <div className="flex items-end gap-[7px]" style={{ height: named ? 38 : 46 }}>
+            {steps.map((s, i) => (
+              <span key={i} style={{ flex: 1, height: h(s.p), background: s.bg, borderRadius: "4px 4px 0 0" }} />
+            ))}
+          </div>
+          {named && (
+            <span className="font-label truncate font-bold uppercase" style={{ fontSize: 9.5, letterSpacing: "0.06em" }}>
+              <span style={{ color: "var(--fire)" }}>{labels![0] || "Leader"}</span>
+              <span style={{ fontWeight: 900 }}> takes it · {live![0]}%</span>
+            </span>
+          )}
         </div>
       );
     }
@@ -145,12 +175,22 @@ function Ghost({ kind, props }: { kind: ReturnType<typeof ghostKind>; props?: nu
       );
     case "treemap": {
       // first column width follows the leader's share when live (bigger leader
-      // → wider first block); reuse the same 5-block mosaic otherwise.
+      // → wider first block); reuse the same 5-block mosaic otherwise. With
+      // labels, the leader block names itself + carries its %.
       const leader = live ? live[0] : 50;
       const firstFr = Math.max(1.6, Math.min(4, (leader / 100) * 5));
       return (
-        <div style={{ display: "grid", gridTemplateColumns: `${firstFr}fr 2fr 1.4fr`, gridTemplateRows: "24px 20px", gap: 3 }}>
-          <span style={{ gridRow: "1 / 3", background: "var(--fire)", borderRadius: 3 }} />
+        <div style={{ display: "grid", gridTemplateColumns: `${firstFr}fr 2fr 1.4fr`, gridTemplateRows: named ? "26px 22px" : "24px 20px", gap: 3 }}>
+          <span style={{ gridRow: "1 / 3", background: "var(--fire)", borderRadius: 3, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", overflow: "hidden", padding: "0 5px" }}>
+            {named && (
+              <>
+                <span className="font-label" style={{ fontSize: 11, fontWeight: 900, color: "var(--paper-bright)", lineHeight: 1.1 }}>{live![0]}%</span>
+                <span className="font-label truncate font-bold uppercase" style={{ fontSize: 8, letterSpacing: "0.06em", color: "var(--paper-bright)", maxWidth: "100%" }}>
+                  {labels![0]}
+                </span>
+              </>
+            )}
+          </span>
           <span style={{ background: "var(--gold)", borderRadius: 3 }} />
           <span style={{ background: "var(--blue)", borderRadius: 3 }} />
           <span style={{ background: "var(--lime)", borderRadius: 3 }} />
@@ -160,8 +200,29 @@ function Ghost({ kind, props }: { kind: ReturnType<typeof ghostKind>; props?: nu
     }
     default: {
       // bars family — widths from the top shares when live, else the dummy set.
+      // With labels each bar becomes a named micro-row: option · track · %.
       const vals = live ? live.slice(0, 3) : [82, 64, 47];
       const max = Math.max(...vals, 1);
+      if (named) {
+        return (
+          <div className="flex flex-col gap-[5px]">
+            {vals.map((p, i) => (
+              <span key={i} className="flex min-w-0 items-center gap-[7px]">
+                <span
+                  className="font-label truncate font-bold uppercase"
+                  style={{ fontSize: 9.5, letterSpacing: "0.06em", width: 84, flexShrink: 0, fontWeight: i === 0 ? 800 : 700, color: i === 0 ? "var(--ink)" : "var(--muted)" }}
+                >
+                  {labels![i] || `Option ${i + 1}`}
+                </span>
+                <span style={{ flex: 1, height: 8, borderRadius: 100, background: "var(--paper-edge)", overflow: "hidden" }}>
+                  <span style={{ display: "block", height: "100%", borderRadius: 100, background: GHOST_INKS[i % GHOST_INKS.length], width: `${Math.max(6, Math.round((p / max) * 100))}%` }} />
+                </span>
+                <span className="font-label" style={{ fontSize: 10, fontWeight: 900, width: 30, textAlign: "right", flexShrink: 0 }}>{p}%</span>
+              </span>
+            ))}
+          </div>
+        );
+      }
       return (
         <div className="flex flex-col gap-1.5">
           {vals.map((p, i) => (
@@ -233,17 +294,28 @@ function TugBlock({ p }: { p: Extract<NonNullable<DiscoveryCard["preview"]>, { k
 }
 
 /** TYPE 2c — DV mini (the question's real result DV, unblurred, with live
- *  proportions). Renders for modes whose result isn't a single % / tug, so each
- *  data card reflects its actual DV instead of falling back to a teaser. */
+ *  proportions + option labels). Renders for modes whose result isn't a single
+ *  % / tug, so each data card reflects its actual DV instead of falling back
+ *  to a teaser. Families that keep a fixed representative shape (map / flow /
+ *  heat / tier) get a leader caption below so the card still names a result. */
 function DvBlock({ p }: { p: Extract<NonNullable<DiscoveryCard["preview"]>, { kind: "dv" }> }) {
+  const kind = ghostKind(p.primary_dv as DvId);
+  const fixedShape = kind === "map" || kind === "flow" || kind === "heat" || kind === "tier";
+  const leader = p.labels?.[0];
   return (
     <div style={dashTop}>
       <div className="font-label font-bold uppercase" style={{ fontSize: 9.5, letterSpacing: "0.14em", color: "var(--fire)", marginBottom: 8 }}>
         India has decided
       </div>
       <div style={{ minHeight: 44 }}>
-        <Ghost kind={ghostKind(p.primary_dv as DvId)} props={p.props} />
+        <Ghost kind={kind} props={p.props} labels={p.labels} />
       </div>
+      {fixedShape && leader && (
+        <div className="font-label truncate font-bold uppercase" style={{ fontSize: 9.5, letterSpacing: "0.06em", marginTop: 7 }}>
+          <span style={{ color: "var(--fire)" }}>{leader}</span>
+          <span style={{ fontWeight: 900 }}> leads · {p.props[0]}%</span>
+        </div>
+      )}
     </div>
   );
 }
