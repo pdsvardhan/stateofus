@@ -1,9 +1,9 @@
 /**
- * INTERACTION_REGISTRY — the 8 product modes (adr-005 §4), one component per
- * mode. bucket_sort and tier_placement share the Sorter (v5 `sort` token),
- * parameterized by question.targets; their chip labels differ. chipLabel
- * strings mirror the v5 prototype modeLabel data (logoquick renders as
- * "Quick Pick" in the prototype, kept here).
+ * INTERACTION_REGISTRY — the product modes (adr-005 §4), one component per
+ * mode. tier_placement keeps the Sorter (v5 `sort` token, parameterized by
+ * question.targets); bucket_sort moved to the BucketStack card-pile flow
+ * (iter-6 item-412). chipLabel strings mirror the v5 prototype modeLabel
+ * data (logoquick renders as "Quick Pick" in the prototype, kept here).
  */
 import type { InteractionRegistry } from "@/lib/interactions/registry";
 import { QuickPick } from "./QuickPick";
@@ -11,6 +11,7 @@ import { LogoQuickPick } from "./LogoQuickPick";
 import { TradeoffCards } from "./TradeoffCards";
 import { SwipeStack } from "./SwipeStack";
 import { Sorter } from "./Sorter";
+import { BucketStack } from "./BucketStack";
 import { RankOrder } from "./RankOrder";
 import { PodiumSlots } from "./PodiumSlots";
 import { Spectrum } from "./Spectrum";
@@ -27,7 +28,7 @@ export const INTERACTION_REGISTRY: InteractionRegistry = {
     Component: TradeoffCards,
   },
   swipe_stack: { mode: "swipe_stack", chipLabel: "Swipe Stack", Component: SwipeStack },
-  bucket_sort: { mode: "bucket_sort", chipLabel: "Bucket Sort", Component: Sorter },
+  bucket_sort: { mode: "bucket_sort", chipLabel: "Bucket Sort", Component: BucketStack },
   tier_placement: {
     mode: "tier_placement",
     chipLabel: "Tier Placement",
@@ -61,6 +62,7 @@ export {
   TradeoffCards,
   SwipeStack,
   Sorter,
+  BucketStack,
   RankOrder,
   PodiumSlots,
   Spectrum,
