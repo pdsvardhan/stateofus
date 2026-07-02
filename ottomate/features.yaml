@@ -43,7 +43,7 @@ features:
         linked_test: null
     dependencies: []
   - id: feat-interaction-modes
-    title: Five interaction modes
+    title: Interaction mode registry
     short_description: Quick Pick, Bucket Sort, Tier Placement, Trade-off Cards,
       Swipe Stack; one interaction per question; skip always allowed (DOC 2).
     type: ui

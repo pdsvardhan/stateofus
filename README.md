@@ -37,7 +37,7 @@ visible; nothing is forced.
 
 - **One question = one experience page** (`/q/[questionId]`): interaction → result reveal →
   primary + secondary DVs → template insight card → reactions/share.
-- **13 interaction modes** (`lib/catalogue/enums.ts`, `components/interactions/`) and **15
+- **13 interaction modes** (`lib/catalogue/enums.ts`, `components/interactions/`) and **16
   custom SVG DV renderers** (`components/dv/`), each behind a registry.
 - **Aggregates-as-tables:** answers UPSERT idempotently per `(question_id, device_hash)`;
   `question_aggregates` are recomputed on write, never scanned live.
