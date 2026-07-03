@@ -374,3 +374,12 @@ pages:
         category: feedback
         picked: false
         variants: []
+  - id: page-stateofus-about
+    title: About
+    route: /about
+    purpose: Anonymity promise + how counting works; editorial motion pass iter-6
+    layout_type: detail
+    permissions: anonymous
+    mobile_handling: responsive
+    entry_points: []
+    components: []
