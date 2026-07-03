@@ -130,10 +130,12 @@ export default function AboutPage() {
               The promise
             </div>
             <div className="font-editorial" style={{ fontSize: 17, lineHeight: 1.5 }}>
-              Your opinion is counted; your identity isn&apos;t. No login, no
-              profile, no name on your vote — you&apos;re a device, not a dossier.
-              The map places you by rough region only, and you can correct or clear
-              it in one tap. Your answer is the only ticket this press will ever ask for.
+              Your opinion is counted; who you are isn&apos;t. No login, no
+              profile, no name — just a nameless marker on your device so each
+              question counts you once, and a rough region you can correct or
+              clear in a tap. Not a dossier, not an ad profile, nothing that
+              traces back to you. Your answer is the only ticket this press will
+              ever ask for.
             </div>
           </StampIn>
         </div>
