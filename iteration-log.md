@@ -278,3 +278,25 @@ not rebuild it. Start by re-verifying the font fix across all pages.
 **Open follow-ups:** `scripts/import-authored.ts` should parse the `Cards:`/`Directions:` swipe syntax (as `normalize.ts` already does for the catalogue) so future authored imports don't re-leak; per-question witty hints + editorial notes still sparse (prior deferral); `no-error-tracking` still OPEN.
 
 **Next session pick-up:** project healthy + deployed at https://stateofus.vault7a.xyz (:8510). Standard lives at `docs/question-authoring-standard.md`; seed via `POST /api/admin/questions` (draft) + activate via `.../transition` (needs `approved_by`); run the SOU-QFE evaluator on every new batch. 146 active, full category×mode×DV coverage.
+
+## 2026-07-02/03 — Windfall wave (iter-6) + backlog closure (iter-7/8/9)
+
+**Stage:** Stage 4 iterate — 3 iterations across two sittings, all deployed live.
+
+**What changed:**
+- **iter-6 (report #63, `windfall-comments (9).json`) — 5 items, verifier APPROVE (reports 304-308), merge `379e054`:**
+  - **409** mini-DV home cards now carry option labels + leading % (was "colour blocks with no context") — `lib/discovery/queries.ts` `dvProps` returns labeled shares; `QuestionCard` Ghost/`DvBlock` render names + % for live families, leader caption for fixed-shape DVs.
+  - **410** wide-monitor tier — new `wide:` (1440px) `@theme` breakpoint; content cap 1280→1700px on home/explore/category/search + masthead/footer, browse grids gain a 4th column, headline scales to 80px (fixes 4K "40-50% empty").
+  - **411** result page two-column at `exp` (content left, sticky recommended rail right; mobile stacked unchanged) + RailRelated harmonized into one paper card family under a "Keep going" rule (dark up-next card retired). Owner-accepted deviation: Change-my-answer sits above recommendations on mobile.
+  - **412** bucket_sort → new `BucketStack` card-pile flow (mc-stack/react-bits base, spring 260/20; tap-only 375px, skip/undo/early-submit, 520ms auto-count, reduced-motion static). `tier_placement` keeps the Sorter.
+  - **413** About editorial motion pass — `AboutFx` client layer (scroll reveals, tilt cards, stamped promise, chip pops; 300-700ms; RSC preserved; reduced-motion static).
+- **iter-7/8** — bookkeeping closes of phantom reports #24 (mono-floor, already shipped `9fdacea`) + #25 (kicker hint, already shipped `32039eb`); observation-only, deferred with commit reason.
+- **iter-9 (report #22 design-AI review) — C1 fixed, merge `7a9d0a1`, verifier APPROVE (report 309):** About "promise" paragraph reworded to remove the privacy overclaim — names the nameless salted-hash device marker (dedup: counts you once) + correctable coarse region honestly; locked "never your identity" headline kept. Every claim independently verified against `lib/identity.ts` / dedup schema / RegionChip.
+
+**Verified already-done (not re-built):** CI red-fix to-do #2 (`ci.yml` already has `RUN_TESTS` gate + prebuilt Playwright, adr-020) → marked done; 41 draft stubs already archived (0 drafts live); swipe-label leak already clean (all 12); report #22 P0/P1/P2 remainder (A1/A3/B1/B2/B3/B5/C2/C3) all shipped iter-3..6. A2 editorial-notes for ~105 Qs = owner re-confirmed accept-the-gap (deferred, not fabricated).
+
+**Decisions:** owner calls — iter-6 directions (labels+numbers, wider+denser, two-column, card-stack, editorial-motion, mc-stack base); accept 411 mobile order; tighten About body / keep headline; keep A2 gap. No new ADRs.
+
+**Friction:** iter-9 items were set to verified/deferred BEFORE calling `/lock` — the lock reset them to `locked`; had to re-apply post-lock (tooling ordering: classify → lock → build-status/defer → integrate). One background verifier died on a session limit mid-run; resumed cleanly from transcript.
+
+**Next session pick-up:** backlog fully cleared — 0 pending reports, 0 open to-dos, all HARD anti-gaslight = 0 (only SOFT stale-verification=7, informational). The one open thread is A2 (editorial-note content for ~105 Qs), blocked on owner-authored content by choice. Heads: master `7a9d0a1`.
