@@ -232,64 +232,70 @@ export function ExperienceClient({
             {result.still_counting ? (
               <StillCounting question={question} result={result} />
             ) : (
-              // iter-3 #19/#20/#21: stacked single column — result viz → where you
-              // landed (personal insight + desk notes) → rate + share inline →
-              // recommendations below the viz.
-              <div className="mx-auto flex max-w-[860px] flex-col gap-7">
-                {/* the count, read first */}
-                <div className="flex flex-col gap-5">
-                  {result.early_returns && (
-                    <div className="border-2 border-ink bg-gold-tint px-3 py-1.5 font-label text-xs font-bold tracking-wider text-ink">
-                      EARLY RETURNS — the count is young, numbers may move
+              // iter-6 item-411: two columns above the exp breakpoint — the
+              // count + personal layer + rate/share on the left, recommended
+              // questions as a sticky right rail (report #50 [6]). Below exp
+              // the iter-3 stacked order is unchanged: viz → where you landed
+              // → rate + share → recommendations.
+              <div className="mx-auto flex max-w-[860px] flex-col gap-7 exp:mx-0 exp:grid exp:max-w-none exp:grid-cols-[minmax(0,1fr)_340px] exp:items-start exp:gap-10">
+                <div className="flex min-w-0 flex-col gap-7">
+                  {/* the count, read first */}
+                  <div className="flex flex-col gap-5">
+                    {result.early_returns && (
+                      <div className="border-2 border-ink bg-gold-tint px-3 py-1.5 font-label text-xs font-bold tracking-wider text-ink">
+                        EARLY RETURNS — the count is young, numbers may move
+                      </div>
+                    )}
+                    {dvDefs.length > 1 ? (
+                      <DvSwitcher defs={dvDefs} question={question} result={result} />
+                    ) : PrimaryDv ? (
+                      <div>
+                        <CountHeader />
+                        <PrimaryDv question={question} result={result} dvId={dvDefs[0].id} />
+                      </div>
+                    ) : null}
+                  </div>
+
+                  {/* WHERE YOU LANDED — mandatory personal insight + desk notes */}
+                  <div className="flex flex-col gap-4">
+                    <div className="flex items-center gap-3">
+                      <span className="rounded border-[1.5px] border-ink bg-lime px-[11px] py-[5px] font-label text-[10px] font-bold uppercase tracking-[.22em] text-ink">
+                        Where you landed
+                      </span>
+                      <span aria-hidden className="h-0.5 flex-1 bg-ink" />
+                    </div>
+                    {verdict && <PersonalCard big={verdict.big} sub={verdict.sub} />}
+                    {notes.length > 0 && <DeskNotes notes={notes} />}
+                    {question.geo && <RegionChip />}
+                  </div>
+
+                  {/* rate the question + share/download, one line (#20/#21) */}
+                  <div className="flex flex-col gap-4 border-t-2 border-ink pt-5 exp:flex-row exp:items-center exp:justify-between exp:gap-6">
+                    <div className="shrink-0">
+                      <ReactionBar questionId={question.id} />
+                    </div>
+                    <div className="w-full exp:max-w-[440px]">
+                      <ShareActions questionId={question.id} />
+                    </div>
+                  </div>
+
+                  {/* change my answer (vote count is canonical in the header above) */}
+                  {answerable && result.your_payload && (
+                    <div className="flex justify-end border-t-2 border-ink pt-3">
+                      <button
+                        onClick={() => setPhase("answer")}
+                        className="font-label text-xs font-bold text-ink underline decoration-2 underline-offset-2"
+                      >
+                        Change my answer
+                      </button>
                     </div>
                   )}
-                  {dvDefs.length > 1 ? (
-                    <DvSwitcher defs={dvDefs} question={question} result={result} />
-                  ) : PrimaryDv ? (
-                    <div>
-                      <CountHeader />
-                      <PrimaryDv question={question} result={result} dvId={dvDefs[0].id} />
-                    </div>
-                  ) : null}
                 </div>
 
-                {/* WHERE YOU LANDED — mandatory personal insight + desk notes */}
-                <div className="flex flex-col gap-4">
-                  <div className="flex items-center gap-3">
-                    <span className="rounded border-[1.5px] border-ink bg-lime px-[11px] py-[5px] font-label text-[10px] font-bold uppercase tracking-[.22em] text-ink">
-                      Where you landed
-                    </span>
-                    <span aria-hidden className="h-0.5 flex-1 bg-ink" />
-                  </div>
-                  {verdict && <PersonalCard big={verdict.big} sub={verdict.sub} />}
-                  {notes.length > 0 && <DeskNotes notes={notes} />}
-                  {question.geo && <RegionChip />}
-                </div>
-
-                {/* rate the question + share/download, one line (#20/#21) */}
-                <div className="flex flex-col gap-4 border-t-2 border-ink pt-5 exp:flex-row exp:items-center exp:justify-between exp:gap-6">
-                  <div className="shrink-0">
-                    <ReactionBar questionId={question.id} />
-                  </div>
-                  <div className="w-full exp:max-w-[440px]">
-                    <ShareActions questionId={question.id} />
-                  </div>
-                </div>
-
-                {/* recommendations / up next — below the result (#19) */}
-                {railRelated}
-
-                {/* change my answer (vote count is canonical in the header above) */}
-                {answerable && result.your_payload && (
-                  <div className="flex justify-end border-t-2 border-ink pt-3">
-                    <button
-                      onClick={() => setPhase("answer")}
-                      className="font-label text-xs font-bold text-ink underline decoration-2 underline-offset-2"
-                    >
-                      Change my answer
-                    </button>
-                  </div>
-                )}
+                {/* recommendations / up next — right rail on wide, below on mobile */}
+                <aside className="exp:sticky exp:top-[90px] exp:self-start" aria-label="Recommended questions">
+                  {railRelated}
+                </aside>
               </div>
             )}
           </motion.section>

@@ -19,7 +19,7 @@ export function Masthead() {
         boxShadow: "0 1px 0 rgba(24,22,42,.12)",
       }}
     >
-      <div className="mx-auto flex max-w-[1280px] items-center justify-between gap-4 px-[22px] py-[13px]">
+      <div className="mx-auto flex max-w-[1280px] items-center justify-between gap-4 px-[22px] py-[13px] wide:max-w-[1700px]">
         <Link href="/" className="flex items-center gap-2.5" aria-label="State of Us — front page">
           <Image
             src="/logo.png"

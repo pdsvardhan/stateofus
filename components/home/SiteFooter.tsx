@@ -5,7 +5,7 @@
 export function SiteFooter() {
   return (
     <footer className="border-t-2 border-ink bg-paper">
-      <div className="mx-auto flex max-w-[1280px] flex-wrap items-center justify-between gap-3.5 px-[22px] py-[18px]">
+      <div className="mx-auto flex max-w-[1280px] flex-wrap items-center justify-between gap-3.5 px-[22px] py-[18px] wide:max-w-[1700px]">
         <span className="font-label text-[10px] uppercase tracking-[.14em] text-muted">
           State of Us · the public, counted · you answer, India answers back
         </span>

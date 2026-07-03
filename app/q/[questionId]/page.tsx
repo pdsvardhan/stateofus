@@ -226,7 +226,7 @@ export default async function QuestionPage(props: {
         />
       )}
 
-      <main className="mx-auto w-full max-w-[640px] px-[22px] pb-[90px] pt-[30px] exp:max-w-[1180px]">
+      <main className="mx-auto w-full max-w-[640px] px-[22px] pb-[90px] pt-[30px] exp:max-w-[1180px] wide:max-w-[1320px]">
         <ExperienceClient
           question={question}
           initialResult={result}
